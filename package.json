@@ -1,39 +1,22 @@
 {
-  "name": "Admin-MuSA",
+  "name": "musa",
   "version": "1.0.0",
-  "description": "Musa admin application",
+  "description": "Musa Admin page",
   "main": "server.js",
-  "directories": {
-    "test": "test"
+  "dependencies": {
+    "handlebars": "^3.0.0",
+    "koa": "^0.18.1",
+    "koa-logger": "^1.2.2",
+    "koa-handlebars": "^0.5.2",
+    "koa-route": "^2.4.0",
+    "koa-static-folder": "^0.1.5",
+    "koa-views": "^3.0.0"
   },
+  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon --harmony server.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/KleioDev/Admin-MuSA.git"
-  },
-  "author": "Kleio",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/KleioDev/Admin-MuSA/issues"
-  },
-  "homepage": "https://github.com/KleioDev/Admin-MuSA",
-  "dependencies": {
-    "chai": "^2.1.1",
-    "dotenv": "^0.5.1",
-    "json": "^9.0.3",
-    "koa": "^0.18.1",
-    "koa-better-body": "^1.0.17",
-    "koa-logger": "^1.2.2",
-    "koa-pg": "^0.24.0",
-    "koa-route": "^2.4.0",
-    "koa-router": "^4.2.0",
-    "koa-validate": "^0.2.10",
-    "pg": "^4.3.0",
-    "pg-hstore": "^2.3.1",
-    "sequelize": "^2.0.4",
-    "thunkify": "^2.1.2"
-  }
+  "author": "luisfrik",
+  "license": "ISC"
 }

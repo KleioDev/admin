@@ -1,75 +1,97 @@
-var render = require('./js/render');
-var koa = require('koa');
-var logger = require('koa-logger');
-var route = require('koa-route');
-var serve = require('koa-static-folder');
+//Dependencies
+var koa = require("koa");
+var logger = require("koa-logger");
+var views = require("koa-views");
+var route = require("koa-route");
+var serve = require("koa-static-folder");
+var handlebars = require('koa-handlebars');
 
+
+
+
+
+//External JS files
+
+
+//Start the app
 var app = koa();
+app.use(handlebars({
+  defaultLayout: "main",
+  partialsDir : './views'
+}));
+
+
+
+//Set the logger
 app.use(logger());
 
-app.use(serve('./bower_components'));
-app.use(serve('./dist'));
-app.use(serve('./js'));
+//Serve components
+app.use(serve("./js"));
+app.use(serve("./dist"));
+app.use(serve("./bower_components"));
 
-//Routes
-app.use(route.get('/', index));
-app.use(route.get('/museum', museum));
-app.use(route.get('/exhibitions', exhibitions));
-app.use(route.get('/objects', objects));
-app.use(route.get('/articles', articles));
-app.use(route.get('/notifications', notifications));
-app.use(route.get('/users', users));
-app.use(route.get('/leaderboard', leaderboard));
-app.use(route.get('/administrators', administrators));
-app.use(route.get('/feedback', feedback));
-app.use(route.get('/database', database));
 
+//Set the template engine
+
+
+//Set routes
+app.use(route.get("/", index));
+app.use(route.get("/museum", museum));
+app.use(route.get("/exhibitions", exhibitions));
+app.use(route.get("/objects", objects));
+app.use(route.get("/articles", articles));
+app.use(route.get("/notifications", notifications));
+app.use(route.get("/users", users));
+app.use(route.get("/leaderboard", leaderboard));
+app.use(route.get("/administrators", administrators));
+app.use(route.get("/feedback", feedback));
+app.use(route.get("/database", database));
 
 //Route definition
-//Renders each page
 function *index(){
-	this.body = yield render('index');
+	yield this.render("index", {title : 'Home'});
 }
+
 function *museum(){
-	this.body = yield render('museum_information');
+	yield this.render("museum_information", {title : 'Museum'});
 }
 
 function *exhibitions(){
-	this.body = yield render("group_management");
+	yield this.render("group_management", {title : 'Exhibitions'});
 }
 
 function *objects(){
-	this.body = yield render("objects");
+	yield this.render("objects", {title : 'Objects'});
 }
 
 function *articles(){
-	this.body = yield render("articles");
+	yield this.render("articles", {title : 'Articles'});
 }
 
 function *notifications(){
-	this.body = yield render("notifications");
+	yield this.render("notifications", {title : 'Notifications'});
 }
 
 function *users(){
-	this.body = yield render("users");
+	yield this.render("users", {title : 'Users'});
 }
 
 function *leaderboard(){
-	this.body = yield render("leaderboard");
+	yield this.render("leaderboard", {title : 'Leaderboard'});
 }
 
 function *administrators(){
-	this.body = yield render("administrators");
+	yield this.render("administrators", {title : 'Administrators'});
 }
 
 function *feedback(){
-	this.body = yield render("feedback");
+	yield this.render("feedback", {title : 'Feedback'});
 }
 
 function *database(){
-	this.body = yield render("database");
+	yield this.render("database", {title : 'Database'});
 }
 
-
+//Set the port
 app.listen(3000);
-console.log("Listening at 3000");
+console.log("Listening on port 3000");
