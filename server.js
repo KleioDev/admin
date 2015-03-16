@@ -4,21 +4,32 @@ var logger = require("koa-logger");
 var views = require("koa-views");
 var route = require("koa-route");
 var serve = require("koa-static-folder");
-var handlebars = require('koa-handlebars');
+var handlebars = require("koa-handlebars");
 
-
-
-
-
-//External JS files
+//DB
+var table = require("./js/leaderboard_table");
 
 
 //Start the app
 var app = koa();
 app.use(handlebars({
-  defaultLayout: "main",
-  partialsDir : './views'
-}));
+    defaultLayout: "main",
+    partialsDir : "./views",
+    helpers:
+        {list_user: function(items, options){
+            var string = "";
+            for(var i = 0; i < table.table.users.length; i++){
+                string = string + "<tr>" + "<td>" + (i+1) + "</td>";
+                string = string + "<td>" + table.table.users[i].name + "</td>";
+                string = string + "<td>" + table.table.users[i].score + "</td>";
+                string = string + "<td><a href=\"#\"><i class=\"fa fa-trash-o fa-fw\"></i></a></td></tr>";
+            }
+            console.log(string);
+            return string;
+
+            }
+        }
+    }));
 
 
 
@@ -32,6 +43,7 @@ app.use(serve("./bower_components"));
 
 
 //Set the template engine
+
 
 
 //Set routes

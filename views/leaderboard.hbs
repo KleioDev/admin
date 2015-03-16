@@ -8,7 +8,26 @@
     </div>
 
 
+    <button type="button" class="btn btn-primary btn-lg btn-block">Reset Leaderboard</button>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Score</th>
+                <th>Remove</th>
+            </tr>
+            </thead>
+            <tbody id="table_body">
 
+           {{#list_user table}}
+               {{name}} {{score}}
+           {{/list_user}}
+
+            </tbody>
+        </table>
+    </div>
 
 
 
