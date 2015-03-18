@@ -7,8 +7,37 @@
         </div>
     </div>
 
+    <div class="form-group input-group">
+        <input type="text" class="form-control" placeholder="Search">
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="button"><i class="fa fa-search"></i>
+            </button>
+        </span>
+    </div>
 
+    <a href="group_management">Group Management</a>
 
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Title</th>
+                <th>Type</th>
+                <th>Dimensions</th>
+                <th>Date Added</th>
+                <th>Artist</th>
+                <th>ID</th>
+                <th>Active</th>
+            </tr>
+            </thead>
+            <tbody id="table_body">
+
+            {{#list_object}}
+            {{/list_object}}
+
+            </tbody>
+        </table>
+    </div>
 
 
 
