@@ -49,7 +49,7 @@ app.use(handlebars({
 
             }
 
-            }
+        }
 
     }));
 
@@ -62,6 +62,8 @@ app.use(logger());
 app.use(serve("./js"));
 app.use(serve("./dist"));
 app.use(serve("./bower_components"));
+app.use(serve("./img"));
+
 
 
 //Set the template engine
@@ -87,7 +89,12 @@ function *index(){
 }
 
 function *museum(){
-	yield this.render("museum_information", {title : 'Museum'});
+	yield this.render("museum_information", {
+        title : 'Museum',
+        name : db.museum_info.name,
+        hours : db.museum_info.hours,
+        description : db.museum_info.description
+        });
 }
 
 function *exhibitions(){
