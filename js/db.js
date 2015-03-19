@@ -162,7 +162,9 @@ exports.users = [
         last_name:"Smith",
         gender:"Male",
         age:33,
-        banned:false
+        banned:false,
+        isAdmin:true
+
     },
     {
         id:2,
@@ -171,7 +173,8 @@ exports.users = [
         last_name:"Smith",
         gender:"Female",
         age:32,
-        banned:false
+        banned:false,
+        isAdmin:false
 
     },
     {
@@ -181,7 +184,8 @@ exports.users = [
         last_name:"Perez",
         gender:"Male",
         age:60,
-        banned:true
+        banned:true,
+        isAdmin:false
 
     },
     {
@@ -191,7 +195,9 @@ exports.users = [
         last_name:"Jones",
         gender:"Male",
         age:22,
-        banned:false
+        banned:false,
+        isAdmin:true
+
 
     },
     {
@@ -201,7 +207,8 @@ exports.users = [
         last_name:"Burger",
         gender:"Male",
         age:47,
-        banned:true
+        banned:true,
+        isAdmin:false
 
     },
     {
@@ -211,7 +218,8 @@ exports.users = [
         last_name:"Ross",
         gender:"Female",
         age:30,
-        banned:false
+        banned:false,
+        isAdmin:true
 
     },
     {
@@ -221,6 +229,7 @@ exports.users = [
         last_name:"Beethoven",
         gender:"Male",
         age:200,
-        banned:true
+        banned:true,
+        isAdmin:false
 
     }];

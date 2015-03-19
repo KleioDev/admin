@@ -89,6 +89,7 @@ app.use(route.get("/leaderboard", leaderboard));
 app.use(route.get("/administrators", administrators));
 app.use(route.get("/feedback", feedback));
 app.use(route.get("/database", database));
+app.use(route.get("/login", login));
 
 //Route definition
 function *index(){
@@ -133,7 +134,9 @@ function *leaderboard(){
 }
 
 function *administrators(){
-	yield this.render("administrators", {title : 'Administrators'});
+	yield this.render("administrators", {
+        title : 'Administrators',
+        admins : db.users});
 }
 
 function *feedback(){
@@ -142,6 +145,10 @@ function *feedback(){
 
 function *database(){
 	yield this.render("database", {title : 'Database'});
+}
+
+function *login(){
+    yield this.render("login");
 }
 
 //Set the port
