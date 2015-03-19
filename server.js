@@ -123,7 +123,9 @@ function *notifications(){
 }
 
 function *users(){
-	yield this.render("users", {title : 'Users'});
+	yield this.render("users", {
+        title : 'Users',
+        users : db.users});
 }
 
 function *leaderboard(){

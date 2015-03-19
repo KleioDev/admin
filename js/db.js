@@ -153,3 +153,74 @@ exports.articles = [
         date:"04/01/2015"
 
     }];
+
+exports.users = [
+    {
+        id:1,
+        email:"placeholder@upr.edu",
+        first_name:"John",
+        last_name:"Smith",
+        gender:"Male",
+        age:33,
+        banned:false
+    },
+    {
+        id:2,
+        email:"placeholder@upr.edu",
+        first_name:"Joanna",
+        last_name:"Smith",
+        gender:"Female",
+        age:32,
+        banned:false
+
+    },
+    {
+        id:3,
+        email:"placeholder@upr.edu",
+        first_name:"Pepe",
+        last_name:"Perez",
+        gender:"Male",
+        age:60,
+        banned:true
+
+    },
+    {
+        id:4,
+        email:"placeholder@upr.edu",
+        first_name:"Lucas",
+        last_name:"Jones",
+        gender:"Male",
+        age:22,
+        banned:false
+
+    },
+    {
+        id:5,
+        email:"placeholder@upr.edu",
+        first_name:"Bob",
+        last_name:"Burger",
+        gender:"Male",
+        age:47,
+        banned:true
+
+    },
+    {
+        id:6,
+        email:"placeholder@upr.edu",
+        first_name:"Diana",
+        last_name:"Ross",
+        gender:"Female",
+        age:30,
+        banned:false
+
+    },
+    {
+        id:7,
+        email:"placeholder@upr.edu",
+        first_name:"Ludwig",
+        last_name:"Beethoven",
+        gender:"Male",
+        age:200,
+        banned:true
+
+    }];
