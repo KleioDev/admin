@@ -47,6 +47,13 @@ app.use(handlebars({
                 string += "</tr>";
                 return string;
 
+            },
+            sample: function(obj) {
+                return obj.substring(0, 100) + "...";
+            },
+            debug: function(obj){
+                console.log("Working.");
+                console.log(obj);
             }
 
         }
@@ -106,7 +113,9 @@ function *objects(){
 }
 
 function *articles(){
-	yield this.render("articles", {title : 'Articles'});
+	yield this.render("articles", {
+        title : 'Articles',
+        articles:db.articles});
 }
 
 function *notifications(){
