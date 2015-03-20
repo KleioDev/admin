@@ -120,7 +120,9 @@ function *articles(){
 }
 
 function *notifications(){
-	yield this.render("notifications", {title : 'Notifications'});
+	yield this.render("notifications", {
+        title : 'Notifications',
+        notifications:db.notifications});
 }
 
 function *users(){
