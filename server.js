@@ -142,7 +142,9 @@ function *administrators(){
 }
 
 function *feedback(){
-	yield this.render("feedback", {title : 'Feedback'});
+	yield this.render("feedback", {
+        title : 'Feedback',
+        feedback:db.feedback});
 }
 
 function *database(){

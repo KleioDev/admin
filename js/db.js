@@ -256,3 +256,101 @@ exports.users = [
         isAdmin:false
 
     }];
+
+exports.feedback = [
+    {
+        id: 1,
+        text: "Room is too cold",
+        type: "General",
+        date: "01/01/2015",
+        solved:true
+    },
+    {
+        id: 2,
+        text: "Room is too hot",
+        type: "General",
+        date: "01/01/2015",
+        solved:true
+    },
+    {
+        id: 3,
+
+        text: "The bathroom is dirty",
+        type: "General",
+        date: "01/01/2015",
+        solved:false
+    },
+    {
+        id: 4,
+
+        text: "This date is wrong",
+        type: "Content",
+        date: "01/01/2015",
+        solved:false
+    },
+    {
+        id: 5,
+
+        text: "X Painting is peeling",
+        type: "Content",
+        date: "02/01/2015",
+        solved:false
+    },
+    {
+        id: 6,
+
+        text: "The audio in room X is too loud",
+        type: "Content",
+        date: "02/01/2015",
+        solved:false
+    },
+    {
+        id: 7,
+
+        text: "This text at painting X is illegible",
+        type: "Content",
+        date: "02/01/2015",
+        solved:true
+
+    },
+    {
+        id: 8,
+
+        text: "I am thirsty and this water fountain doesn\'t work.",
+        type: "General",
+        date: "02/01/2015",
+        solved:false
+    },
+    {
+        id: 9,
+
+        text: "The app closes unexpectedly",
+        type: "Mobile App Bug",
+        date: "03/01/2015",
+        solved:true
+    },
+    {
+        id: 10,
+
+        text: "The app displays wrong image",
+        type: "Mobile App Bug",
+        date: "03/01/2015",
+        solved:true
+    },
+    {
+        id: 11,
+
+        text: "The app does not connect to bluetooth",
+        type: "Mobile App Bug",
+        date: "03/01/2015",
+        solved:true
+    },
+    {
+        id: 12,
+
+        text: "The app is ugly",
+        type: "General",
+        date: "03/01/2015",
+        solved:false
+    }
+];
