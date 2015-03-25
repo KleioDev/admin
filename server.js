@@ -93,12 +93,12 @@ app.use(route.get("/login", login));
 
 //Route definition
 function *index(){
-	yield this.render("index", {title : 'Home'});
+	yield this.render("index", {title : "Home"});
 }
 
 function *museum(){
 	yield this.render("museum_information", {
-        title : 'Museum',
+        title : "Museum",
         name : db.museum_info.name,
         hours : db.museum_info.hours,
         description : db.museum_info.description
@@ -106,51 +106,51 @@ function *museum(){
 }
 
 function *exhibitions(){
-	yield this.render("group_management", {
-        title : 'Exhibitions',
+	yield this.render("rooms", {
+        title : "Exhibitions",
         rooms : db.rooms});
 }
 
 function *objects(){
-	yield this.render("objects", {title : 'Objects'});
+	yield this.render("objects", {title : "Objects"});
 }
 
 function *articles(){
 	yield this.render("articles", {
-        title : 'Articles',
+        title : "Articles",
         articles:db.articles});
 }
 
 function *notifications(){
 	yield this.render("notifications", {
-        title : 'Notifications',
+        title : "Notifications",
         notifications:db.notifications});
 }
 
 function *users(){
 	yield this.render("users", {
-        title : 'Users',
+        title : "Users",
         users : db.users});
 }
 
 function *leaderboard(){
-	yield this.render("leaderboard", {title : 'Leaderboard'});
+	yield this.render("leaderboard", {title : "Leaderboard"});
 }
 
 function *administrators(){
 	yield this.render("administrators", {
-        title : 'Administrators',
+        title : "Administrators",
         admins : db.users});
 }
 
 function *feedback(){
 	yield this.render("feedback", {
-        title : 'Feedback',
+        title : "Feedback",
         feedback:db.feedback});
 }
 
 function *database(){
-	yield this.render("database", {title : 'Database'});
+	yield this.render("database", {title : "Database"});
 }
 
 function *login(){
