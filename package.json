@@ -10,7 +10,7 @@
     "koa": "^0.18.1",
     "koa-handlebars": "^0.5.2",
     "koa-logger": "^1.2.2",
-    "koa-route": "^2.4.0",
+    "koa-router": "^4.2.0",
     "koa-static-folder": "^0.1.5",
     "koa-views": "^3.0.0"
   },

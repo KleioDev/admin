@@ -2,9 +2,10 @@
 var koa = require("koa");
 var logger = require("koa-logger");
 var views = require("koa-views");
-var route = require("koa-route");
+var Router = require("koa-router");
 var serve = require("koa-static-folder");
 var handlebars = require("koa-handlebars");
+var route = new Router();
 
 //DB
 var db = require("./js/db");
@@ -78,18 +79,24 @@ app.use(serve("./img"));
 
 
 //Set routes
-app.use(route.get("/", index));
-app.use(route.get("/museum", museum));
-app.use(route.get("/exhibitions", exhibitions));
-app.use(route.get("/objects", objects));
-app.use(route.get("/articles", articles));
-app.use(route.get("/notifications", notifications));
-app.use(route.get("/users", users));
-app.use(route.get("/leaderboard", leaderboard));
-app.use(route.get("/administrators", administrators));
-app.use(route.get("/feedback", feedback));
-app.use(route.get("/database", database));
-app.use(route.get("/login", login));
+route.get("/", index);
+route.get("/museum", museum);
+route.get("/exhibitions", exhibitions);
+route.get("/objects", objects);
+route.get("/articles", articles);
+route.get("/notifications", notifications);
+route.get("/users", users);
+route.get("/leaderboard", leaderboard);
+route.get("/administrators", administrators);
+route.get("/feedback", feedback);
+route.get("/database", database);
+route.get("/login", login);
+
+route.get("/new_admin", new_admin);
+route.get("/edit_admin/:id", edit_admin);
+
+app.use(route.routes());
+
 
 //Route definition
 function *index(){
@@ -156,6 +163,20 @@ function *database(){
 function *login(){
     yield this.render("login");
 }
+
+function *new_admin(){
+    yield this.render("new_admin",{
+        title: "New Administrator"
+    });
+}
+
+function *edit_admin(){
+    console.log(this.params);
+    yield this.render("edit_admin",{
+        title: "Edit Administrator"
+    });
+}
+
 
 //Set the port
 app.listen(3000);
