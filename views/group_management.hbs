@@ -9,7 +9,29 @@
 
 
 
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+            <tr>
+                <th>Room</th>
+                <th>iBeacon ID</th>
+                <th>New ID</th>
+                <th>Save</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#each rooms}}
+                <tr class="odd gradeX">
+                    <td>{{number}}</td>
+                    <td>{{current_id}}</td>
+                    <td><input class="form-control" placeholder="Enter new ID here"></td>
+                    <td style="text-align: center"><a href="#">Add ID</a></td>
+            {{/each}}
 
+            </tbody>
+        </table>
+    </div>
+</div>
 
 
 

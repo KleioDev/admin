@@ -106,7 +106,9 @@ function *museum(){
 }
 
 function *exhibitions(){
-	yield this.render("group_management", {title : 'Exhibitions'});
+	yield this.render("group_management", {
+        title : 'Exhibitions',
+        rooms : db.rooms});
 }
 
 function *objects(){

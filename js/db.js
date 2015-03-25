@@ -354,3 +354,46 @@ exports.feedback = [
         solved:false
     }
 ];
+
+exports.rooms = [
+    {
+        number: 1,
+        current_id: 1234567890
+    },
+    {
+        number: 2,
+        current_id: 1234567891
+    },
+    {
+        number: 3,
+        current_id: 1234567892
+    },
+    {
+        number: 4,
+        current_id: 1234567893
+    },
+    {
+        number: 5,
+        current_id: 1234567894
+    },
+    {
+        number: 6,
+        current_id: 1234567895
+    },
+    {
+        number: 7,
+        current_id: 1234567896
+    },
+    {
+        number: 8,
+        current_id: 1234567897
+    },
+    {
+        number: 9,
+        current_id: 1234567898
+    },
+    {
+        number: 10,
+        current_id: 1234567899
+    }
+];
