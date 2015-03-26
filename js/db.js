@@ -32,8 +32,7 @@ exports.table = {
 
         }]};
 
-exports.objects = {
-    objects: [{
+exports.objects = [{
         id:1,
         title:"First object",
         description:"First object description",
@@ -119,8 +118,8 @@ exports.objects = {
         objectNumber:5,
         artist:"Van Gogh",
         active:false
-    }]
-}
+    }];
+
 
 exports.museum_info = {
     name: "Museo de Arte Recinto Mayaguez",
@@ -397,3 +396,4 @@ exports.rooms = [
         current_id: 1234567899
     }
 ];
+

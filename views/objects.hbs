@@ -15,7 +15,7 @@
         </span>
     </div>
 
-    <a href="group_management">Group Management</a>
+    <a href="/group_management">Group Management</a>
 
     <div class="table-responsive">
         <table class="table">
@@ -28,12 +28,30 @@
                 <th>Artist</th>
                 <th>ID</th>
                 <th>Active</th>
+                <th>View</th>
             </tr>
             </thead>
             <tbody id="table_body">
+            {{#each objects}}
+            <tr>
+                <td>{{title}}</td>
 
-            {{#list_object}}
-            {{/list_object}}
+                <td>{{type}}</td>
+                <td>{{dimensions}}</td>
+                <td>{{dated}}</td>
+                <td>{{artist}}</td>
+                <td>{{id}}</td>
+
+                {{#if active}}
+                <td>Active</td>
+                {{else}}
+                <td>Inactive</td>
+                {{/if}}
+                <td style="text-align: center"><a href="single_object/{{id}}"><button type="button" class="btn btn-default">View</button></a></td>
+
+            </tr>
+
+            {{/each}}
 
             </tbody>
         </table>

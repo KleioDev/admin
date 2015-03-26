@@ -18,37 +18,6 @@ app.use(handlebars({
     partialsDir : "./views",
     helpers:
         {
-            list_user: function(){
-                var string = "";
-                for(var i = 0; i < db.table.users.length; i++){
-                    string += "<tr>" + "<td>" + (i+1) + "</td>";
-                    string += "<td>" + db.table.users[i].name + "</td>";
-                    string += "<td>" + db.table.users[i].score + "</td>";
-                    string += "<td><a href=\"#\"><i class=\"fa fa-trash-o fa-fw\"></i></a></td></tr>";
-                }
-                return string;
-                },
-            list_object: function(){
-                var string = "";
-                for (var i = 0; i < db.objects.objects.length; i++){
-                    string += "<tr>" + "<td><a href=\"#\"><strong>" + db.objects.objects[i].title + "</strong></a></td>";
-
-                    string += "<td>" + db.objects.objects[i].type + "</td>";
-                    string += "<td>" + db.objects.objects[i].dimensions + "</td>";
-                    string += "<td>" + db.objects.objects[i].dated + "</td>";
-                    string += "<td>" + db.objects.objects[i].artist + "</td>";
-                    string += "<td>" + db.objects.objects[i].id + "</td>";
-                    if(db.objects.objects[i].active){
-                        string += "<td>Active</td>";
-                    }
-                    else{
-                        string += "<td>Inactive</td>";
-                    }
-                }
-                string += "</tr>";
-                return string;
-
-            },
             sample: function(obj) {
                 return obj.substring(0, 100) + "...";
             },
@@ -94,6 +63,7 @@ route.get("/login", login);
 
 route.get("/new_admin", new_admin);
 route.get("/edit_admin/:id", edit_admin);
+route.get("/single_object/:id", single_object);
 
 app.use(route.routes());
 
@@ -119,7 +89,10 @@ function *exhibitions(){
 }
 
 function *objects(){
-	yield this.render("objects", {title : "Objects"});
+	yield this.render("objects", {
+        title : "Objects",
+        objects: db.objects
+    });
 }
 
 function *articles(){
@@ -186,6 +159,12 @@ function *edit_admin(){
             title: "Wrong User"
         });
     }
+}
+
+function *single_object(){
+    yield this.render("single_object", {
+        object : db.objects[this.params.id - 1]
+    });
 }
 
 
