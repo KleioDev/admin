@@ -16,13 +16,19 @@
                 <th>#</th>
                 <th>Name</th>
                 <th>Score</th>
-                <th>Remove</th>
+                <th style="text-align: center">Remove</th>
             </tr>
             </thead>
             <tbody id="table_body">
 
-           {{#list_user}}
-           {{/list_user}}
+           {{#each users}}
+               <tr>
+                   <th>#</th>
+                   <th>{{name}}</th>
+                   <th>{{score}}</th>
+                   <th style="text-align: center"><a href="/remove/{{id}}"><i class="fa fa-trash fa-fw"></i></a></th>
+               </tr>
+           {{/each}}
 
             </tbody>
         </table>

@@ -114,7 +114,9 @@ function *users(){
 }
 
 function *leaderboard(){
-	yield this.render("leaderboard", {title : "Leaderboard"});
+	yield this.render("leaderboard", {
+        title : "Leaderboard",
+        users : db.table.users});
 }
 
 function *administrators(){
