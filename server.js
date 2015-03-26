@@ -171,10 +171,21 @@ function *new_admin(){
 }
 
 function *edit_admin(){
-    console.log(this.params);
-    yield this.render("edit_admin",{
-        title: "Edit Administrator"
-    });
+
+    //TODO: Add proper algorithm for finding the admin info and return 404 status code
+    var param_admin = db.users[this.params.id - 1];
+    console.log(param_admin);
+    if(param_admin.isAdmin) {
+        yield this.render("edit_admin", {
+            title: "Edit Administrator",
+            admin: param_admin
+        });
+    }
+    else{
+        yield this.render("404", {
+            title: "Wrong User"
+        });
+    }
 }
 
 
