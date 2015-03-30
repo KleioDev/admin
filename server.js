@@ -24,6 +24,16 @@ app.use(handlebars({
             debug: function(obj){
                 console.log("Working.");
                 console.log(obj);
+            },
+            list_user: function(){
+                var string = "";
+                for(var i = 0; i < db.table.users.length; i++){
+                    string += "<tr>" + "<td>" + (i+1) + "</td>";
+                    string += "<td>" + db.table.users[i].name + "</td>";
+                    string += "<td>" + db.table.users[i].score + "</td>";
+                    string += "<td><a href=\"#\"><i class=\"fa fa-trash-o fa-fw\"></i></a></td></tr>";
+                    }
+                return string;
             }
 
         }
