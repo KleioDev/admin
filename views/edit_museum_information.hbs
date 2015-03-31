@@ -1,0 +1,35 @@
+{{> navbar}}
+
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">{{title}}</h1>
+        </div>
+    </div>
+
+    <form action="/edit_museum_information" method="post">
+        <div class="form-group">
+            <label>Picture</label>
+            <input type="file">
+            <label>Name</label>
+            <input id="museum_name" type="text" name="name" class="form-control" placeholder="Enter museum name.">
+            <p class="help-block">Was: {{name}}</p>
+
+            <label>Hours</label>
+            <input id="museum_hours" type="text" name="hours" class="form-control" placeholder="Enter hours information.">
+            <p class="help-block">Was: {{hours}}</p>
+
+            <label>Description</label>
+            <textarea id="museum_desc" type="text" name="description" class="form-control" placeholder="Enter short description.">
+            </textarea>
+            <p class="help-block">Was: {{description}}</p>
+
+            <button class="btn btn-default" type="submit">Submit</button>
+
+        </div>
+    </form>
+
+
+
+
+</div>

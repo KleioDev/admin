@@ -74,6 +74,7 @@ route.get("/login", login);
 route.get("/new_admin", new_admin);
 route.get("/edit_admin/:id", edit_admin);
 route.get("/single_object/:id", single_object);
+route.get("/edit_museum_information", edit_museum_information)
 
 app.use(route.routes());
 
@@ -177,6 +178,16 @@ function *single_object(){
     yield this.render("single_object", {
         object : db.objects[this.params.id - 1]
     });
+}
+
+function *edit_museum_information(){
+    yield this.render("edit_museum_information", {
+        title : "Museum",
+            name : db.museum_info.name,
+        hours : db.museum_info.hours,
+        description : db.museum_info.description
+    });
+
 }
 
 
