@@ -7,16 +7,9 @@
         </div>
     </div>
 
-    <div class="form-group input-group">
-        <input type="text" class="form-control" placeholder="Search">
-            <span class="input-group-btn">
-                <button class="btn btn-default" type="button"><i class="fa fa-search"></i>
-                </button>
-        </span>
-    </div>
 
-    <div class="table-responsive">
-        <table class="table">
+    <div class="dataTable_wrapper">
+        <table class="table table-striped table-bordered table-hover" id="feedback_table">
             <thead>
             <tr>
                 <th>ID</th>
@@ -25,7 +18,7 @@
                 <th>Last Name</th>
                 <th>Gender</th>
                 <th>Age</th>
-                <th>Banned</th>
+                <!--<th>Banned</th>-->
             </tr>
             </thead>
             <tbody id="table_body">
@@ -37,7 +30,7 @@
                     <td>{{last_name}}</td>
                     <td>{{gender}}</td>
                     <td>{{age}}</td>
-                    <td>{{banned}}</td>
+                    <!--<td>{{banned}}</td>-->
 
 
                 </tr>

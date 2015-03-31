@@ -156,22 +156,26 @@ exports.articles = [
 exports.notifications = [
     {
         title:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.",
-        date:"03/25/2015"
+        date:"03/25/2015",
+        id: 1
 
     },
     {
         title:"Eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim.",
-        date:"03/26/2015"
+        date:"03/26/2015",
+        id: 2
 
     },
     {
         title:"Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-        date:"03/31/2015"
+        date:"03/31/2015",
+        id: 3
 
     },
     {
         title:"Excepteur sint occaecat cupidatat non proident.",
-        date:"04/01/2015"
+        date:"04/01/2015",
+        id: 4
 
     }];
 
