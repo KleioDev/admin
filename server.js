@@ -50,6 +50,8 @@ app.use(serve("./js"));
 app.use(serve("./dist"));
 app.use(serve("./bower_components"));
 app.use(serve("./img"));
+app.use(serve("./audio"));
+
 
 
 

@@ -55,7 +55,66 @@ exports.objects = [{
         department:"something",
         objectNumber:1,
         artist:"Van Gogh",
-        active:true
+        active:true,
+        image: "../img/oil.jpg",
+        audio_content:[
+            {
+                id:1,
+                title:"The song of the ages",
+                audio:"../audio/Tom_Jones_Its_Not_Unusual.mp3"
+            },
+            {
+                id:2,
+                title:"The same song of the ages",
+                audio:"../audio/Tom_Jones_Its_Not_Unusual.mp3"
+            }
+        ],
+        video_content:[
+            {
+                id:1,
+                title: "Theme",
+                youtube_url:"https://www.youtube.com/watch?v=1nCqRmx3Dnw"
+            },
+            {
+                id:2,
+                title:"The Dance of Death",
+                youtube_url:"https://www.youtube.com/watch?v=zS1cLOIxsQ8"
+            }
+        ],
+        image_content: [
+            {
+                id:1,
+                title:"Fresh Prince Portrait",
+                image_path:"../js/fresh_prince.jpeg"
+            },
+            {
+                id:2,
+                title:"Fresh Prince Uncle",
+                image_path:"../js/uncle_phil.jpeg"
+            },
+            {
+                id:3,
+                title:"Fresh Prince Cousin",
+                image_path:"../js/carlton_banks.jpeg"
+            }
+        ],
+        text_content: [
+            {
+                id:1,
+                title:"Fresh Prince Backstory 1",
+                text: "Now this is the story all about how"
+            },
+            {
+                id:2,
+                title:"Fresh Prince Backstory 2",
+                text: "My life got twisted, turned up side down"
+            },
+            {
+                id:3,
+                title:"Fresh Prince Backstory 3",
+                text: "I'd like to take a minute, just sit right there"
+            }
+        ]
     },
     {
         id:2,
@@ -72,7 +131,61 @@ exports.objects = [{
         department:"something",
         objectNumber:2,
         artist:"Van Gogh",
-        active:true
+        active:true,
+        image: "../img/oil.jpg",
+        audio_content:[
+            {
+                id:1,
+                title:"The song of the ages",
+                audio:"../audio/Tom_Jones_Its_Not_Unusual.mp3"
+            }
+        ],
+        video_content:[
+            {
+                id:1,
+                title: "Theme",
+                youtube_url:"https://www.youtube.com/watch?v=1nCqRmx3Dnw"
+            },
+            {
+                id:2,
+                title:"The Dance of Death",
+                youtube_url:"https://www.youtube.com/watch?v=zS1cLOIxsQ8"
+            }
+        ],
+        image_content: [
+            {
+                id:1,
+                title:"Fresh Prince Portrait",
+                image_path:"../js/fresh_prince.jpeg"
+            },
+            {
+                id:2,
+                title:"Fresh Prince Uncle",
+                image_path:"../js/uncle_phil.jpeg"
+            },
+            {
+                id:3,
+                title:"Fresh Prince Cousin",
+                image_path:"../js/carlton_banks.jpeg"
+            }
+        ],
+        text_content: [
+            {
+                id:1,
+                title:"Fresh Prince Backstory 1",
+                text: "Now this is the story all about how"
+            },
+            {
+                id:2,
+                title:"Fresh Prince Backstory 2",
+                text: "My life got twisted, turned up side down"
+            },
+            {
+                id:3,
+                title:"Fresh Prince Backstory 3",
+                text: "I'd like to take a minute, just sit right there"
+            }
+        ]
 
     },
     {
@@ -90,7 +203,61 @@ exports.objects = [{
         department:"something",
         objectNumber:3,
         artist:"Van Gogh",
-        active:true
+        active:true,
+        image: "../img/oil.jpg",
+        audio_content:[
+            {
+                id:1,
+                title:"The song of the ages",
+                audio:"../audio/Tom_Jones_Its_Not_Unusual.mp3"
+            }
+        ],
+        video_content:[
+            {
+                id:1,
+                title: "Theme",
+                youtube_url:"https://www.youtube.com/watch?v=1nCqRmx3Dnw"
+            },
+            {
+                id:2,
+                title:"The Dance of Death",
+                youtube_url:"https://www.youtube.com/watch?v=zS1cLOIxsQ8"
+            }
+        ],
+        image_content: [
+            {
+                id:1,
+                title:"Fresh Prince Portrait",
+                image_path:"../js/fresh_prince.jpeg"
+            },
+            {
+                id:2,
+                title:"Fresh Prince Uncle",
+                image_path:"../js/uncle_phil.jpeg"
+            },
+            {
+                id:3,
+                title:"Fresh Prince Cousin",
+                image_path:"../js/carlton_banks.jpeg"
+            }
+        ],
+        text_content: [
+            {
+                id:1,
+                title:"Fresh Prince Backstory 1",
+                text: "Now this is the story all about how"
+            },
+            {
+                id:2,
+                title:"Fresh Prince Backstory 2",
+                text: "My life got twisted, turned up side down"
+            },
+            {
+                id:3,
+                title:"Fresh Prince Backstory 3",
+                text: "I'd like to take a minute, just sit right there"
+            }
+        ]
 
     },
     {
@@ -108,7 +275,61 @@ exports.objects = [{
         department:"something",
         objectNumber:4,
         artist:"Van Gogh",
-        active:false
+        active:false,
+        image: "../img/oil.jpg",
+        audio_content:[
+            {
+                id:1,
+                title:"The song of the ages",
+                audio:"../audio/Tom_Jones_Its_Not_Unusual.mp3"
+            }
+        ],
+        video_content:[
+            {
+                id:1,
+                title: "Theme",
+                youtube_url:"https://www.youtube.com/watch?v=1nCqRmx3Dnw"
+            },
+            {
+                id:2,
+                title:"The Dance of Death",
+                youtube_url:"https://www.youtube.com/watch?v=zS1cLOIxsQ8"
+            }
+        ],
+        image_content: [
+            {
+                id:1,
+                title:"Fresh Prince Portrait",
+                image_path:"../js/fresh_prince.jpeg"
+            },
+            {
+                id:2,
+                title:"Fresh Prince Uncle",
+                image_path:"../js/uncle_phil.jpeg"
+            },
+            {
+                id:3,
+                title:"Fresh Prince Cousin",
+                image_path:"../js/carlton_banks.jpeg"
+            }
+        ],
+        text_content: [
+            {
+                id:1,
+                title:"Fresh Prince Backstory 1",
+                text: "Now this is the story all about how"
+            },
+            {
+                id:2,
+                title:"Fresh Prince Backstory 2",
+                text: "My life got twisted, turned up side down"
+            },
+            {
+                id:3,
+                title:"Fresh Prince Backstory 3",
+                text: "I'd like to take a minute, just sit right there"
+            }
+        ]
     },
     {
         id:5,
@@ -125,7 +346,61 @@ exports.objects = [{
         department:"something",
         objectNumber:5,
         artist:"Van Gogh",
-        active:false
+        active:false,
+        image: "../img/oil.jpg",
+        audio_content:[
+            {
+                id:1,
+                title:"The song of the ages",
+                audio:"../audio/Tom_Jones_Its_Not_Unusual.mp3"
+            }
+        ],
+        video_content:[
+            {
+                id:1,
+                title: "Theme",
+                youtube_url:"https://www.youtube.com/watch?v=1nCqRmx3Dnw"
+            },
+            {
+                id:2,
+                title:"The Dance of Death",
+                youtube_url:"https://www.youtube.com/watch?v=zS1cLOIxsQ8"
+            }
+        ],
+        image_content: [
+            {
+                id:1,
+                title:"Fresh Prince Portrait",
+                image_path:"../js/fresh_prince.jpeg"
+            },
+            {
+                id:2,
+                title:"Fresh Prince Uncle",
+                image_path:"../js/uncle_phil.jpeg"
+            },
+            {
+                id:3,
+                title:"Fresh Prince Cousin",
+                image_path:"../js/carlton_banks.jpeg"
+            }
+        ],
+        text_content: [
+            {
+                id:1,
+                title:"Fresh Prince Backstory 1",
+                text: "Now this is the story all about how"
+            },
+            {
+                id:2,
+                title:"Fresh Prince Backstory 2",
+                text: "My life got twisted, turned up side down"
+            },
+            {
+                id:3,
+                title:"Fresh Prince Backstory 3",
+                text: "I'd like to take a minute, just sit right there"
+            }
+        ]
     }];
 
 
