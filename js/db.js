@@ -85,17 +85,17 @@ exports.objects = [{
             {
                 id:1,
                 title:"Fresh Prince Portrait",
-                image_path:"../js/fresh_prince.jpeg"
+                image_path:"../img/fresh_prince.jpeg"
             },
             {
                 id:2,
                 title:"Fresh Prince Uncle",
-                image_path:"../js/uncle_phil.jpeg"
+                image_path:"../img/uncle_phil.jpg"
             },
             {
                 id:3,
                 title:"Fresh Prince Cousin",
-                image_path:"../js/carlton_banks.jpeg"
+                image_path:"../img/carlton_banks.jpeg"
             }
         ],
         text_content: [
@@ -156,17 +156,17 @@ exports.objects = [{
             {
                 id:1,
                 title:"Fresh Prince Portrait",
-                image_path:"../js/fresh_prince.jpeg"
+                image_path:"../img/fresh_prince.jpeg"
             },
             {
                 id:2,
                 title:"Fresh Prince Uncle",
-                image_path:"../js/uncle_phil.jpeg"
+                image_path:"../img/uncle_phil.jpg"
             },
             {
                 id:3,
                 title:"Fresh Prince Cousin",
-                image_path:"../js/carlton_banks.jpeg"
+                image_path:"../img/carlton_banks.jpeg"
             }
         ],
         text_content: [
@@ -228,17 +228,17 @@ exports.objects = [{
             {
                 id:1,
                 title:"Fresh Prince Portrait",
-                image_path:"../js/fresh_prince.jpeg"
+                image_path:"../img/fresh_prince.jpeg"
             },
             {
                 id:2,
                 title:"Fresh Prince Uncle",
-                image_path:"../js/uncle_phil.jpeg"
+                image_path:"../img/uncle_phil.jpg"
             },
             {
                 id:3,
                 title:"Fresh Prince Cousin",
-                image_path:"../js/carlton_banks.jpeg"
+                image_path:"../img/carlton_banks.jpeg"
             }
         ],
         text_content: [
@@ -300,17 +300,17 @@ exports.objects = [{
             {
                 id:1,
                 title:"Fresh Prince Portrait",
-                image_path:"../js/fresh_prince.jpeg"
+                image_path:"../img/fresh_prince.jpeg"
             },
             {
                 id:2,
                 title:"Fresh Prince Uncle",
-                image_path:"../js/uncle_phil.jpeg"
+                image_path:"../img/uncle_phil.jpg"
             },
             {
                 id:3,
                 title:"Fresh Prince Cousin",
-                image_path:"../js/carlton_banks.jpeg"
+                image_path:"../img/carlton_banks.jpeg"
             }
         ],
         text_content: [
@@ -371,17 +371,17 @@ exports.objects = [{
             {
                 id:1,
                 title:"Fresh Prince Portrait",
-                image_path:"../js/fresh_prince.jpeg"
+                image_path:"../img/fresh_prince.jpeg"
             },
             {
                 id:2,
                 title:"Fresh Prince Uncle",
-                image_path:"../js/uncle_phil.jpeg"
+                image_path:"../img/uncle_phil.jpg"
             },
             {
                 id:3,
                 title:"Fresh Prince Cousin",
-                image_path:"../js/carlton_banks.jpeg"
+                image_path:"../img/carlton_banks.jpeg"
             }
         ],
         text_content: [
