@@ -1,0 +1,27 @@
+{{> navbar}}
+
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">{{title}}</h1>
+        </div>
+    </div>
+
+    <form action="/new_article" method="post">
+        <div class="form-group">
+            <label>Title</label>
+            <input id="article_title" type="text" name="title" class="form-control" placeholder="Enter title.">
+            <label>Text</label>
+            <textarea id="article_text" type="text" name="text" class="form-control" placeholder="Enter text."rows="6"></textarea>
+            <br>
+            <button class="btn btn-default" type="submit">Submit</button>
+
+
+        </div>
+    </form>
+
+
+
+
+
+</div>

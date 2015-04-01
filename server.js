@@ -19,7 +19,7 @@ app.use(handlebars({
     helpers:
         {
             sample: function(obj) {
-                return obj.substring(0, 100) + "...";
+                return obj.substring(0, 80) + "...";
             },
             debug: function(obj){
                 console.log("Working.");
@@ -74,7 +74,10 @@ route.get("/login", login);
 route.get("/new_admin", new_admin);
 route.get("/edit_admin/:id", edit_admin);
 route.get("/single_object/:id", single_object);
-route.get("/edit_museum_information", edit_museum_information)
+route.get("/edit_museum_information", edit_museum_information);
+route.get("/article/:id", single_article);
+route.get("/edit_article/:id", edit_article);
+route.get("/new_article", new_article);
 
 app.use(route.routes());
 
@@ -187,8 +190,38 @@ function *edit_museum_information(){
         hours : db.museum_info.hours,
         description : db.museum_info.description
     });
+}
+
+
+function *single_article(){// id as param
+    var param_article = db.articles[this.params.id - 1];
+    yield this.render("single_article", {
+        title: param_article.title,
+        text: param_article.text,
+        date: param_article.date,
+        id: param_article.id
+
+    });
 
 }
+
+function *edit_article(){ //id as param
+    var param_article = db.articles[this.params.id - 1];
+
+    yield this.render("edit_article", {
+        title: param_article.title,
+        text: param_article.text,
+        date: param_article.date,
+        id: param_article.id
+    });
+}
+
+function *new_article(){
+    yield this.render("new_article", {
+        title: "New Article"
+    });
+}
+
 
 
 //Set the port
