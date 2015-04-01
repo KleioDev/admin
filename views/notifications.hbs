@@ -15,11 +15,13 @@
             </span>
         </div>
     </form>
+    <br>
 
     <div class="dataTable_wrapper">
         <table class="table table-striped table-bordered table-hover" id="notification_table">
             <thead>
             <tr>
+                <th>ID</th>
                 <th>Notification</th>
                 <th>Date</th>
                 <th>Remove</th>
@@ -28,11 +30,12 @@
             <tbody id="table_body">
             {{#each notifications}}
                 <tr>
+                    <td>{{id}}</td>
                     <td>{{title}}</td>
                     <td>{{date}}</td>
-                    <td style="text-align: center;"><a href="#"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmation">Delete</button></a></td>
+                    <td style="text-align: center;"><a href="#"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmation{{id}}">Delete</button></a></td>
                 </tr>
-                <div class="modal fade" id="deleteConfirmation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal fade" id="deleteConfirmation{{id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">

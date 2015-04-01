@@ -31,7 +31,7 @@ app.use(handlebars({
                     string += "<tr>" + "<td>" + (i+1) + "</td>";
                     string += "<td>" + db.table.users[i].name + "</td>";
                     string += "<td>" + db.table.users[i].score + "</td>";
-                    string += "<td><a href=\"#\"><i class=\"fa fa-trash-o fa-fw\"></i></a></td></tr>";
+                    string += "<td style=\"text-align:center;\"><a href=\"/reset_score/" + db.table.users[i].id + "\"><i class=\"fa fa-trash-o fa-fw\"></i></a></td></tr>";
                     }
                 return string;
             }

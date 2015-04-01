@@ -1,34 +1,42 @@
 exports.table = {
     users: [{
             name: "Zorali de Feria",
-            score: 10000
+            score: 10000,
+            id: 1
         },
         {
             name: "Jose Martinez",
-            score: 444
+            score: 444,
+            id: 2
 
         },
         {
             name: "Luis Medina",
-            score: 111
+            score: 111,
+            id: 3
         },
         {
             name: "Pepe Gonzalez",
-            score: 33
+            score: 33,
+            id: 4
 
         },
         {
             name: "Cesar Cruz",
-            score: 31
+            score: 31,
+            id: 5
 
         },
         {
             name: "Pepa Perez",
             score: 8
+            ,
+            id: 6
         },
         {
             name: "Ignacio el Gallo",
-            score: 1
+            score: 1,
+            id: 7
 
         }]};
 

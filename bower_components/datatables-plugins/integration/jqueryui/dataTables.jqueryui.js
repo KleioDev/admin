@@ -16,7 +16,7 @@ var factory = function( $, DataTable ) {
 "use strict";
 
 
-var sort_prefix = 'css_right ui-icon ui-icon-';
+var sort_prefix = 'css_right ui-icon';
 var toolbar_prefix = 'fg-toolbar ui-toolbar ui-widget-header ui-helper-clearfix ui-corner-';
 
 /* Set the defaults for DataTables initialisation */

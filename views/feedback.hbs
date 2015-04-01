@@ -19,23 +19,23 @@
                 </thead>
                 <tbody>
                 {{#each feedback}}
-                <tr class="odd gradeX">
+                <tr>
                     <td>{{text}}</td>
                     <td>{{type}}</td>
                     <td>{{date}}</td>
                     {{#if solved}}
                         <td style="text-align: center">Solved</td>
-                        <td style="text-align: center"><a href="#" data-toggle="modal" data-target="#deleteConfirmation"><i class="fa fa-trash fa-fw"></i></a></td>
+                        <td style="text-align: center"><a href="#" data-toggle="modal" data-target="#deleteConfirmation{{id}}"><i class="fa fa-trash fa-fw"></i></a></td>
 
                     {{else}}
                         <td style="text-align: center">Pending</td>
-                        <td style="text-align: center"><a href="#" data-toggle="modal" data-target="#solveConfirmation"><i class="fa fa-check fa-fw"></i></a></td>
+                        <td style="text-align: center"><a href="#" data-toggle="modal" data-target="#solveConfirmation{{id}}"><i class="fa fa-check fa-fw"></i></a></td>
 
                     {{/if}}
 
                     <!-- Delete Feedback Entry modal -->
 
-                    <div class="modal fade" id="deleteConfirmation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="deleteConfirmation{{id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -54,7 +54,7 @@
                     </div>
 
                     <!-- Solve Feedback Entry modal -->
-                    <div class="modal fade" id="solveConfirmation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="solveConfirmation{{id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
