@@ -71,6 +71,7 @@ route.get("/article/:id", single_article);
 route.get("/edit_article/:id", edit_article);
 route.get("/new_article", new_article);
 route.get("/exhibition/:id", exhibition);
+route.get("/room/:id", room);
 
 app.use(route.routes());
 
@@ -248,6 +249,20 @@ function *exhibition(){
         object_list: list
 
     })
+}
+
+function *room(){
+    var room;
+    for(var i = 0; i < db.rooms.length; i++){
+        if(this.params.id == db.rooms[i].id){
+            room = db.rooms[i];
+            break;
+        }
+    }
+    yield this.render("room", {
+        title: "Room " + room.number,
+        ibeacon_list: room.current_id
+    });
 }
 
 
