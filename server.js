@@ -62,7 +62,6 @@ route.get("/feedback", feedback);
 route.get("/database", database);
 route.get("/login", login);
 route.get("/rooms", rooms);
-
 route.get("/new_admin", new_admin);
 route.get("/edit_admin/:id", edit_admin);
 route.get("/single_object/:id", single_object);
@@ -72,6 +71,30 @@ route.get("/edit_article/:id", edit_article);
 route.get("/new_article", new_article);
 route.get("/exhibition/:id", exhibition);
 route.get("/room/:id", room);
+route.post("/create_notification", create_notification);
+route.post("/edit_admin/:id", edit_admin);
+route.post("/delete_notification/:id", delete_notification);
+route.post("/edit_article/:id", edit_article);
+route.post("/add_article", add_article);
+route.post("/delete_article/:id", delete_article);
+route.post("/solve_feedback/:id", solve_feedback);
+route.post("/delete_feedback/:id", delete_feedback);
+route.post("/reset_score/:id", reset_score);
+route.post("/upload_audio", upload_audio);
+route.post("/delete_audio/:id", delete_audio);
+route.post("/delete_text/:id", delete_text);
+route.post("/add_text", add_text);
+route.post("/delete_image/:id", delete_image);
+route.post("/add_image", add_image);
+route.post("/delete_video/:id", delete_video);
+route.post("/add_video", add_video);
+route.post("/new_exhibtion", new_exhibition);
+route.post("/add_to_exhibition", add_to_exhibition);
+route.post("/remove_from_exhibition/:id", remove_from_exhibition);
+route.post("/new_room", new_room);
+route.post("/remove_ibeacon/:id", remove_ibeacon);
+
+
 
 app.use(route.routes());
 
@@ -264,6 +287,115 @@ function *room(){
         ibeacon_list: room.current_id
     });
 }
+function *create_notification(){
+
+}
+
+function *edit_admin(){
+
+}
+
+function *delete_notification(){
+    for(var i = 0; i < db.notifications.length; i++){
+        if(this.params.id == db.notifications[i].id){
+            db.notifications.splice(i, 1);
+            break;
+        }
+    }
+    //NOT REDIRECTING
+    this.redirect("/notifications");
+
+}
+
+function *edit_article(){
+
+}
+
+function *add_article(){
+
+}
+
+function *delete_article(){
+    for(var i = 0; i < db.articles.length; i++){
+        if(this.params.id == db.articles[i].id){
+            db.articles.splice(i, 1);
+            break;
+        }
+    }
+    this.redirect("/articles");
+}
+
+function *solve_feedback(){
+
+}
+
+function *delete_feedback(){
+    for(var i = 0; i < db.feedback.length; i++){
+        if(this.params.id == db.feedback[i].id){
+            db.feedback.splice(i, 1);
+            break;
+        }
+    }
+    this.redirect("/feedback");
+}
+
+function *reset_score(){
+
+}
+
+function *upload_audio(){
+
+}
+
+function *delete_audio(){
+
+}
+
+function *delete_text(){
+
+}
+
+function *add_text(){
+
+}
+
+function *delete_image(){
+
+}
+
+function *add_image(){
+
+}
+
+function *delete_video(){
+
+}
+
+function *add_video(){
+
+}
+
+function *new_exhibition(){
+
+}
+
+function *add_to_exhibition(){
+
+}
+
+function *remove_from_exhibition(){
+
+}
+
+function *new_room(){
+
+}
+
+function *remove_ibeacon(){
+
+}
+
+
 
 
 

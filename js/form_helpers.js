@@ -47,6 +47,18 @@ $(document).ready(function() {
         validate_article();
         $('#article_text').change(validate_article);
     }
+
+    //Formless post
+    $(document).ready(function() {
+        $(function() {
+            $("#delete").on("click",function(e) {
+                e.preventDefault(); // cancel the link itself
+                $.post(this.href,function(data) {
+                    $("#someContainer").html(data);
+                });
+            });
+        });
+    });
 });
 
 function validate_notifications(){

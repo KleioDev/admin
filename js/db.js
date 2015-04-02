@@ -147,12 +147,16 @@ exports.objects = [{
             {
                 id:1,
                 title: "Theme",
-                youtube_url:"https://www.youtube.com/watch?v=1nCqRmx3Dnw"
+                youtube_url:"https://www.youtube.com/watch?v=1nCqRmx3Dnw",
+                embed_id: "1nCqRmx3Dnw"
+
             },
             {
                 id:2,
                 title:"The Dance of Death",
-                youtube_url:"https://www.youtube.com/watch?v=zS1cLOIxsQ8"
+                youtube_url:"https://www.youtube.com/watch?v=zS1cLOIxsQ8",
+                embed_id: "zS1cLOIxsQ8"
+
             }
         ],
         image_content: [
@@ -219,12 +223,15 @@ exports.objects = [{
             {
                 id:1,
                 title: "Theme",
-                youtube_url:"https://www.youtube.com/watch?v=1nCqRmx3Dnw"
+                youtube_url:"https://www.youtube.com/watch?v=1nCqRmx3Dnw",
+                embed_id: "1nCqRmx3Dnw"
+
             },
             {
                 id:2,
                 title:"The Dance of Death",
-                youtube_url:"https://www.youtube.com/watch?v=zS1cLOIxsQ8"
+                youtube_url:"https://www.youtube.com/watch?v=zS1cLOIxsQ8",
+                embed_id: "1nCqRmx3Dnw"
             }
         ],
         image_content: [
@@ -291,12 +298,16 @@ exports.objects = [{
             {
                 id:1,
                 title: "Theme",
-                youtube_url:"https://www.youtube.com/watch?v=1nCqRmx3Dnw"
+                youtube_url:"https://www.youtube.com/watch?v=1nCqRmx3Dnw",
+                embed_id: "1nCqRmx3Dnw"
+
+
             },
             {
                 id:2,
                 title:"The Dance of Death",
-                youtube_url:"https://www.youtube.com/watch?v=zS1cLOIxsQ8"
+                youtube_url:"https://www.youtube.com/watch?v=zS1cLOIxsQ8",
+                embed_id: "1nCqRmx3Dnw"
             }
         ],
         image_content: [
@@ -362,12 +373,15 @@ exports.objects = [{
             {
                 id:1,
                 title: "Theme",
-                youtube_url:"https://www.youtube.com/watch?v=1nCqRmx3Dnw"
+                youtube_url:"https://www.youtube.com/watch?v=1nCqRmx3Dnw",
+                embed_id: "1nCqRmx3Dnw"
+
             },
             {
                 id:2,
                 title:"The Dance of Death",
-                youtube_url:"https://www.youtube.com/watch?v=zS1cLOIxsQ8"
+                youtube_url:"https://www.youtube.com/watch?v=zS1cLOIxsQ8",
+                embed_id: "1nCqRmx3Dnw"
             }
         ],
         image_content: [
