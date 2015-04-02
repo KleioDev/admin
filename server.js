@@ -5,6 +5,7 @@ var views = require("koa-views");
 var Router = require("koa-router");
 var serve = require("koa-static-folder");
 var handlebars = require("koa-handlebars");
+var parse = require("co-body");
 var route = new Router();
 
 //DB
@@ -30,8 +31,9 @@ app.use(handlebars({
                     string += "<tr>" + "<td>" + (i+1) + "</td>";
                     string += "<td>" + db.table.users[i].name + "</td>";
                     string += "<td>" + db.table.users[i].score + "</td>";
-                    string += "<td style=\"text-align:center;\"><a href=\"/reset_score/" +
-                        db.table.users[i].id + "\"><i class=\"fa fa-trash-o fa-fw\"></i></a></td></tr>";
+                    string += "<td style=\"text-align:center;\"><form action=\"/reset_score\" method=\"post\"><input hidden=\"true\" value=\"" +
+                        db.table.users[i].id +
+                        "\" name=\"id\"><button type=\"submit\" class=\"btn btn-danger\"><i class=\"fa fa-trash-o fa-fw\"></i></button></form></td></tr>";
                     }
                 return string;
             }
@@ -71,15 +73,17 @@ route.get("/edit_article/:id", edit_article);
 route.get("/new_article", new_article);
 route.get("/exhibition/:id", exhibition);
 route.get("/room/:id", room);
+
 route.post("/create_notification", create_notification);
 route.post("/edit_admin/:id", edit_admin);
-route.post("/delete_notification/:id", delete_notification);
+route.delete("/delete_notification/:id", delete_notification);
 route.post("/edit_article/:id", edit_article);
 route.post("/add_article", add_article);
-route.post("/delete_article/:id", delete_article);
+route.delete("/delete_article/:id", delete_article);
 route.post("/solve_feedback/:id", solve_feedback);
-route.post("/delete_feedback/:id", delete_feedback);
-route.post("/reset_score/:id", reset_score);
+route.delete("/delete_feedback/:id", delete_feedback);
+route.post("/reset_score", reset_score);
+route.post("/reset_leaderboard", reset_leaderboard);
 route.post("/upload_audio", upload_audio);
 route.post("/delete_audio/:id", delete_audio);
 route.post("/delete_text/:id", delete_text);
@@ -88,7 +92,7 @@ route.post("/delete_image/:id", delete_image);
 route.post("/add_image", add_image);
 route.post("/delete_video/:id", delete_video);
 route.post("/add_video", add_video);
-route.post("/new_exhibtion", new_exhibition);
+route.post("/new_exhibition", new_exhibition);
 route.post("/add_to_exhibition", add_to_exhibition);
 route.post("/remove_from_exhibition/:id", remove_from_exhibition);
 route.post("/new_room", new_room);
@@ -288,10 +292,16 @@ function *room(){
     });
 }
 function *create_notification(){
-
-}
-
-function *edit_admin(){
+    var post = yield parse(this);
+    console.log(post);
+    post.date = new Date;
+    var max = db.notifications[0].id;
+    for(var i = 0; i<db.notifications.length; i++){
+        if(db.notifications[i].id > max) max = db.notifications[i].id;
+    }
+    post.id = max + 1;
+    db.notifications.push(post);
+    this.redirect("/notifications");
 
 }
 
@@ -303,15 +313,21 @@ function *delete_notification(){
         }
     }
     //NOT REDIRECTING
-    this.redirect("/notifications");
-
-}
-
-function *edit_article(){
+     this.redirect("/notifications");
 
 }
 
 function *add_article(){
+    var post = yield parse(this);
+    post.date = new Date;
+    var max = db.articles[0].id;
+    for(var i = 0; i<db.articles.length; i++){
+        if(db.articles[i].id > max) max = db.articles[i].id;
+    }
+    post.id = max + 1;
+    db.articles.push(post);
+    this.redirect("/articles");
+
 
 }
 
@@ -326,6 +342,13 @@ function *delete_article(){
 }
 
 function *solve_feedback(){
+    for(var i = 0; i < db.feedback.length; i++){
+        if(this.params.id == db.feedback[i].id){
+            db.feedback.solved = true;
+            break;
+        }
+    }
+    this.redirect("/feedback");
 
 }
 
@@ -340,7 +363,20 @@ function *delete_feedback(){
 }
 
 function *reset_score(){
+    var post = yield parse(this);
+    for(var i = 0; i < db.table.users.length; i++){
+        if(post.id == db.table.users[i].id) db.table.users[i].score = 0;
+    }
+    this.redirect("/leaderboard");
 
+
+}
+
+function *reset_leaderboard(){
+    for(var i = 0; i < db.table.users.length; i++){
+        db.table.users[i].score = 0;
+    }
+    this.redirect("/leaderboard");
 }
 
 function *upload_audio(){

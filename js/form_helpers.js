@@ -49,16 +49,24 @@ $(document).ready(function() {
     }
 
     //Formless post
-    $(document).ready(function() {
-        $(function() {
-            $("#delete").on("click",function(e) {
-                e.preventDefault(); // cancel the link itself
-                $.post(this.href,function(data) {
-                    $("#someContainer").html(data);
-                });
-            });
-        });
-    });
+    //$(function() {
+    //    $("#delete").on("click",function(e) {
+    //        e.preventDefault(); // cancel the link itself
+    //        $.post(this.href,function(data) {
+    //            $("#someContainer").html(data);
+    //        });
+    //    });
+    //});
+    //$(function() {
+    //    $("#solve").on("click",function(e) {
+    //        e.preventDefault(); // cancel the link itself
+    //        $.post(this.href,function(data) {
+    //            $("#someContainer").html(data);
+    //        });
+    //    });
+    //});
+
+
 });
 
 function validate_notifications(){

@@ -4,6 +4,7 @@
   "description": "Musa Admin page",
   "main": "server.js",
   "dependencies": {
+    "co-body": "^1.1.0",
     "grunt": "^0.4.5",
     "handlebars": "^3.0.0",
     "handlebars-helpers": "^0.5.8",
