@@ -10,7 +10,6 @@ var route = new Router();
 //DB
 var db = require("./js/db");
 
-
 //Start the app
 var app = koa();
 app.use(handlebars({
@@ -31,16 +30,13 @@ app.use(handlebars({
                     string += "<tr>" + "<td>" + (i+1) + "</td>";
                     string += "<td>" + db.table.users[i].name + "</td>";
                     string += "<td>" + db.table.users[i].score + "</td>";
-                    string += "<td style=\"text-align:center;\"><a href=\"/reset_score/" + db.table.users[i].id + "\"><i class=\"fa fa-trash-o fa-fw\"></i></a></td></tr>";
+                    string += "<td style=\"text-align:center;\"><a href=\"/reset_score/" +
+                        db.table.users[i].id + "\"><i class=\"fa fa-trash-o fa-fw\"></i></a></td></tr>";
                     }
                 return string;
             }
-
         }
-
     }));
-
-
 
 //Set the logger
 app.use(logger());
@@ -51,13 +47,6 @@ app.use(serve("./dist"));
 app.use(serve("./bower_components"));
 app.use(serve("./img"));
 app.use(serve("./audio"));
-
-
-
-
-//Set the template engine
-
-
 
 //Set routes
 route.get("/", index);
@@ -72,6 +61,7 @@ route.get("/administrators", administrators);
 route.get("/feedback", feedback);
 route.get("/database", database);
 route.get("/login", login);
+route.get("/rooms", rooms);
 
 route.get("/new_admin", new_admin);
 route.get("/edit_admin/:id", edit_admin);
@@ -80,6 +70,7 @@ route.get("/edit_museum_information", edit_museum_information);
 route.get("/article/:id", single_article);
 route.get("/edit_article/:id", edit_article);
 route.get("/new_article", new_article);
+route.get("/exhibition/:id", exhibition);
 
 app.use(route.routes());
 
@@ -99,9 +90,17 @@ function *museum(){
 }
 
 function *exhibitions(){
-	yield this.render("rooms", {
+	yield this.render("exhibitions", {
         title : "Exhibitions",
-        rooms : db.rooms});
+        exhibitions: db.exhibitions
+    });
+}
+
+function *rooms(){
+    yield this.render("rooms",{
+        title: "Rooms",
+        rooms : db.rooms
+    });
 }
 
 function *objects(){
@@ -222,6 +221,33 @@ function *new_article(){
     yield this.render("new_article", {
         title: "New Article"
     });
+}
+
+function *exhibition(){
+
+    var exhibition;
+    for(var i = 0; i < db.exhibitions.length; i++){
+        if(this.params.id == db.exhibitions[i].id){
+            exhibition = db.exhibitions[i];
+            break;
+        }
+    }
+    //Simulate join
+    var list = [];
+    for(var i = 0, k = 0; i < db.objects.length; i++){
+        if(db.objects[i].id == exhibition.object_list[k]){
+            list.push(db.objects[i]);
+            k++;
+            i = 0;
+        }
+    }
+
+    yield this.render("exhibition",{
+        title: exhibition.title,
+        description: exhibition.description,
+        object_list: list
+
+    })
 }
 
 

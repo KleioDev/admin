@@ -691,3 +691,18 @@ exports.rooms = [
     }
 ];
 
+exports.exhibitions = [
+    {
+        id:1,
+        title:"Exhibition Alfa",
+        description:"This is the exhibition for something of value.",
+        object_list: [1, 2, 3]
+    },
+    {
+        id:2,
+        title:"Exhibition Beta",
+        description:"This is the exhibition for something of worth.",
+        object_list: [4, 5]
+    }
+]
+

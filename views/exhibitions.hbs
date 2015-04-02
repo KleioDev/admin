@@ -8,23 +8,23 @@
     </div>
 
 
-    <p style="text-align: right"><a href="/new_room">Add Room</a></p>
+    <p style="text-align: right"><a href="/new_exhibition">Add Exhibitions</a></p>
 
     <div class="table-responsive">
         <table class="table table-striped table-bordered table-hover">
             <thead>
             <tr>
-                <th>Room Number</th>
-                <th>iBeacon ID</th>
+                <th>Exhibition Title</th>
+                <th>Description Sample</th>
                 <th>View</th>
             </tr>
             </thead>
             <tbody>
-            {{#each rooms}}
+            {{#each exhibitions}}
                 <tr class="odd gradeX">
-                    <td>{{number}}</td>
-                    <td>{{current_id}}</td>
-                    <td style="text-align: center"><a href="room/{{id}}">View</a></td>
+                    <td>{{title}}</td>
+                    <td>{{sample description}}</td>
+                    <td style="text-align: center"><a href="/exhibition/{{id}}">View</a></td>
             {{/each}}
 
             </tbody>
