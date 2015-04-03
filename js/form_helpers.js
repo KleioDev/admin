@@ -71,10 +71,10 @@ $(document).ready(function() {
 
 function validate_notifications(){
     if ($('#notification_field').val().length > 0) {
-        $("button[type=submit]").prop("disabled", false);
+        $("#create_notification_submit").prop("disabled", false);
     }
     else {
-        $("button[type=submit]").prop("disabled", true);
+        $("#create_notification_submit").prop("disabled", true);
     }
 }
 

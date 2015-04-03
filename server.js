@@ -195,8 +195,10 @@ function *new_admin(){
 function *edit_admin(){
 
     //TODO: Add proper algorithm for finding the admin info and return 404 status code
-    var param_admin = db.users[this.params.id - 1];
-    console.log(param_admin);
+    var param_admin;
+    for(var i = 0; i < db.users.length; i++){
+        if(this.params.id == db.users[i].id) param_admin = db.users[i];
+    }
     if(param_admin.isAdmin) {
         yield this.render("edit_admin", {
             title: "Edit Administrator",
@@ -204,7 +206,7 @@ function *edit_admin(){
         });
     }
     else{
-        yield this.render("404", {
+        yield this.render("404", {//this is extremely ugly
             title: "Wrong User"
         });
     }
@@ -227,7 +229,10 @@ function *edit_museum_information(){
 
 
 function *single_article(){// id as param
-    var param_article = db.articles[this.params.id - 1];
+    var param_article;
+    for(var i = 0; i < db.articles.length; i++){
+        if(this.params.id == db.articles[i].id) param_article = db.articles[i];
+    }
     yield this.render("single_article", {
         title: param_article.title,
         text: param_article.text,
@@ -239,7 +244,10 @@ function *single_article(){// id as param
 }
 
 function *edit_article(){ //id as param
-    var param_article = db.articles[this.params.id - 1];
+    var param_article;
+    for(var i = 0; i < db.articles.length; i++){
+        if(this.params.id == db.articles[i].id) param_article = db.articles[i];
+    }
 
     yield this.render("edit_article", {
         title: param_article.title,
@@ -298,7 +306,6 @@ function *room(){
 }
 function *create_notification(){
     var post = yield parse(this);
-    console.log(post);
     post.date = new Date;
     var max = db.notifications[0].id;
     for(var i = 0; i<db.notifications.length; i++){
@@ -311,14 +318,14 @@ function *create_notification(){
 }
 
 function *delete_notification(){
+    var post = yield parse(this);
     for(var i = 0; i < db.notifications.length; i++){
-        if(this.params.id == db.notifications[i].id){
+        if(post.id == db.notifications[i].id){
             db.notifications.splice(i, 1);
             break;
         }
     }
-    //NOT REDIRECTING
-     this.redirect("/notifications");
+    this.redirect("/notifications");
 
 }
 
@@ -337,19 +344,22 @@ function *add_article(){
 }
 
 function *delete_article(){
+    var post = yield parse(this);
     for(var i = 0; i < db.articles.length; i++){
-        if(this.params.id == db.articles[i].id){
+        if(post.id == db.articles[i].id){
             db.articles.splice(i, 1);
             break;
         }
     }
+
     this.redirect("/articles");
 }
 
 function *solve_feedback(){
+    var post = yield parse(this);
     for(var i = 0; i < db.feedback.length; i++){
-        if(this.params.id == db.feedback[i].id){
-            db.feedback.solved = true;
+        if(post.id == db.feedback[i].id){
+            db.feedback[i].solved = true;
             break;
         }
     }
@@ -358,8 +368,9 @@ function *solve_feedback(){
 }
 
 function *delete_feedback(){
+    var post = yield parse(this);
     for(var i = 0; i < db.feedback.length; i++){
-        if(this.params.id == db.feedback[i].id){
+        if(post.id == db.feedback[i].id){
             db.feedback.splice(i, 1);
             break;
         }

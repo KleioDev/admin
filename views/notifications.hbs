@@ -11,7 +11,7 @@
     <form action="/create_notification" method="post">
         <div class="form-group">
             <input id="notification_field" type="text" name="title" class="form-control" placeholder="Enter short description.">
-            <button class="btn btn-default" type="submit">Submit</button>
+            <button class="btn btn-default" type="submit" id="create_notification_submit">Submit</button>
             </span>
         </div>
     </form>
@@ -47,7 +47,10 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                <a href="/delete_notification/{{id}}" id="delete"><button type="button" class="btn btn-primary">Yes</button></a>
+                                <form action="/delete_notification" method="post">
+                                    <input hidden="true" name="id" value="{{id}}">
+                                    <button class="btn btn-danger" type="submit">Remove</button>
+                                </form>
                             </div>
                         </div>
                     </div>

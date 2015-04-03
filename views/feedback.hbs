@@ -47,7 +47,10 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    <a href="/delete_feedback/{{id}}" id="delete"><button type="button" class="btn btn-primary">Yes</button></a>
+                                    <form action="/delete_feedback" method="post">
+                                        <input hidden="true" name="id" value="{{id}}">
+                                        <button class="btn btn-danger" type="submit">Delete</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -66,7 +69,10 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    <a href="/solve_feedback/{{id}}" id="solve"><button type="button" class="btn btn-primary">Yes</button></a>
+                                    <form action="/solve_feedback" method="post">
+                                        <input hidden="true" name="id" value="{{id}}">
+                                        <button class="btn btn-primary" type="submit">Solve</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
