@@ -50,9 +50,9 @@
     <form action="/add_to_exhibition" method="post">
         <div class="form-group">
             <label>To add to the exhibition, enter the ID of the desired object:</label>
-            <input id="object_id" type="text" name="title" class="form-control" placeholder="Enter ID" style="width: 10%">
+            <input id="object_id" type="text" name="object" class="form-control" placeholder="Enter ID" style="width: 10%">
+            <input hidden="true" name="id" value={{id}}>
             <button class="btn btn-default" type="submit">Submit</button>
-
         </div>
     </form>
 

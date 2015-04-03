@@ -252,7 +252,6 @@ function *new_article(){
 }
 
 function *exhibition(){
-
     var exhibition;
     for(var i = 0; i < db.exhibitions.length; i++){
         if(this.params.id == db.exhibitions[i].id){
@@ -273,7 +272,8 @@ function *exhibition(){
     yield this.render("exhibition",{
         title: exhibition.title,
         description: exhibition.description,
-        object_list: list
+        object_list: list,
+        id: exhibition.id
 
     })
 }
@@ -385,6 +385,7 @@ function *upload_audio(){
 
 function *delete_audio(){
 
+
 }
 
 function *delete_text(){
@@ -412,11 +413,32 @@ function *add_video(){
 }
 
 function *new_exhibition(){
-
+    var post = yield parse(this);
+    post.object_list = [];
+    var max = db.exhibitions[0].id;
+    for(var i = 0; i < db.exhibitions.length; i++){//find the next highest for id
+        if(db.exhibitions[i].id > max) max = db.exhibitions[i].id;
+    }
+    post.id = max + 1;
+    db.exhibitions.push(post);
+    this.redirect("/exhibitions");
 }
 
 function *add_to_exhibition(){
+    var post = yield parse(this);
+    var present = false;
+    var exhibition_index;
+    for(var i = 0; i < db.exhibitions.length; i++){//find the position of the exhibition
+        if(post.id == db.exhibitions[i].id) {
+            exhibition_index = i;
+        }
+    }
 
+    for(var i = 0; i < db.exhibitions[exhibition_index].object_list.length; i++){//check if its already in the list
+        if(post.object == db.exhibitions[exhibition_index].object_list[i]) present = true;
+    }
+    if(!present) db.exhibitions[exhibition_index].object_list.push(post.object); //if not, add it
+    this.redirect("/exhibition/" + post.id);
 }
 
 function *remove_from_exhibition(){
