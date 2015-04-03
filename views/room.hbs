@@ -21,7 +21,12 @@
             {{#each ibeacon_list}}
                 <tr class="odd gradeX">
                     <td>{{id}}</td>
-                    <td style="text-align: center"><a href="/remove_ibeacon/{{id}}">Remove</a></td>
+                    <td style="text-align: center">
+                        <form action="/remove_ibeacon" method="post">
+                            <input hidden="true" name="room_id" value="{{../id}}">
+                            <input hidden="true" name="ibeacon_id" value="{{id}}">                            
+                            <button type="submit" class="btn btn-danger">Remove</a>
+                        </form></td>
             {{/each}}
 
             </tbody>
@@ -31,7 +36,8 @@
     <form action="/add_to_room" method="post">
         <div class="form-group">
             <label>To add to the exhibition, enter the ID of the desired iBeacon:</label>
-            <input id="ibeacon_id" type="text" name="title" class="form-control" placeholder="Enter ID" style="width: 10%">
+            <input hidden="true" name="room_id" value="{{id}}">
+            <input id="ibeacon_id" type="text" name="ibeacon_id" class="form-control" placeholder="Enter ID" style="width: 10%">
             <button class="btn btn-default" type="submit">Submit</button>
 
         </div>

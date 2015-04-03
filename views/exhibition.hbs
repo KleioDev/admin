@@ -40,7 +40,14 @@
                         <td>Inactive</td>
                 {{/if}}
 
-                    <td style="text-align: center"><a href="/remove_from_exhibition/{{id}}">Remove</a></td>
+                    <td style="text-align: center">
+                        <form action="/remove_from_exhibition" method="post">
+                            <input hidden="true" name="object_id" value={{id}}>
+                            <input hidden="true" name="exhibition_id" value={{../id}}>
+
+                            <button type="submit" class="btn btn-danger">Remove</button>
+                        </form>    
+                    </td>
             {{/each}}
 
             </tbody>

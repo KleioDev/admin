@@ -8,11 +8,13 @@ var handlebars = require("koa-handlebars");
 var parse = require("co-body");
 var route = new Router();
 
-//DB
+//Dummy database
 var db = require("./js/db");
 
 //Start the app
 var app = koa();
+
+//Set up the templating engine and helper functions
 app.use(handlebars({
     defaultLayout: "main",
     partialsDir : "./views",
@@ -76,27 +78,28 @@ route.get("/room/:id", room);
 
 route.post("/create_notification", create_notification);
 route.post("/edit_admin/:id", edit_admin);
-route.delete("/delete_notification/:id", delete_notification);
+route.post("/delete_notification/:id", delete_notification);//DELETE
 route.post("/edit_article/:id", edit_article);
 route.post("/add_article", add_article);
-route.delete("/delete_article/:id", delete_article);
-route.post("/solve_feedback/:id", solve_feedback);
-route.delete("/delete_feedback/:id", delete_feedback);
+route.post("/delete_article/:id", delete_article);//DELETE
+route.post("/solve_feedback/:id", solve_feedback);//UPDATE
+route.post("/delete_feedback/:id", delete_feedback);//DELETE
 route.post("/reset_score", reset_score);
 route.post("/reset_leaderboard", reset_leaderboard);
 route.post("/upload_audio", upload_audio);
-route.post("/delete_audio/:id", delete_audio);
-route.post("/delete_text/:id", delete_text);
+route.post("/delete_audio/:id", delete_audio);//DELETE
+route.post("/delete_text/:id", delete_text);//DELETE
 route.post("/add_text", add_text);
-route.post("/delete_image/:id", delete_image);
+route.post("/delete_image/:id", delete_image);//DELETE
 route.post("/add_image", add_image);
-route.post("/delete_video/:id", delete_video);
+route.post("/delete_video/:id", delete_video);//DELETE
 route.post("/add_video", add_video);
 route.post("/new_exhibition", new_exhibition);
 route.post("/add_to_exhibition", add_to_exhibition);
-route.post("/remove_from_exhibition/:id", remove_from_exhibition);
+route.post("/remove_from_exhibition", remove_from_exhibition);//DELETE
 route.post("/new_room", new_room);
-route.post("/remove_ibeacon/:id", remove_ibeacon);
+route.post("/add_to_room", add_to_room);
+route.post("/remove_ibeacon", remove_ibeacon);//DELETE
 
 
 
@@ -288,6 +291,7 @@ function *room(){
     }
     yield this.render("room", {
         title: "Room " + room.number,
+        id: room.id,
         ibeacon_list: room.current_id
     });
 }
@@ -431,26 +435,89 @@ function *add_to_exhibition(){
     for(var i = 0; i < db.exhibitions.length; i++){//find the position of the exhibition
         if(post.id == db.exhibitions[i].id) {
             exhibition_index = i;
+            break;
         }
     }
 
     for(var i = 0; i < db.exhibitions[exhibition_index].object_list.length; i++){//check if its already in the list
-        if(post.object == db.exhibitions[exhibition_index].object_list[i]) present = true;
+        if(post.object == db.exhibitions[exhibition_index].object_list[i]) {
+            present = true;
+            break;
+        }
     }
     if(!present) db.exhibitions[exhibition_index].object_list.push(post.object); //if not, add it
     this.redirect("/exhibition/" + post.id);
 }
 
 function *remove_from_exhibition(){
+    var post = yield parse(this);
+    var exhibition_index;
+    for(var i = 0; i < db.exhibitions.length; i++){//find the position of the exhibition
+        if(post.exhibition_id == db.exhibitions[i].id) {
+            exhibition_index = i;
+            break;
+        }
+    }
+    for(var i = 0; i < db.exhibitions[exhibition_index].object_list.length; i++){//check if its already in the list
+        if(post.object_id == db.exhibitions[exhibition_index].object_list[i]) {
+            db.exhibitions[exhibition_index].object_list.splice(i, 1);
+            break;
+        }
+    }
+    this.redirect("/exhibition/" + post.exhibition_id);
+
 
 }
 
 function *new_room(){
+    db.rooms.push({
+        id: db.rooms.length + 1,
+        number: db.rooms.length + 1,
+        current_id: []
+    });
+    this.redirect("/rooms");
+
+}
+
+function *add_to_room(){
+    var post = yield parse(this);
+    var present = false;
+    var room_index;
+    for(var i = 0; i < db.rooms.length; i++){//find the position of the exhibition
+        if(post.room_id == db.rooms[i].id) {
+            room_index = i;
+            break;
+        }
+    }
+
+    for(var i = 0; i < db.rooms[room_index].current_id.length; i++){//check if its already in the list
+        if(post.ibeacon_id == db.rooms[room_index].current_id[i]) {
+            present = true;
+            break;
+        }
+    }
+    if(!present) db.rooms[room_index].current_id.push({id:post.ibeacon_id}); //if not, add it
+    this.redirect("/room/" + post.room_id);
+
 
 }
 
 function *remove_ibeacon(){
-
+    var post = yield parse(this);
+    var room_index;
+    for(var i = 0; i < db.rooms.length; i++){//find the position of the exhibition
+        if(post.room_id == db.rooms[i].id) {
+            room_index = i;
+            break;
+        }
+    }
+    for(var i = 0; i < db.rooms[room_index].current_id.length; i++){//check if its already in the list
+        if(post.ibeacon_id == db.rooms[room_index].current_id[i].id) {
+            db.rooms[room_index].current_id.splice(i, 1);
+            break;
+        }
+    }
+    this.redirect("/room/" + post.room_id);
 }
 
 
