@@ -6,6 +6,7 @@ var Router = require("koa-router");
 var serve = require("koa-static-folder");
 var handlebars = require("koa-handlebars");
 var parse = require("co-body");
+var parse_multi = require("co-busboy");
 var route = new Router();
 
 //Dummy database
@@ -78,21 +79,21 @@ route.get("/room/:id", room);
 
 route.post("/create_notification", create_notification);
 route.post("/edit_admin/:id", edit_admin);
-route.post("/delete_notification/:id", delete_notification);//DELETE
-route.post("/edit_article/:id", edit_article);
+route.post("/delete_notification", delete_notification);//DELETE
+route.post("/edit_article", edit_article);
 route.post("/add_article", add_article);
-route.post("/delete_article/:id", delete_article);//DELETE
-route.post("/solve_feedback/:id", solve_feedback);//UPDATE
-route.post("/delete_feedback/:id", delete_feedback);//DELETE
+route.post("/delete_article", delete_article);//DELETE
+route.post("/solve_feedback", solve_feedback);//UPDATE
+route.post("/delete_feedback", delete_feedback);//DELETE
 route.post("/reset_score", reset_score);
 route.post("/reset_leaderboard", reset_leaderboard);
 route.post("/upload_audio", upload_audio);
-route.post("/delete_audio/:id", delete_audio);//DELETE
-route.post("/delete_text/:id", delete_text);//DELETE
+route.post("/delete_audio", delete_audio);//DELETE
+route.post("/delete_text", delete_text);//DELETE
 route.post("/add_text", add_text);
-route.post("/delete_image/:id", delete_image);//DELETE
+route.post("/delete_image", delete_image);//DELETE
 route.post("/add_image", add_image);
-route.post("/delete_video/:id", delete_video);//DELETE
+route.post("/delete_video", delete_video);//DELETE
 route.post("/add_video", add_video);
 route.post("/new_exhibition", new_exhibition);
 route.post("/add_to_exhibition", add_to_exhibition);
@@ -384,7 +385,32 @@ function *reset_leaderboard(){
 }
 
 function *upload_audio(){
+        console.log(this);
 
+    var parts = parse_multi(this);
+    var part;
+    var id;
+    for(id = 0; id < db.objects.length; i++){//get the index
+        if(parts.object_id == db.objects[id].id) break;
+    }
+
+    var max = db.objects[id].audio_content[0].id;
+
+    for(var i = 0; i<db.objects[id].audio_content.length; i++){
+        if(db.objects[id].audio_content[i].id > max) max = db.objects[id].audio_content[i].id;
+    }
+
+    while(part = yield parts){
+    var stream = fs.createWriteStream("audio/" + part.filename);
+    part.pipe(stream);
+    console.log('uploading %s -> %s', part.filename, stream.path);
+    }
+    db.objects[id].audio_content.push({
+        id: max + 1,
+        title: parts.title,
+        audio: "../" + part.filename
+    });
+    this.redirect("/single_object/" + parts.object_id);
 }
 
 function *delete_audio(){
@@ -393,10 +419,41 @@ function *delete_audio(){
 }
 
 function *delete_text(){
+    var post = yield parse(this);
+    var id;
+    for(id = 0; id < db.objects.length; i++){//get the index
+        if(post.object_id == db.objects[id].id) break;
+    }
+
+    for(var i = 0; i<db.objects[id].text_content.length; i++){
+        if(db.objects[id].text_content[i].id == post.text_id){
+            db.objects[id].text_content.splice(i, 1);
+            break;
+        } 
+    }
+    this.redirect("/single_object/"+post.object_id);
 
 }
 
 function *add_text(){
+    var post = yield parse(this);
+    var id;
+    for(id = 0; id < db.objects.length; i++){//get the index
+        if(post.object_id == db.objects[id].id) break;
+    }
+    var max = db.objects[id].text_content[0].id;
+
+    for(var i = 0; i<db.objects[id].text_content.length; i++){
+        if(db.objects[id].text_content[i].id > max) max = db.objects[id].text_content[i].id;
+    }
+
+    db.objects[id].text_content.push({
+        id: max + 1,
+        title: post.title,
+        text: post.text
+    });
+
+    this.redirect("/single_object/" + post.object_id);
 
 }
 
@@ -405,14 +462,54 @@ function *delete_image(){
 }
 
 function *add_image(){
+    // var parts = parse(this);
+    // var part;
 
+    // while (part = yield parts) {
+    //     var stream = fs.createWriteStream("img/" + part.filename);
+    //     part.pipe(stream);
+    //     console.log('uploading %s -> %s', part.filename, stream.path);
+    // }
+
+    // this.redirect("/single_object/" + parts.object_id);
 }
 
 function *delete_video(){
+    var post = yield parse(this);
+    var id;
+    for(id = 0; id < db.objects.length; i++){//get the index
+        if(post.object_id == db.objects[id].id) break;
+    }
 
+    for(var i = 0; i<db.objects[id].video_content.length; i++){
+        if(db.objects[id].video_content[i].id == post.video_id){
+            db.objects[id].video_content.splice(i, 1);
+            break;
+        } 
+    }
+    this.redirect("/single_object/"+post.object_id);
 }
 
 function *add_video(){
+    var post = yield parse(this);
+    var id;
+    for(id = 0; id < db.objects.length; i++){//get the index
+        if(post.object_id == db.objects[id].id) break;
+    }
+    var max = db.objects[id].video_content[0].id;
+
+    for(var i = 0; i<db.objects[id].video_content.length; i++){
+        if(db.objects[id].video_content[i].id > max) max = db.objects[id].video_content[i].id;
+    }
+
+    db.objects[id].video_content.push({
+        id: max + 1,
+        title: post.title,
+        youtube_url: post.text,
+        embed_id: post.text.substring(post.text.indexOf("=")+1)
+    });
+    console.log(db.objects[id].video_content);
+    this.redirect("/single_object/" + post.object_id);
 
 }
 
