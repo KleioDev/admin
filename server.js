@@ -9,6 +9,7 @@ var parse = require("co-body");
 var parse_multi = require("koa-better-body");
 var route = new Router();
 var fs = require("fs");
+var serve_single = require("koa-static");
 
 //Dummy database
 var db = require("./js/db");
