@@ -804,7 +804,7 @@ function *delete_feedback(){
 }
 
 ////////////////////////////
-//Miscellaneus Routes Definition
+//Miscellaneous Routes Definition
 ////////////////////////////
 function *database(){
 	yield this.render("database", {title : "Database"});
@@ -818,3 +818,5 @@ function *login(){
 //Set the port
 app.listen(3000);
 console.log("Listening on port 3000");
+
+exports.app = app;
