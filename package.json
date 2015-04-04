@@ -10,6 +10,7 @@
     "handlebars": "^3.0.0",
     "handlebars-helpers": "^0.5.8",
     "koa": "^0.18.1",
+    "koa-body": "^1.2.0",
     "koa-handlebars": "^0.5.2",
     "koa-logger": "^1.2.2",
     "koa-router": "^4.2.0",
