@@ -46,70 +46,96 @@ app.use(handlebars({
 //Set the logger
 app.use(logger());
 
-//Serve components
+//Serve components for the web page
 app.use(serve("./js"));
 app.use(serve("./dist"));
 app.use(serve("./bower_components"));
 app.use(serve("./img"));
 app.use(serve("./audio"));
 
-//Set routes
+////////
+//ROUTES
+////////
+
+//Museum Routes
 route.get("/", index);
 route.get("/museum", museum);
-route.get("/exhibitions", exhibitions);
-route.get("/objects", objects);
-route.get("/articles", articles);
-route.get("/notifications", notifications);
-route.get("/users", users);
-route.get("/leaderboard", leaderboard);
-route.get("/administrators", administrators);
-route.get("/feedback", feedback);
-route.get("/database", database);
-route.get("/login", login);
-route.get("/rooms", rooms);
-route.get("/new_admin", new_admin);
-route.get("/edit_admin/:id", edit_admin);
-route.get("/single_object/:id", single_object);
 route.get("/edit_museum_information", edit_museum_information);
-route.get("/article/:id", single_article);
-route.get("/edit_article/:id", edit_article);
-route.get("/new_article", new_article);
-route.get("/exhibition/:id", exhibition);
-route.get("/room/:id", room);
+route.post("edit_museum", edit_museum);
 
-route.post("/create_notification", create_notification);
-route.post("/edit_admin/:id", edit_admin);
-route.post("/delete_notification", delete_notification);//DELETE
-route.post("/edit_article", edit_article);
-route.post("/add_article", add_article);
-route.post("/delete_article", delete_article);//DELETE
-route.post("/solve_feedback", solve_feedback);//UPDATE
-route.post("/delete_feedback", delete_feedback);//DELETE
-route.post("/reset_score", reset_score);
-route.post("/reset_leaderboard", reset_leaderboard);
-route.post("/upload_audio", upload_audio);
-route.post("/delete_audio", delete_audio);//DELETE
-route.post("/delete_text", delete_text);//DELETE
-route.post("/add_text", add_text);
-route.post("/delete_image", delete_image);//DELETE
-route.post("/add_image", add_image);
-route.post("/delete_video", delete_video);//DELETE
-route.post("/add_video", add_video);
+//Exhibition Routes
+route.get("/exhibitions", exhibitions);
+route.get("/exhibition/:id", exhibition);
 route.post("/new_exhibition", new_exhibition);
 route.post("/add_to_exhibition", add_to_exhibition);
 route.post("/remove_from_exhibition", remove_from_exhibition);//DELETE
+
+//Object Routes
+route.get("/objects", objects);
+route.get("/single_object/:id", single_object);
+route.post("/upload_audio", upload_audio);
+route.post("/delete_audio", delete_audio);//DELETE
+route.post("/add_text", add_text);
+route.post("/delete_text", delete_text);//DELETE
+route.post("/add_image", add_image);
+route.post("/delete_image", delete_image);//DELETE
+route.post("/add_video", add_video);
+route.post("/delete_video", delete_video);//DELETE
+
+//Article Routes
+route.get("/articles", articles);
+route.get("/article/:id", single_article);
+route.get("/edit_article/:id", edit_article_page);
+route.get("/new_article", new_article);
+route.post("/edit_article", edit_article);
+route.post("/add_article", add_article);
+route.post("/delete_article", delete_article);//DELETE
+
+//Notification Routes
+route.get("/notifications", notifications);
+route.post("/create_notification", create_notification);
+route.post("/delete_notification", delete_notification);//DELETE
+
+//User Routes
+route.get("/users", users);
+
+//Leaderboard Routes
+route.get("/leaderboard", leaderboard);
+route.post("/reset_score", reset_score);
+route.post("/reset_leaderboard", reset_leaderboard);
+
+//Administrator Routes
+route.get("/administrators", administrators);
+route.get("/new_admin", new_admin);
+route.get("/edit_admin/:id", edit_admin_page);
+route.post("/edit_admin", edit_admin);
+route.post("/add_admin", add_admin);
+
+//Feedback Routes
+route.get("/feedback", feedback);
+route.post("/solve_feedback", solve_feedback);//UPDATE
+route.post("/delete_feedback", delete_feedback);//DELETE
+
+//Room Routes
+route.get("/rooms", rooms);
+route.get("/room/:id", room);
 route.post("/new_room", new_room);
 route.post("/add_to_room", add_to_room);
 route.post("/remove_ibeacon", remove_ibeacon);//DELETE
 
+//Miscellaneus
+route.get("/login", login);
+route.get("/database", database);
 
-
+//Set the routes
 app.use(route.routes());
 
 
-//Route definition
+////////////////////////////
+//Museum Routes Definition
+///////////////////////////
 function *index(){
-	yield this.render("index", {title : "Home"});
+    yield this.render("index", {title : "Home"});
 }
 
 function *museum(){
@@ -121,145 +147,39 @@ function *museum(){
         });
 }
 
-function *exhibitions(){
-	yield this.render("exhibitions", {
-        title : "Exhibitions",
-        exhibitions: db.exhibitions
-    });
-}
-
-function *rooms(){
-    yield this.render("rooms",{
-        title: "Rooms",
-        rooms : db.rooms
-    });
-}
-
-function *objects(){
-	yield this.render("objects", {
-        title : "Objects",
-        objects: db.objects
-    });
-}
-
-function *articles(){
-	yield this.render("articles", {
-        title : "Articles",
-        articles:db.articles});
-}
-
-function *notifications(){
-	yield this.render("notifications", {
-        title : "Notifications",
-        notifications:db.notifications});
-}
-
-function *users(){
-	yield this.render("users", {
-        title : "Users",
-        users : db.users});
-}
-
-function *leaderboard(){
-	yield this.render("leaderboard", {
-        title : "Leaderboard",
-        users : db.table.users});
-}
-
-function *administrators(){
-	yield this.render("administrators", {
-        title : "Administrators",
-        admins : db.users});
-}
-
-function *feedback(){
-	yield this.render("feedback", {
-        title : "Feedback",
-        feedback:db.feedback});
-}
-
-function *database(){
-	yield this.render("database", {title : "Database"});
-}
-
-function *login(){
-    yield this.render("login");
-}
-
-function *new_admin(){
-    yield this.render("new_admin",{
-        title: "New Administrator"
-    });
-}
-
-function *edit_admin(){
-
-    //TODO: Add proper algorithm for finding the admin info and return 404 status code
-    var param_admin;
-    for(var i = 0; i < db.users.length; i++){
-        if(this.params.id == db.users[i].id) param_admin = db.users[i];
-    }
-    if(param_admin.isAdmin) {
-        yield this.render("edit_admin", {
-            title: "Edit Administrator",
-            admin: param_admin
-        });
-    }
-    else{
-        yield this.render("404", {//this is extremely ugly
-            title: "Wrong User"
-        });
-    }
-}
-
-function *single_object(){
-    yield this.render("single_object", {
-        object : db.objects[this.params.id - 1]
-    });
-}
-
 function *edit_museum_information(){
     yield this.render("edit_museum_information", {
         title : "Museum",
-            name : db.museum_info.name,
+        name : db.museum_info.name,
         hours : db.museum_info.hours,
         description : db.museum_info.description
     });
 }
 
+function *edit_museum(){
+    var post = yield parse(this);
+    console.log(post);
+    
+    if(post.name.length != 0)
+        db.museum_info.name = post.name;
 
-function *single_article(){// id as param
-    var param_article;
-    for(var i = 0; i < db.articles.length; i++){
-        if(this.params.id == db.articles[i].id) param_article = db.articles[i];
-    }
-    yield this.render("single_article", {
-        title: param_article.title,
-        text: param_article.text,
-        date: param_article.date,
-        id: param_article.id
+    if(post.hours.length != 0)
+        db.museum_info.hours = post.hours;
 
-    });
+    if(post.description.length != 0)
+        db.museum_info.description = post.description;
+    
+    this.redirect("/museum");
 
 }
 
-function *edit_article(){ //id as param
-    var param_article;
-    for(var i = 0; i < db.articles.length; i++){
-        if(this.params.id == db.articles[i].id) param_article = db.articles[i];
-    }
-
-    yield this.render("edit_article", {
-        title: param_article.title,
-        text: param_article.text,
-        date: param_article.date,
-        id: param_article.id
-    });
-}
-
-function *new_article(){
-    yield this.render("new_article", {
-        title: "New Article"
+////////////////////////////
+//Exhibition Routes Definition
+///////////////////////////
+function *exhibitions(){
+	yield this.render("exhibitions", {
+        title : "Exhibitions",
+        exhibitions: db.exhibitions
     });
 }
 
@@ -271,13 +191,12 @@ function *exhibition(){
             break;
         }
     }
-    //Simulate join
     var list = [];
     for(var i = 0, k = 0; i < db.objects.length; i++){
-        if(db.objects[i].id == exhibition.object_list[k]){
+        if(exhibition.object_list[k] == db.objects[i].id){
             list.push(db.objects[i]);
             k++;
-            i = 0;
+            i = -1; //offset the counter, need to start at 0
         }
     }
 
@@ -286,8 +205,80 @@ function *exhibition(){
         description: exhibition.description,
         object_list: list,
         id: exhibition.id
+    });
+}
 
-    })
+function *new_exhibition(){
+    var post = yield parse(this);
+    post.object_list = [];
+    var max = db.exhibitions[0].id;
+    for(var i = 0; i < db.exhibitions.length; i++){//find the next highest for id
+        if(db.exhibitions[i].id > max) max = db.exhibitions[i].id;
+    }
+    post.id = max + 1;
+    db.exhibitions.push(post);
+    this.redirect("/exhibitions");
+}
+
+function *add_to_exhibition(){
+    var post = yield parse(this);
+    var present = false;
+    var exhibition_index;
+    for(var i = 0; i < db.exhibitions.length; i++){//find the position of the exhibition
+        if(post.id == db.exhibitions[i].id) {
+            exhibition_index = i;
+            break;
+        }
+    }
+
+    if(isNaN(post.object)){
+
+        this.redirect("/exhibition/" + post.id);
+
+    }
+    else{
+        for(var i = 0; i < db.exhibitions[exhibition_index].object_list.length; i++){//check if its already in the list
+            if(post.object == db.exhibitions[exhibition_index].object_list[i]) {
+                present = true;
+                break;
+            }
+        }
+        if(!present) db.exhibitions[exhibition_index].object_list.push(parseInt(post.object)); //if not, add it
+        console.log(db.exhibitions[exhibition_index].object_list);
+        this.redirect("/exhibition/" + post.id);
+    }
+
+    
+}
+
+function *remove_from_exhibition(){
+    var post = yield parse(this);
+    var exhibition_index;
+    for(var i = 0; i < db.exhibitions.length; i++){//find the position of the exhibition
+        if(post.exhibition_id == db.exhibitions[i].id) {
+            exhibition_index = i;
+            break;
+        }
+    }
+    for(var i = 0; i < db.exhibitions[exhibition_index].object_list.length; i++){//check if its already in the list
+        if(post.object_id == db.exhibitions[exhibition_index].object_list[i]) {
+            db.exhibitions[exhibition_index].object_list.splice(i, 1);
+            break;
+        }
+    }
+    console.log(db.exhibitions[exhibition_index].object_list);
+
+    this.redirect("/exhibition/" + post.exhibition_id);
+}
+
+////////////////////////////
+//Room Routes Definition
+////////////////////////////
+function *rooms(){
+    yield this.render("rooms",{
+        title: "Rooms",
+        rooms : db.rooms
+    });
 }
 
 function *room(){
@@ -304,29 +295,136 @@ function *room(){
         ibeacon_list: room.current_id
     });
 }
-function *create_notification(){
-    var post = yield parse(this);
-    post.date = new Date;
-    var max = db.notifications[0].id;
-    for(var i = 0; i<db.notifications.length; i++){
-        if(db.notifications[i].id > max) max = db.notifications[i].id;
-    }
-    post.id = max + 1;
-    db.notifications.push(post);
-    this.redirect("/notifications");
+
+function *new_room(){
+    db.rooms.push({
+        id: db.rooms.length + 1,
+        number: db.rooms.length + 1,
+        current_id: []
+    });
+    this.redirect("/rooms");
 
 }
 
-function *delete_notification(){
+function *add_to_room(){
     var post = yield parse(this);
-    for(var i = 0; i < db.notifications.length; i++){
-        if(post.id == db.notifications[i].id){
-            db.notifications.splice(i, 1);
+    var present = false;
+    var room_index;
+    for(var i = 0; i < db.rooms.length; i++){//find the position of the exhibition
+        if(post.room_id == db.rooms[i].id) {
+            room_index = i;
             break;
         }
     }
-    this.redirect("/notifications");
 
+    for(var i = 0; i < db.rooms[room_index].current_id.length; i++){//check if its already in the list
+        if(post.ibeacon_id == db.rooms[room_index].current_id[i]) {
+            present = true;
+            break;
+        }
+    }
+    if(!present) db.rooms[room_index].current_id.push({id:post.ibeacon_id}); //if not, add it
+    this.redirect("/room/" + post.room_id);
+
+
+}
+
+function *remove_ibeacon(){
+    var post = yield parse(this);
+    var room_index;
+    for(var i = 0; i < db.rooms.length; i++){//find the position of the exhibition
+        if(post.room_id == db.rooms[i].id) {
+            room_index = i;
+            break;
+        }
+    }
+    for(var i = 0; i < db.rooms[room_index].current_id.length; i++){//check if its already in the list
+        if(post.ibeacon_id == db.rooms[room_index].current_id[i].id) {
+            db.rooms[room_index].current_id.splice(i, 1);
+            break;
+        }
+    }
+    this.redirect("/room/" + post.room_id);
+}
+
+
+////////////////////////////
+//Object Routes Definition
+////////////////////////////
+function *objects(){
+	yield this.render("objects", {
+        title : "Objects",
+        objects: db.objects
+    });
+}
+
+//Static for the sake of the presentation
+function *single_object(){
+    yield this.render("single_object", {
+        object : db.objects[this.params.id - 1]
+    });
+}
+
+
+////////////////////////////
+//Article Routes Definition
+////////////////////////////
+function *articles(){
+	yield this.render("articles", {
+        title : "Articles",
+        articles:db.articles});
+}
+
+function *single_article(){// id as param
+    var param_article;
+    for(var i = 0; i < db.articles.length; i++){
+        if(this.params.id == db.articles[i].id) param_article = db.articles[i];
+    }
+    yield this.render("single_article", {
+        title: param_article.title,
+        text: param_article.text,
+        date: param_article.date,
+        id: param_article.id
+    });
+}
+
+function *edit_article_page(){ //id as param
+    var param_article;
+    for(var i = 0; i < db.articles.length; i++){
+        if(this.params.id == db.articles[i].id) param_article = db.articles[i];
+    }
+
+    yield this.render("edit_article", {
+        title: param_article.title,
+        text: param_article.text,
+        date: param_article.date,
+        id: param_article.id
+    });
+}
+
+function *edit_article(){
+    var post = yield parse(this);
+
+    for(var i = 0; i < db.articles.length; i++){
+        if(post.id == db.articles[i].id) {
+            if(post.title.length != 0){
+                db.articles[i].title = post.title;
+                db.articles[i].date = new Date;
+            }
+
+            if(post.text.length != 0){
+                db.articles[i].text = post.text;
+                db.articles[i].date = new Date;
+            }
+        }
+    }
+    this.redirect("/articles");
+}
+
+function *new_article(){
+    yield this.render("new_article", {
+        title: "New Article"
+    });
 }
 
 function *add_article(){
@@ -355,6 +453,164 @@ function *delete_article(){
     this.redirect("/articles");
 }
 
+////////////////////////////
+//Notification Routes Definition
+////////////////////////////
+function *notifications(){
+	yield this.render("notifications", {
+        title : "Notifications",
+        notifications:db.notifications});
+}
+
+function *create_notification(){
+    var post = yield parse(this);
+    post.date = new Date;
+    var max = db.notifications[0].id;
+    for(var i = 0; i<db.notifications.length; i++){
+        if(db.notifications[i].id > max) max = db.notifications[i].id;
+    }
+    post.id = max + 1;
+    db.notifications.push(post);
+    this.redirect("/notifications");
+
+}
+
+function *delete_notification(){
+    var post = yield parse(this);
+    for(var i = 0; i < db.notifications.length; i++){
+        if(post.id == db.notifications[i].id){
+            db.notifications.splice(i, 1);
+            break;
+        }
+    }
+    this.redirect("/notifications");
+
+}
+
+
+////////////////////////////
+//User Routes Definition
+////////////////////////////
+function *users(){
+	yield this.render("users", {
+        title : "Users",
+        users : db.users});
+}
+
+////////////////////////////
+//Leaderboard Routes Definition
+////////////////////////////
+function *leaderboard(){
+	yield this.render("leaderboard", {
+        title : "Leaderboard",
+        users : db.table.users});
+}
+
+function *reset_score(){
+    var post = yield parse(this);
+    for(var i = 0; i < db.table.users.length; i++){
+        if(post.id == db.table.users[i].id) db.table.users[i].score = 0;
+    }
+    this.redirect("/leaderboard");
+
+
+}
+
+function *reset_leaderboard(){
+    for(var i = 0; i < db.table.users.length; i++){
+        db.table.users[i].score = 0;
+    }
+    this.redirect("/leaderboard");
+}
+
+///////////////////////////////
+//Admistrator Routes Definition
+///////////////////////////////
+function *administrators(){
+	yield this.render("administrators", {
+        title : "Administrators",
+        admins : db.users});
+}
+
+function *new_admin(){
+    yield this.render("new_admin",{
+        title: "New Administrator"
+    });
+}
+
+function *edit_admin_page(){
+
+    var param_admin;
+    for(var i = 0; i < db.users.length; i++){
+        if(this.params.id == db.users[i].id) param_admin = db.users[i];
+    }
+    if(param_admin.isAdmin) {
+        yield this.render("edit_admin", {
+            title: "Edit Administrator",
+            admin: param_admin
+        });
+    }
+    else{
+        this.status = 404;
+        yield this.render("404", {
+            title: "Wrong User"
+        });
+    }
+}
+
+function *edit_admin(){
+    var post = yield parse(this);
+    console.log(post);
+    for(var i = 0; i<db.users.length; i++){
+        if(db.users[i].id == post.id) {
+            if(post.admin_first.length != 0)
+                db.users[i].first_name = post.admin_first;
+
+            if(post.admin_last.length != 0)
+                db.users[i].last_name = post.admin_last;
+
+            if(post.admin_email.length != 0)
+                db.users[i].email = post.admin_email;
+
+            break;
+        }
+    }
+    this.redirect("/administrators");
+}
+
+function *add_admin(){
+    var post = yield parse(this);
+    var max = db.users[0].id;
+    for(var i = 0; i<db.users.length; i++){
+        if(db.users[i].id > max) max = db.users[i].id;
+    }
+    post.id = max + 1;
+
+    db.users.push({
+        id: post.id,
+        email:post.email,
+        first_name:post.first_name,
+        last_name:post.last_name,
+        gender:post.gender,
+        age:post.age,
+        banned:false,
+        isAdmin:true
+
+    });
+    this.redirect("/administrators");
+
+
+}
+
+////////////////////////////
+//Feedback Routes Definition
+////////////////////////////
+function *feedback(){
+	yield this.render("feedback", {
+        title : "Feedback",
+        feedback:db.feedback});
+}
+
 function *solve_feedback(){
     var post = yield parse(this);
     for(var i = 0; i < db.feedback.length; i++){
@@ -378,22 +634,34 @@ function *delete_feedback(){
     this.redirect("/feedback");
 }
 
-function *reset_score(){
-    var post = yield parse(this);
-    for(var i = 0; i < db.table.users.length; i++){
-        if(post.id == db.table.users[i].id) db.table.users[i].score = 0;
-    }
-    this.redirect("/leaderboard");
-
-
+////////////////////////////
+//Miscellaneus Routes Definition
+////////////////////////////
+function *database(){
+	yield this.render("database", {title : "Database"});
 }
 
-function *reset_leaderboard(){
-    for(var i = 0; i < db.table.users.length; i++){
-        db.table.users[i].score = 0;
-    }
-    this.redirect("/leaderboard");
+function *login(){
+    yield this.render("login");
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function *upload_audio(){
         console.log(this);
@@ -524,109 +792,7 @@ function *add_video(){
 
 }
 
-function *new_exhibition(){
-    var post = yield parse(this);
-    post.object_list = [];
-    var max = db.exhibitions[0].id;
-    for(var i = 0; i < db.exhibitions.length; i++){//find the next highest for id
-        if(db.exhibitions[i].id > max) max = db.exhibitions[i].id;
-    }
-    post.id = max + 1;
-    db.exhibitions.push(post);
-    this.redirect("/exhibitions");
-}
 
-function *add_to_exhibition(){
-    var post = yield parse(this);
-    var present = false;
-    var exhibition_index;
-    for(var i = 0; i < db.exhibitions.length; i++){//find the position of the exhibition
-        if(post.id == db.exhibitions[i].id) {
-            exhibition_index = i;
-            break;
-        }
-    }
-
-    for(var i = 0; i < db.exhibitions[exhibition_index].object_list.length; i++){//check if its already in the list
-        if(post.object == db.exhibitions[exhibition_index].object_list[i]) {
-            present = true;
-            break;
-        }
-    }
-    if(!present) db.exhibitions[exhibition_index].object_list.push(post.object); //if not, add it
-    this.redirect("/exhibition/" + post.id);
-}
-
-function *remove_from_exhibition(){
-    var post = yield parse(this);
-    var exhibition_index;
-    for(var i = 0; i < db.exhibitions.length; i++){//find the position of the exhibition
-        if(post.exhibition_id == db.exhibitions[i].id) {
-            exhibition_index = i;
-            break;
-        }
-    }
-    for(var i = 0; i < db.exhibitions[exhibition_index].object_list.length; i++){//check if its already in the list
-        if(post.object_id == db.exhibitions[exhibition_index].object_list[i]) {
-            db.exhibitions[exhibition_index].object_list.splice(i, 1);
-            break;
-        }
-    }
-    this.redirect("/exhibition/" + post.exhibition_id);
-
-
-}
-
-function *new_room(){
-    db.rooms.push({
-        id: db.rooms.length + 1,
-        number: db.rooms.length + 1,
-        current_id: []
-    });
-    this.redirect("/rooms");
-
-}
-
-function *add_to_room(){
-    var post = yield parse(this);
-    var present = false;
-    var room_index;
-    for(var i = 0; i < db.rooms.length; i++){//find the position of the exhibition
-        if(post.room_id == db.rooms[i].id) {
-            room_index = i;
-            break;
-        }
-    }
-
-    for(var i = 0; i < db.rooms[room_index].current_id.length; i++){//check if its already in the list
-        if(post.ibeacon_id == db.rooms[room_index].current_id[i]) {
-            present = true;
-            break;
-        }
-    }
-    if(!present) db.rooms[room_index].current_id.push({id:post.ibeacon_id}); //if not, add it
-    this.redirect("/room/" + post.room_id);
-
-
-}
-
-function *remove_ibeacon(){
-    var post = yield parse(this);
-    var room_index;
-    for(var i = 0; i < db.rooms.length; i++){//find the position of the exhibition
-        if(post.room_id == db.rooms[i].id) {
-            room_index = i;
-            break;
-        }
-    }
-    for(var i = 0; i < db.rooms[room_index].current_id.length; i++){//check if its already in the list
-        if(post.ibeacon_id == db.rooms[room_index].current_id[i].id) {
-            db.rooms[room_index].current_id.splice(i, 1);
-            break;
-        }
-    }
-    this.redirect("/room/" + post.room_id);
-}
 
 
 

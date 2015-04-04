@@ -7,7 +7,7 @@
         </div>
     </div>
 
-    <form action="/add_article" method="post">
+    <form action="/edit_article" method="post">
         <div class="form-group">
             <label>Title</label>
             <input id="article_title" type="text" name="title" class="form-control" placeholder="Enter title.">
@@ -16,8 +16,7 @@
             <textarea id="article_text" type="text" name="text" class="form-control" placeholder="Enter text." rows="6"></textarea>
             <p class="help-block">Was: {{text}}</p>
 
-            <input id="article_id" type="number" name="id" class="form-control" placeholder="{{id}}" disabled="true" style="width: 25%">
-            <p class="help-block">This is the article id. Cannot be edited.</p>
+            <input id="article_id" type="number" name="id"  value="{{id}}" hidden="true" >
 
 
             <button class="btn btn-default" type="submit">Submit</button>

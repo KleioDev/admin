@@ -7,7 +7,7 @@
         </div>
     </div>
 
-    <form action="/edit_museum_information" method="post">
+    <form action="/edit_museum" method="post">
         <div class="form-group">
             <label>Picture</label>
             <input type="file">
@@ -20,8 +20,7 @@
             <p class="help-block">Was: {{hours}}</p>
 
             <label>Description</label>
-            <textarea id="museum_desc" type="text" name="description" class="form-control" placeholder="Enter short description.">
-            </textarea>
+            <textarea id="museum_desc" type="text" name="description" class="form-control" placeholder="Enter short description."></textarea>
             <p class="help-block">Was: {{description}}</p>
 
             <button class="btn btn-default" type="submit">Submit</button>
