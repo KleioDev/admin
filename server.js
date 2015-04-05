@@ -226,7 +226,7 @@ function *edit_museum_information(){
 
 function *edit_museum(){
     var post = yield parse(this);
-    console.log(post);
+    console.log(post.name);
     
     if(post.name.length != 0)
         db.museum_info.name = post.name;
@@ -253,30 +253,40 @@ function *exhibitions(){
 
 function *exhibition(){
     var exhibition;
+    var set = false;
     for(var i = 0; i < db.exhibitions.length; i++){
         if(this.params.id == db.exhibitions[i].id){
             exhibition = db.exhibitions[i];
+            set = true;
             break;
         }
     }
-    var list = [];
+    if(!set){
+        this.status = 404;
+        yield this.render("404", {
+            title: "Wrong Exhibition"
+        });
+    }
 
-    for(var i = 0; i < exhibition.object_list.length; i++){
-        for(var k = 0; k < db.objects.length; k++){
-            if(typeof db.objects[k] != 'undefined' && exhibition.object_list[i] == db.objects[k].id){
-                list.push(db.objects[k]);
+
+    else{
+        var list = [];
+        for(var i = 0; i < exhibition.object_list.length; i++){
+            for(var k = 0; k < db.objects.length; k++){
+                if(typeof db.objects[k] != 'undefined' && exhibition.object_list[i] == db.objects[k].id){
+                    list.push(db.objects[k]);
+                }
             }
         }
+        yield this.render("exhibition",{
+            title: exhibition.title,
+            description: exhibition.description,
+            object_list: list,
+            ibeacon:exhibition.ibeacon,
+            id: exhibition.id
+        });
     }
-    console.log(list);
 
-    yield this.render("exhibition",{
-        title: exhibition.title,
-        description: exhibition.description,
-        object_list: list,
-        ibeacon:exhibition.ibeacon,
-        id: exhibition.id
-    });
 }
 
 function *new_exhibition(){
@@ -350,17 +360,28 @@ function *rooms(){
 
 function *room(){
     var room;
+    var set = false;
     for(var i = 0; i < db.rooms.length; i++){
         if(this.params.id == db.rooms[i].id){
             room = db.rooms[i];
+            set = true;
             break;
         }
     }
-    yield this.render("room", {
-        title: "Room " + room.number,
-        id: room.id,
-        ibeacon_list: room.current_id
-    });
+    if(!set){
+        this.status = 404;
+        yield this.render("404", {
+            title: "Wrong Room"
+        });
+    }
+    else{
+        yield this.render("room", {
+            title: "Room " + room.number,
+            id: room.id,
+            ibeacon_list: room.current_id
+        });
+    }
+
 }
 
 function *new_room(){
@@ -427,10 +448,29 @@ function *objects(){
 
 //Static for the sake of the presentation
 function *single_object(){
-    yield this.render("single_object", {
-        title: db.objects[this.params.id - 1].title,
-        object : db.objects[this.params.id - 1]
-    });
+    var object;
+    var set = false;
+
+    for(var i = 0; i < db.objects.length; i++){
+        if(db.objects[i].id == this.params.id){
+            object = db.objects[i];
+            set = true;
+            break;
+        }
+    }
+    if(!set){
+        this.status = 404;
+        yield this.render("404", {
+            title: "Wrong Object"
+        });
+    }
+    else{
+        yield this.render("single_object", {
+            title: object.title,
+            object : object
+        });
+    }
+
 }
 
 function *upload_audio(){
@@ -602,29 +642,58 @@ function *articles(){
 
 function *single_article(){// id as param
     var param_article;
+    var set = false;
     for(var i = 0; i < db.articles.length; i++){
-        if(this.params.id == db.articles[i].id) param_article = db.articles[i];
+        if(this.params.id == db.articles[i].id){
+            param_article = db.articles[i];
+            set = true;
+            break;
+        }
     }
-    yield this.render("single_article", {
-        title: param_article.title,
-        text: param_article.text,
-        date: param_article.date,
-        id: param_article.id
-    });
+
+    if(!set){
+        this.status = 404;
+        yield this.render("404", {
+            title: "Wrong Article"
+        });
+    }
+    else{
+        yield this.render("single_article", {
+            title: param_article.title,
+            text: param_article.text,
+            date: param_article.date,
+            id: param_article.id
+        });
+    }
+
 }
 
 function *edit_article_page(){ //id as param
     var param_article;
+    var set = false;
+
     for(var i = 0; i < db.articles.length; i++){
-        if(this.params.id == db.articles[i].id) param_article = db.articles[i];
+        if(this.params.id == db.articles[i].id) {
+            param_article = db.articles[i];
+            set = true;
+            break;
+        }
+    }
+    if(!set){
+        this.status = 404;
+        yield this.render("404", {
+            title: "Wrong Article"
+        });
+    }
+    else{
+        yield this.render("edit_article", {
+            title: param_article.title,
+            text: param_article.text,
+            date: param_article.date,
+            id: param_article.id
+        });
     }
 
-    yield this.render("edit_article", {
-        title: param_article.title,
-        text: param_article.text,
-        date: param_article.date,
-        id: param_article.id
-    });
 }
 
 function *edit_article(){
@@ -726,6 +795,7 @@ function *users(){
 //Leaderboard Routes Definition
 ////////////////////////////
 function *leaderboard(){
+    console.log(db.table.users);
 	yield this.render("leaderboard", {
         title : "Leaderboard",
         users : db.table.users});
@@ -869,7 +939,6 @@ function *database(){
 function *requireLogin(next){
 
     if (!this.session.user) {
-        console.log("hi");
         this.redirect("/login");
     }
     else {
