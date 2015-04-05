@@ -85,89 +85,89 @@ app.use(serve("./audio"));
 route.post("/login", login);
 route.get("/login", login_page);
 
-route.get("/logout", function() {
+route.get("/logout", function*() {
     console.log(this.session.user);
-    this.request.session = null;
+    this.session = null;
     this.redirect("login");
 });
 //Museum Routes
 route.get("/", requireLogin, index);
-route.get("/museum", museum);
-route.get("/edit_museum_information", edit_museum_information);
-route.post("/edit_museum", edit_museum);
+route.get("/museum", requireLogin, museum);
+route.get("/edit_museum_information", requireLogin, edit_museum_information);
+route.post("/edit_museum", requireLogin, edit_museum);
 
 //Exhibition Routes
-route.get("/exhibitions", exhibitions);
-route.get("/exhibition/:id", exhibition);
-route.post("/new_exhibition", new_exhibition);
-route.post("/add_to_exhibition", add_to_exhibition);
-route.post("/remove_from_exhibition", remove_from_exhibition);//DELETE
+route.get("/exhibitions", requireLogin, exhibitions);
+route.get("/exhibition/:id", requireLogin, exhibition);
+route.post("/new_exhibition", requireLogin, new_exhibition);
+route.post("/add_to_exhibition", requireLogin, add_to_exhibition);
+route.post("/remove_from_exhibition", requireLogin, remove_from_exhibition);//DELETE
 
 //Object Routes
-route.get("/objects", objects);
-route.get("/single_object/:id", single_object);
-route.post("/upload_audio", parse_multi({
+route.get("/objects", requireLogin, objects);
+route.get("/single_object/:id", requireLogin, single_object);
+route.post("/upload_audio", requireLogin, parse_multi({
     multipart: true,
     formidable: {
         uploadDir: 'audio/'
     }
 }), upload_audio);
-route.post("/delete_audio", delete_audio);//DELETE
-route.post("/add_text", add_text);
-route.post("/delete_text", delete_text);//DELETE
-route.post("/add_image", parse_multi({
+route.post("/delete_audio", requireLogin, delete_audio);//DELETE
+route.post("/add_text", requireLogin, add_text);
+route.post("/delete_text", requireLogin, delete_text);//DELETE
+route.post("/add_image", requireLogin, parse_multi({
     multipart: true,
     formidable: {
         uploadDir: 'img/'
     }
 }), add_image);
-route.post("/delete_image", delete_image);//DELETE
-route.post("/add_video", add_video);
-route.post("/delete_video", delete_video);//DELETE
+route.post("/delete_image", requireLogin, delete_image);//DELETE
+route.post("/add_video", requireLogin, add_video);
+route.post("/delete_video", requireLogin, delete_video);//DELETE
 
 //Article Routes
-route.get("/articles", articles);
-route.get("/article/:id", single_article);
-route.get("/edit_article/:id", edit_article_page);
-route.get("/new_article", new_article);
-route.post("/edit_article", edit_article);
-route.post("/add_article", add_article);
-route.post("/delete_article", delete_article);//DELETE
+route.get("/articles", requireLogin, articles);
+route.get("/article/:id", requireLogin, single_article);
+route.get("/edit_article/:id", requireLogin, edit_article_page);
+route.get("/new_article", requireLogin, new_article);
+route.post("/edit_article", requireLogin, edit_article);
+route.post("/add_article", requireLogin, add_article);
+route.post("/delete_article", requireLogin, delete_article);//DELETE
 
 //Notification Routes
-route.get("/notifications", notifications);
-route.post("/create_notification", create_notification);
-route.post("/delete_notification", delete_notification);//DELETE
+route.get("/notifications", requireLogin, notifications);
+route.post("/create_notification", requireLogin, create_notification);
+route.post("/delete_notification", requireLogin, delete_notification);//DELETE
 
 //User Routes
-route.get("/users", users);
+route.get("/users", requireLogin, users);
 
 //Leaderboard Routes
-route.get("/leaderboard", leaderboard);
-route.post("/reset_score", reset_score);
-route.post("/reset_leaderboard", reset_leaderboard);
+route.get("/leaderboard", requireLogin, leaderboard);
+route.post("/reset_score", requireLogin, reset_score);
+route.post("/reset_leaderboard", requireLogin, reset_leaderboard);
 
 //Administrator Routes
-route.get("/administrators", administrators);
-route.get("/new_admin", new_admin);
-route.get("/edit_admin/:id", edit_admin_page);
-route.post("/edit_admin", edit_admin);
-route.post("/add_admin", add_admin);
+route.get("/administrators", requireLogin, administrators);
+route.get("/new_admin", requireLogin, new_admin);
+route.get("/edit_admin/:id", requireLogin, edit_admin_page);
+route.post("/edit_admin", requireLogin, edit_admin);
+route.post("/add_admin", requireLogin, add_admin);
 
 //Feedback Routes
-route.get("/feedback", feedback);
-route.post("/solve_feedback", solve_feedback);//UPDATE
-route.post("/delete_feedback", delete_feedback);//DELETE
+route.get("/feedback", requireLogin, feedback);
+route.post("/solve_feedback", requireLogin, solve_feedback);//UPDATE
+route.post("/delete_feedback", requireLogin, delete_feedback);//DELETE
 
 //Room Routes
-route.get("/rooms", rooms);
-route.get("/room/:id", room);
-route.post("/new_room", new_room);
-route.post("/add_to_room", add_to_room);
-route.post("/remove_ibeacon", remove_ibeacon);//DELETE
+route.get("/rooms", requireLogin, rooms);
+route.get("/room/:id", requireLogin, room);
+route.post("/new_room", requireLogin, new_room);
+route.post("/add_to_room", requireLogin, add_to_room);
+route.post("/remove_ibeacon", requireLogin, remove_ibeacon);//DELETE
 
 //Miscellaneus
-route.get("/database", database);
+route.get("/database", requireLogin, database);
 
 //Set the routes
 app.use(route.routes());
@@ -868,10 +868,9 @@ function *database(){
 	yield this.render("database", {title : "Database"});
 }
 
-function requireLogin(next){
-    console.log(typeof this.session.user);
+function *requireLogin(next){
 
-    if (typeof this.session.user === 'undefined') {
+    if (!this.session.user) {
         console.log("hi");
         this.redirect("/login");
     }
