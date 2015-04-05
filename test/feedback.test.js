@@ -11,7 +11,7 @@ describe('Feedback', function(){
     describe('GET /feedback', function(){
 
         it('should return a status of 200', function *(){
-            yield request.get('/feeback').expect(200);
+            yield request.get('/feedback').expect(200);
         });
     });
 

@@ -2,6 +2,7 @@ var supertest = require('supertest-as-promised');
 var expect = require('chai').expect;
 var server = require('../server.js');
 var app = server.app;
+var comocha = require("co-mocha");
 
 request = supertest(app.callback());
 var administrators = require('../js/db.js').users;

@@ -487,13 +487,14 @@ exports.notifications = [
 exports.users = [
     {
         id:1,
-        email:"placeholder@upr.edu",
+        email:"admin@upr.edu",
         first_name:"John",
         last_name:"Smith",
         gender:"Male",
         age:33,
         banned:false,
-        isAdmin:true
+        isAdmin:true,
+        password:"123456"
 
     },
     {
@@ -504,7 +505,9 @@ exports.users = [
         gender:"Female",
         age:32,
         banned:false,
-        isAdmin:false
+        isAdmin:false,
+        password:"123456"
+
 
     },
     {
@@ -515,7 +518,9 @@ exports.users = [
         gender:"Male",
         age:60,
         banned:true,
-        isAdmin:false
+        isAdmin:false,
+        password:"123456"
+
 
     },
     {
@@ -526,7 +531,9 @@ exports.users = [
         gender:"Male",
         age:22,
         banned:false,
-        isAdmin:true
+        isAdmin:true,
+        password:"123456"
+
 
 
     },
@@ -538,7 +545,9 @@ exports.users = [
         gender:"Male",
         age:47,
         banned:true,
-        isAdmin:false
+        isAdmin:false,
+        password:"123456"
+
 
     },
     {
@@ -549,7 +558,9 @@ exports.users = [
         gender:"Female",
         age:30,
         banned:false,
-        isAdmin:true
+        isAdmin:true,
+        password:"123456"
+
 
     },
     {
@@ -560,7 +571,9 @@ exports.users = [
         gender:"Male",
         age:200,
         banned:true,
-        isAdmin:false
+        isAdmin:false,
+        password:"123456"
+
 
     }];
 

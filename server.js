@@ -9,13 +9,37 @@ var parse = require("co-body");
 var parse_multi = require("koa-better-body");
 var route = new Router();
 var fs = require("fs");
-var serve_single = require("koa-static");
+var session = require("koa-session");
 
 //Dummy database
 var db = require("./js/db");
 
 //Start the app
 var app = koa();
+
+
+//Authentication
+app.keys = ['secret'];
+app.use(session(app));
+
+app.use(function *(next) {
+    if (this.session && this.session.user) {
+        for(var i = 0; i < db.users.length; i++){
+            if(this.session.email === db.users[i].email){//Find the
+                this.request.user = db.users[i];
+                delete this.request.user.password; // delete the password from the session
+                this.session.user = db.users[i];  //refresh the session value
+                this.response.locals.user = db.users[i];
+            }
+        }
+        yield next;
+    }
+    else {
+        yield next;
+    }
+});
+
+
 
 //Set up the templating engine and helper functions
 app.use(handlebars({
@@ -58,12 +82,19 @@ app.use(serve("./audio"));
 ////////
 //ROUTES
 ////////
+route.post("/login", login);
+route.get("/login", login_page);
 
+route.get("/logout", function() {
+    console.log(this.session.user);
+    this.request.session = null;
+    this.redirect("login");
+});
 //Museum Routes
-route.get("/", index);
+route.get("/", requireLogin, index);
 route.get("/museum", museum);
 route.get("/edit_museum_information", edit_museum_information);
-route.post("edit_museum", edit_museum);
+route.post("/edit_museum", edit_museum);
 
 //Exhibition Routes
 route.get("/exhibitions", exhibitions);
@@ -136,7 +167,6 @@ route.post("/add_to_room", add_to_room);
 route.post("/remove_ibeacon", remove_ibeacon);//DELETE
 
 //Miscellaneus
-route.get("/login", login);
 route.get("/database", database);
 
 //Set the routes
@@ -146,6 +176,33 @@ app.use(route.routes());
 ////////////////////////////
 //Museum Routes Definition
 ///////////////////////////
+function *login(){
+    console.log("Logging in");
+    var post = yield parse(this);
+    console.log(post);
+    for(var i = 0; i < db.users.length; i++){
+        if(post.email === db.users[i].email){
+            if (post.password === db.users[i].password) {
+                this.session.user = db.users[i];
+                console.log(this.session.user);
+                this.redirect("/");
+                break;
+            }
+            else {
+                //yield this.render("login", {error: "Wrong email or password"});
+                console.log(1);
+                this.redirect("/login");
+                break;
+            }
+        }
+    }
+}
+
+function *login_page(){
+    yield this.render("login");
+
+}
+
 function *index(){
     yield this.render("index", {title : "Home"});
 }
@@ -811,9 +868,19 @@ function *database(){
 	yield this.render("database", {title : "Database"});
 }
 
-function *login(){
-    yield this.render("login");
+function requireLogin(next){
+    console.log(typeof this.session.user);
+
+    if (typeof this.session.user === 'undefined') {
+        console.log("hi");
+        this.redirect("/login");
+    }
+    else {
+        yield* next;
+    }
 }
+
+
 
 
 //Set the port
