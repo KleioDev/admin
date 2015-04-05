@@ -178,21 +178,23 @@ app.use(route.routes());
 ///////////////////////////
 function *login(){
     var post = yield parse(this);
-    console.log(post);
+    var found = false;
     for(var i = 0; i < db.users.length; i++){
         if(post.email === db.users[i].email && db.users[i].isAdmin){
             if (post.password === db.users[i].password) {
                 this.session.user = db.users[i];
                 this.redirect("/");
+                found = true;
                 break;
             }
             else {
+
                 this.redirect("/login");
                 break;
             }
         }
     }
-    this.redirect("/login");
+    if(!found) this.redirect("/login");
 }
 
 function *login_page(){
@@ -258,18 +260,21 @@ function *exhibition(){
         }
     }
     var list = [];
-    for(var i = 0, k = 0; i < db.objects.length; i++){
-        if(exhibition.object_list[k] == db.objects[i].id){
-            list.push(db.objects[i]);
-            k++;
-            i = -1; //offset the counter, need to start at 0
+
+    for(var i = 0; i < exhibition.object_list.length; i++){
+        for(var k = 0; k < db.objects.length; k++){
+            if(typeof db.objects[k] != 'undefined' && exhibition.object_list[i] == db.objects[k].id){
+                list.push(db.objects[k]);
+            }
         }
     }
+    console.log(list);
 
     yield this.render("exhibition",{
         title: exhibition.title,
         description: exhibition.description,
         object_list: list,
+        ibeacon:exhibition.ibeacon,
         id: exhibition.id
     });
 }
@@ -296,11 +301,9 @@ function *add_to_exhibition(){
             break;
         }
     }
-
-    if(isNaN(post.object)){
-
+    if(post.ibeacon.length != 0) db.exhibitions[exhibition_index].ibeacon = post.ibeacon;
+    if(isNaN(post.object) || post.object.length == 0){
         this.redirect("/exhibition/" + post.id);
-
     }
     else{
         for(var i = 0; i < db.exhibitions[exhibition_index].object_list.length; i++){//check if its already in the list
@@ -313,8 +316,6 @@ function *add_to_exhibition(){
         console.log(db.exhibitions[exhibition_index].object_list);
         this.redirect("/exhibition/" + post.id);
     }
-
-    
 }
 
 function *remove_from_exhibition(){

@@ -8,7 +8,7 @@
     </div>
     <p>{{description}}</p>
 
-
+    <p>iBeacon attached: {{ibeacon}}</p>
     <h4>Objects belonging to this exhibition:</h4>
     <div class="table-responsive">
         <table class="table table-striped table-bordered table-hover">
@@ -57,7 +57,9 @@
     <form action="/add_to_exhibition" method="post">
         <div class="form-group">
             <label>To add to the exhibition, enter the ID of the desired object:</label>
-            <input id="object_id" type="text" name="object" class="form-control" placeholder="Enter ID" style="width: 10%">
+            <input id="object_id" type="text" name="object" class="form-control" placeholder="Enter ID" style="width: 20%">
+            <input id="object_id" type="text" name="ibeacon" class="form-control" placeholder="Enter iBeacon" style="width: 20%">
+
             <input hidden="true" name="id" value={{id}}>
             <button class="btn btn-default" type="submit">Submit</button>
         </div>
