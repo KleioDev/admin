@@ -19,15 +19,15 @@ describe('Leaderboard', function(){
         });
     });
 
-    describe('POST /reset_score', function(){
-
-        it('Should reset User 1\'s score', function *(){
-            yield request.post("/login").send({email:"admin@upr.edu", password:"123456"}).then(
-                request.post('/reset_score').send({id: 1}).end(function(err, res){
-                expect(res).to.have.status(200);
-            }));
-        });
-    });
+    //describe('POST /reset_score', function(){
+    //
+    //    it('Should reset User 1\'s score', function *(){
+    //        yield request.post("/login").send({email:"admin@upr.edu", password:"123456"}).then(
+    //            request.post('/reset_score').send({id: 1}).end(function(err, res){
+    //            expect(res).to.have.status(200);
+    //        }));
+    //    });
+    //});
 
     //describe('POST /reset_leaderboard', function(){
     //
