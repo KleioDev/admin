@@ -499,7 +499,7 @@ exports.users = [
     },
     {
         id:2,
-        email:"placeholder@upr.edu",
+        email:"placeholder1@upr.edu",
         first_name:"Joanna",
         last_name:"Smith",
         gender:"Female",
@@ -512,7 +512,7 @@ exports.users = [
     },
     {
         id:3,
-        email:"placeholder@upr.edu",
+        email:"placeholder2@upr.edu",
         first_name:"Pepe",
         last_name:"Perez",
         gender:"Male",
@@ -525,7 +525,7 @@ exports.users = [
     },
     {
         id:4,
-        email:"placeholder@upr.edu",
+        email:"placeholder3@upr.edu",
         first_name:"Lucas",
         last_name:"Jones",
         gender:"Male",
@@ -539,7 +539,7 @@ exports.users = [
     },
     {
         id:5,
-        email:"placeholder@upr.edu",
+        email:"placeholder4@upr.edu",
         first_name:"Bob",
         last_name:"Burger",
         gender:"Male",
@@ -552,7 +552,7 @@ exports.users = [
     },
     {
         id:6,
-        email:"placeholder@upr.edu",
+        email:"placeholder5@upr.edu",
         first_name:"Diana",
         last_name:"Ross",
         gender:"Female",
@@ -565,7 +565,7 @@ exports.users = [
     },
     {
         id:7,
-        email:"placeholder@upr.edu",
+        email:"placeholder6@upr.edu",
         first_name:"Ludwig",
         last_name:"Beethoven",
         gender:"Male",

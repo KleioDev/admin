@@ -177,25 +177,22 @@ app.use(route.routes());
 //Museum Routes Definition
 ///////////////////////////
 function *login(){
-    console.log("Logging in");
     var post = yield parse(this);
     console.log(post);
     for(var i = 0; i < db.users.length; i++){
-        if(post.email === db.users[i].email){
+        if(post.email === db.users[i].email && db.users[i].isAdmin){
             if (post.password === db.users[i].password) {
                 this.session.user = db.users[i];
-                console.log(this.session.user);
                 this.redirect("/");
                 break;
             }
             else {
-                //yield this.render("login", {error: "Wrong email or password"});
-                console.log(1);
                 this.redirect("/login");
                 break;
             }
         }
     }
+    this.redirect("/login");
 }
 
 function *login_page(){
