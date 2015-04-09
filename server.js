@@ -112,6 +112,7 @@ app.use(handlebars({
 // */
 //
 app.use(serve("./public"));
+app.use(serve('./bower_components'));
 //
 //
 ///**
