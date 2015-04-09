@@ -19,6 +19,10 @@ var db = require("./js/db");
 var museum = require("./routes/museum");
 var exhibitions = require("./routes/exhibitions");
 var rooms = require("./routes/rooms");
+var objects = require("./routes/objects");
+var articles = require("./routes/articles");
+var notifications = require("./routes/notifications");
+var users = require("./routes/users");
 
 
 //Start the app
@@ -145,49 +149,49 @@ route.post("/remove_from_exhibition", requireLogin, exhibitions.remove_from_exhi
 /**
  * Object routes
  */
-route.get("/objects", requireLogin, objects);
-route.get("/single_object/:id", requireLogin, single_object);
+route.get("/objects", requireLogin, objects.objects());
+route.get("/single_object/:id", requireLogin, objects.single_object());
 route.post("/upload_audio", requireLogin, parse_multi({
     multipart: true,
     formidable: {
         uploadDir: 'audio/'
     }
-}), upload_audio);
-route.post("/delete_audio", requireLogin, delete_audio);//DELETE
-route.post("/add_text", requireLogin, add_text);
-route.post("/delete_text", requireLogin, delete_text);//DELETE
+}), objects.upload_audio());
+route.post("/delete_audio", requireLogin, objects.delete_audio());//DELETE
+route.post("/add_text", requireLogin, objects.add_text());
+route.post("/delete_text", requireLogin, objects.delete_text());//DELETE
 route.post("/add_image", requireLogin, parse_multi({
     multipart: true,
     formidable: {
         uploadDir: 'img/'
     }
-}), add_image);
-route.post("/delete_image", requireLogin, delete_image);//DELETE
-route.post("/add_video", requireLogin, add_video);
-route.post("/delete_video", requireLogin, delete_video);//DELETE
+}), objects.add_image());
+route.post("/delete_image", requireLogin, objects.delete_image());//DELETE
+route.post("/add_video", requireLogin, objects.add_video());
+route.post("/delete_video", requireLogin, objects.delete_video());//DELETE
 
 /**
  * Article routes
  */
-route.get("/articles", requireLogin, articles);
-route.get("/article/:id", requireLogin, single_article);
-route.get("/edit_article/:id", requireLogin, edit_article_page);
-route.get("/new_article", requireLogin, new_article);
-route.post("/edit_article", requireLogin, edit_article);
-route.post("/add_article", requireLogin, add_article);
-route.post("/delete_article", requireLogin, delete_article);//DELETE
+route.get("/articles", requireLogin, articles.articles());
+route.get("/article/:id", requireLogin, articles.single_article());
+route.get("/edit_article/:id", requireLogin, articles.edit_article_page());
+route.get("/new_article", requireLogin, articles.new_article());
+route.post("/edit_article", requireLogin, articles.edit_article());
+route.post("/add_article", requireLogin, articles.add_article());
+route.post("/delete_article", requireLogin, articles.delete_article());//DELETE
 
 /**
  * Notification routes
  */
-route.get("/notifications", requireLogin, notifications);
-route.post("/create_notification", requireLogin, create_notification);
-route.post("/delete_notification", requireLogin, delete_notification);//DELETE
+route.get("/notifications", requireLogin, notifications.notifications());
+route.post("/create_notification", requireLogin, notifications.create_notification());
+route.post("/delete_notification", requireLogin, notifications.delete_notification());//DELETE
 
 /**
  * User routes
  */
-route.get("/users", requireLogin, users);
+route.get("/users", requireLogin, users.users());
 
 /**
  * Leaderboard routes
@@ -233,9 +237,6 @@ app.use(route.routes());
  * Route Definitions
  */
 
-
-
-
 /**
  * Parses the information, verifies that the user exists and matches the password.
  * If the user is matched, redirect to root.
@@ -277,430 +278,7 @@ function *index(){
     yield this.render("index", {title : "Home"});
 }
 
-/******************************************************************************
- * Object route definitions
- */
 
-/**
- * Render the Objects page.
- */
-function *objects(){
-	yield this.render("objects", {
-        title : "Objects",
-        objects: db.objects
-    });
-}
-
-/**
- * Render the Single Object page.
- * If the id passed does not belong to an object, render 404.
- */
-function *single_object(){
-    var object;
-    var set = false;
-
-    for(var i = 0; i < db.objects.length; i++){
-        if(db.objects[i].id == this.params.id){
-            object = db.objects[i];
-            set = true;
-            break;
-        }
-    }
-    if(!set){
-        this.status = 404;
-        yield this.render("404", {
-            title: "Wrong Object"
-        });
-    }
-    else{
-        yield this.render("single_object", {
-            title: object.title,
-            object : object
-        });
-    }
-
-}
-
-/**
- * Parses title information and handles the audio upload.
- */
-function *upload_audio(){
-    console.log(this.request.body);
-    var id;
-    for(id = 0; id < db.objects.length; id++){//get the index
-        if(this.request.body.fields.object_id == db.objects[id].id) break;
-    }
-
-    var max = db.objects[id].audio_content[0].id;
-    for(var i = 0; i<db.objects[id].audio_content.length; i++){
-        if(db.objects[id].audio_content[i].id > max) max = db.objects[id].audio_content[i].id;
-    }
-    db.objects[id].audio_content.push({
-        id: max + 1,
-        title: this.request.body.fields.title,
-        audio: "../" + this.request.body.files.file.path
-    });
-
-    console.log(db.objects[id].audio_content);
-
-    this.redirect("/single_object/" + this.request.body.fields.object_id);
-}
-
-/**
- * Parse audio entry information to remove the entry and delete the audio file.
- */
-function *delete_audio(){
-    var post = yield parse(this);
-    var id;
-    for(id = 0; id < db.objects.length; i++){//get the index
-        if(post.object_id == db.objects[id].id) break;
-    }
-
-    for(var i = 0; i<db.objects[id].audio_content.length; i++){
-        if(db.objects[id].audio_content[i].id == post.audio_id){
-            fs.unlinkSync("views/" + db.objects[id].audio_content[i].audio);
-            db.objects[id].audio_content.splice(i, 1);
-            break;
-        }
-    }
-    this.redirect("/single_object/"+post.object_id);
-}
-
-/**
- * Parse the text entry information to remove it from the object
- */
-function *delete_text(){
-    var post = yield parse(this);
-    var id;
-    for(id = 0; id < db.objects.length; i++){//get the index
-        if(post.object_id == db.objects[id].id) break;
-    }
-
-    for(var i = 0; i<db.objects[id].text_content.length; i++){
-        if(db.objects[id].text_content[i].id == post.text_id){
-            db.objects[id].text_content.splice(i, 1);
-            break;
-        } 
-    }
-    this.redirect("/single_object/"+post.object_id);
-
-}
-
-/**
- * Parse title and text information to add it to the database.
- */
-function *add_text(){
-    var post = yield parse(this);
-    var id;
-    for(id = 0; id < db.objects.length; i++){//get the index
-        if(post.object_id == db.objects[id].id) break;
-    }
-    var max = db.objects[id].text_content[0].id;
-
-    for(var i = 0; i<db.objects[id].text_content.length; i++){
-        if(db.objects[id].text_content[i].id > max) max = db.objects[id].text_content[i].id;
-    }
-
-    db.objects[id].text_content.push({
-        id: max + 1,
-        title: post.title,
-        text: post.text
-    });
-
-    this.redirect("/single_object/" + post.object_id);
-
-}
-
-/**
- * Parse image content entry information to delete it from an object.
- */
-function *delete_image(){
-    var post = yield parse(this);
-    var id;
-    for(id = 0; id < db.objects.length; i++){//get the index
-        if(post.object_id == db.objects[id].id) break;
-    }
-
-    for(var i = 0; i<db.objects[id].image_content.length; i++){
-        if(db.objects[id].image_content[i].id == post.image_id){
-            fs.unlinkSync("views/" + db.objects[id].image_content[i].image_path);
-            db.objects[id].image_content.splice(i, 1);
-            break;
-        }
-    }
-    this.redirect("/single_object/"+post.object_id);
-}
-
-/**
- * Parse title to create an image content entry and upload the file.
- */
-function *add_image(){
-    console.log(this.request.body);
-    var id;
-    for(id = 0; id < db.objects.length; id++){//get the index
-        if(this.request.body.fields.object_id == db.objects[id].id) break;
-    }
-
-    var max = db.objects[id].image_content[0].id;
-    for(var i = 0; i<db.objects[id].image_content.length; i++){
-        if(db.objects[id].image_content[i].id > max) max = db.objects[id].image_content[i].id;
-    }
-    db.objects[id].image_content.push({
-        id: max + 1,
-        title: this.request.body.fields.title,
-        image_path: "../" + this.request.body.files.file.path
-    });
-
-    console.log(db.objects[id].image_content);
-
-    this.redirect("/single_object/" + this.request.body.fields.object_id);
-}
-
-/**
- * Parse video content information to delete the entry from the database.
- */
-function *delete_video(){
-    var post = yield parse(this);
-    var id;
-    for(id = 0; id < db.objects.length; i++){//get the index
-        if(post.object_id == db.objects[id].id) break;
-    }
-
-    for(var i = 0; i<db.objects[id].video_content.length; i++){
-        if(db.objects[id].video_content[i].id == post.video_id){
-            db.objects[id].video_content.splice(i, 1);
-            break;
-        } 
-    }
-    this.redirect("/single_object/"+post.object_id);
-}
-
-/**
- * Parse video content information to add the entry from the database.
- */
-function *add_video(){
-    var post = yield parse(this);
-    var id;
-    for(id = 0; id < db.objects.length; i++){//get the index
-        if(post.object_id == db.objects[id].id) break;
-    }
-    var max = db.objects[id].video_content[0].id;
-
-    for(var i = 0; i<db.objects[id].video_content.length; i++){
-        if(db.objects[id].video_content[i].id > max) max = db.objects[id].video_content[i].id;
-    }
-
-    db.objects[id].video_content.push({
-        id: max + 1,
-        title: post.title,
-        youtube_url: post.text,
-        embed_id: post.text.substring(post.text.indexOf("=")+1)
-    });
-    console.log(db.objects[id].video_content);
-    this.redirect("/single_object/" + post.object_id);
-
-}
-
-
-
-/******************************************************************************
- * Article route definitions
- */
-
-/**
- * Render the Articles page
- */ 
-function *articles(){
-	yield this.render("articles", {
-        title : "Articles",
-        articles:db.articles});
-}
-
-/**
- * Render the Single Article page.
- * If the id passed does not belong to an article, render 404.
- */
-function *single_article(){// id as param
-    var param_article;
-    var set = false;
-    for(var i = 0; i < db.articles.length; i++){
-        if(this.params.id == db.articles[i].id){
-            param_article = db.articles[i];
-            set = true;
-            break;
-        }
-    }
-
-    if(!set){
-        this.status = 404;
-        yield this.render("404", {
-            title: "Wrong Article"
-        });
-    }
-    else{
-        yield this.render("single_article", {
-            title: param_article.title,
-            text: param_article.text,
-            date: param_article.date,
-            id: param_article.id
-        });
-    }
-
-}
-
-/**
- * Render the Edit Article page.
- * If the id passed does not belong to an article, render 404.
- */
-function *edit_article_page(){ //id as param
-    var param_article;
-    var set = false;
-
-    for(var i = 0; i < db.articles.length; i++){
-        if(this.params.id == db.articles[i].id) {
-            param_article = db.articles[i];
-            set = true;
-            break;
-        }
-    }
-    if(!set){
-        this.status = 404;
-        yield this.render("404", {
-            title: "Wrong Article"
-        });
-    }
-    else{
-        yield this.render("edit_article", {
-            title: param_article.title,
-            text: param_article.text,
-            date: param_article.date,
-            id: param_article.id
-        });
-    }
-
-}
-
-/**
- * Parse article information to edit the it.
- * Since the user may not fill out all the fields, update it as needed.
- */
-function *edit_article(){
-    var post = yield parse(this);
-
-    for(var i = 0; i < db.articles.length; i++){
-        if(post.id == db.articles[i].id) {
-            if(post.title.length != 0){
-                db.articles[i].title = post.title;
-                db.articles[i].date = new Date;
-            }
-
-            if(post.text.length != 0){
-                db.articles[i].text = post.text;
-                db.articles[i].date = new Date;
-            }
-        }
-    }
-    this.redirect("/articles");
-}
-
-/**
- * Render the New Article page.
- */
-function *new_article(){
-    yield this.render("new_article", {
-        title: "New Article"
-    });
-}
-
-/**
- * Parse the article information to add it to the database.
- */
-function *add_article(){
-    var post = yield parse(this);
-    post.date = new Date;
-    var max = db.articles[0].id;
-    for(var i = 0; i<db.articles.length; i++){
-        if(db.articles[i].id > max) max = db.articles[i].id;
-    }
-    post.id = max + 1;
-    db.articles.push(post);
-    this.redirect("/articles");
-
-
-}
-
-/**
- * Parse the article information to remove it to the database.
- */
-function *delete_article(){
-    var post = yield parse(this);
-    for(var i = 0; i < db.articles.length; i++){
-        if(post.id == db.articles[i].id){
-            db.articles.splice(i, 1);
-            break;
-        }
-    }
-
-    this.redirect("/articles");
-}
-
-/******************************************************************************
- * Article route definitions
- */
-
-/**
-* Render the Notifications page.
-*/
-function *notifications(){
-	yield this.render("notifications", {
-        title : "Notifications",
-        notifications:db.notifications});
-}
-
-/**
- * Parse the notification information to add it to the database.
- */
-function *create_notification(){
-    var post = yield parse(this);
-    post.date = new Date;
-    var max = db.notifications[0].id;
-    for(var i = 0; i<db.notifications.length; i++){
-        if(db.notifications[i].id > max) max = db.notifications[i].id;
-    }
-    post.id = max + 1;
-    db.notifications.push(post);
-    this.redirect("/notifications");
-
-}
-
-/**
- * Parse the notification information to remove it to the database.
- */
-function *delete_notification(){
-    var post = yield parse(this);
-    for(var i = 0; i < db.notifications.length; i++){
-        if(post.id == db.notifications[i].id){
-            db.notifications.splice(i, 1);
-            break;
-        }
-    }
-    this.redirect("/notifications");
-
-}
-
-
-/******************************************************************************
- * User route definitions
- */
-
-/**
- * Render the Users page.
- */
-function *users(){
-	yield this.render("users", {
-        title : "Users",
-        users : db.users});
-}
 
 /******************************************************************************
  * Leaderboard route definitions
