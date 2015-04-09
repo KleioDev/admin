@@ -202,15 +202,6 @@ app.use(serve('./bower_components'));
 //route.post("/reset_leaderboard", requireLogin, leaderboard.reset_leaderboard());
 //
 ///**
-// * Administrator routes
-// */
-//route.get("/administrator", administrators.index);
-//route.get("/new_admin", requireLogin, administrators.new_admin());
-//route.get("/edit_admin/:id", requireLogin, administrators.edit_admin_page());
-//route.post("/edit_admin", requireLogin, administrators.edit_admin());
-//route.post("/add_admin", requireLogin, administrators.add_admin());
-//
-///**
 // * Feedback Routes
 // */
 //route.get("/feedback", requireLogin, feedback);
