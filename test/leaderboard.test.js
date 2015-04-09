@@ -7,7 +7,7 @@ var assert = require('assert');
 
 
 request = supertest(app.callback());
-var leaderboard_users = require('../js/db.js').table.users;
+var leaderboard_users = require('./db.js').table.users;
 
 describe('Leaderboard', function(){
 

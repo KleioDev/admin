@@ -7,7 +7,7 @@ var comocha = require("co-mocha");
 
 
 request = supertest(app.callback());
-var db = require('../js/db.js');
+var db = require('./db.js');
 
 describe('Articles', function(){
 

@@ -6,7 +6,7 @@ var comocha = require("co-mocha");
 
 
 request = supertest(app.callback());
-var users = require('../js/db.js').users;
+var users = require('./db.js').users;
 
 describe('Users', function(){
 

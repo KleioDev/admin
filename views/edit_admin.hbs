@@ -8,33 +8,33 @@
     </div>
 
     <div class="col-lg-8">
-        <form role="form" action="/edit_admin" method="post">
+        <form role="form" action="/administrator/{{admin.id}}" method="POST">
             <input hidden="true" name="id" value="{{admin.id}}">
             <div class="form-group">
                 <label>First Name</label>
-                <input class="form-control" id="admin_first" name="admin_first" >
-                <p class="help-block">Was: {{admin.first_name}}</p>
+                <input class="form-control" id="admin_first" name="firstName" >
+                <p class="help-block">Was: {{admin.firstName}}</p>
             </div>
             <div class="form-group" >
                 <label>Last Name</label>
-                <input class="form-control" id="admin_last" name="admin_last">
-                <p class="help-block">Was: {{admin.last_name}}</p>
+                <input class="form-control" id="admin_last" name="lastName">
+                <p class="help-block">Was: {{admin.lastName}}</p>
 
             </div>
             <div class="form-group" >
                 <label>Email</label>
-                <input class="form-control" id="admin_email" name="admin_email">
+                <input class="form-control" type="email" id="admin_email" name="email">
                 <p class="help-block">Was: {{admin.email}}</p>
 
             </div>
-            <div class="form-group">
-                <label>Museum</label>
-                <select class="form-control" id="admin_museum" name="admin_museum">
-                    <option>MuSA</option>
-                </select>
-                <p class="help-block">Was: [Not implemented yet]</p>
+            <!--<div class="form-group">-->
+                <!--<label>Museum</label>-->
+                <!--<select class="form-control" id="admin_museum" name="admin_museum">-->
+                    <!--<option>MuSA</option>-->
+                <!--</select>-->
+                <!--<p class="help-block">Was: [Not implemented yet]</p>-->
 
-            </div>
+            <!--</div>-->
             <button type="submit" class="btn btn-default">Submit</button>
         </form>
     </div>

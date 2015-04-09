@@ -7,7 +7,7 @@
         </div>
     </div>
 
-    <p style="text-align: right"><a href="/new_admin">Add new administrator</a></p>
+    <p style="text-align: right"><a href="/administrator/new">Add new administrator</a></p>
 
 
     <div class="dataTable_wrapper">
@@ -18,26 +18,20 @@
                 <th>Email</th>
                 <th>First Name</th>
                 <th>Last Name</th>
-                <th>Gender</th>
-                <th>Age</th>
                 <th style="text-align: center">Information</th>
             </tr>
             </thead>
             <tbody id="table_body">
             {{#each admins}}
-                {{#if isAdmin}}
                 <tr>
                     <td>{{id}}</td>
                     <td>{{email}}</td>
-                    <td>{{first_name}}</td>
-                    <td>{{last_name}}</td>
-                    <td>{{gender}}</td>
-                    <td>{{age}}</td>
-                    <td style="text-align: center"><a href="/edit_admin/{{id}}">Edit</a></td>
+                    <td>{{firstName}}</td>
+                    <td>{{lastName}}</td>
+                    <td style="text-align: center"><a href="/administrator/{{id}}/edit">Edit</a></td>
 
 
                 </tr>
-                {{/if}}
             {{/each}}
 
             </tbody>

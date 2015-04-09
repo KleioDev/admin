@@ -6,7 +6,7 @@ var comocha = require("co-mocha");
 
 
 request = supertest(app.callback());
-var rooms = require('../js/db.js').rooms;
+var rooms = require('./db.js').rooms;
 
 describe('Rooms', function(){
 

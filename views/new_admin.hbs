@@ -8,47 +8,33 @@
     </div>
 
     <div class="col-lg-8">
-        <form role="form" action="/add_admin" method="post">
+        <form role="form" action="/administrator" method="post">
             <div class="form-group">
                 <label>First Name</label>
-                <input class="form-control" name="first_name">
+                <input class="form-control" name="firstName">
             </div>
             <div class="form-group">
                 <label>Last Name</label>
-                <input class="form-control" name="last_name">
+                <input class="form-control" name="lastName">
             </div>
             <div class="form-group">
                 <label>Email</label>
                 <input class="form-control" name="email">
             </div>
-            <div class="radio">
-                <label>
-                    <input type="radio" name="gender" id="optionsRadios1" value="Male" checked>Male
-                </label>
-            </div>
-            <div class="radio">
-                <label>
-                    <input type="radio" name="gender" id="optionsRadios2" value="Female">Female
-                </label>
-            </div>
             <div class="form-group">
                 <label>Password</label>
-                <input class="form-control" type="password">
+                <input class="form-control" type="password" name="password">
             </div>
             <div class="form-group">
                 <label>Repeat Password</label>
                 <input class="form-control" type="password">
             </div>
-            <div class="form-group">
-                <label>Age</label>
-                <input class="form-control" type="number" name="age">
-            </div>
-            <div class="form-group">
-                <label>Museum</label>
-                <select class="form-control" name="museum">
-                    <option>MuSA</option>
-                </select>
-            </div>
+            <!--<div class="form-group">-->
+                <!--<label>Museum</label>-->
+                <!--<select class="form-control" name="museum">-->
+                    <!--<option>MuSA</option>-->
+                <!--</select>-->
+            <!--</div>-->
             <button type="submit" class="btn btn-default">Submit</button>
         </form>
     </div>

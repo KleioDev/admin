@@ -1,4 +1,4 @@
-var db = require("../js/db");
+var db = require("./db");
 var koa = require("koa");
 var handlebars = require("koa-handlebars");
 var parse = require("co-body");

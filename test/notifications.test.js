@@ -6,7 +6,7 @@ var comocha = require("co-mocha");
 
 
 request = supertest(app.callback());
-var notifications = require('../js/db.js').notifications;
+var notifications = require('./db.js').notifications;
 
 describe('Notifications', function(){
 

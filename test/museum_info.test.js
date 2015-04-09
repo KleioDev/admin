@@ -7,7 +7,7 @@ var assert = require("assert");
 
 
 request = supertest(app.callback());
-var museum_info = require('../js/db.js').museum_info;
+var museum_info = require('./db.js').museum_info;
 
 describe('Museum', function(){
     describe('GET /', function(){
