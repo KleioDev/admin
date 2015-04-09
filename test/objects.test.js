@@ -6,7 +6,7 @@ var comocha = require("co-mocha");
 
 
 request = supertest(app.callback());
-var objects = require('../js/db.js').objects;
+var objects = require('./db.js').objects;
 
 describe('Objects', function(){
 

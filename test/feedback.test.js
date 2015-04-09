@@ -6,7 +6,7 @@ var comocha = require("co-mocha");
 
 
 request = supertest(app.callback());
-var feedback = require('../js/db.js').feedback;
+var feedback = require('./db.js').feedback;
 
 describe('Feedback', function(){
 

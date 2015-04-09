@@ -6,7 +6,7 @@ var comocha = require('co-mocha');
 var assert = require("assert");
 
 request = supertest(app.callback());
-var administrators = require('../js/db.js').users;
+var administrators = require('./db.js').users;
 
 describe('Administrators', function(){
 

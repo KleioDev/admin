@@ -6,7 +6,7 @@ var comocha = require("co-mocha");
 
 
 request = supertest(app.callback());
-var exhibitions = require('../js/db.js').exhibitions;
+var exhibitions = require('./db.js').exhibitions;
 
 describe('Exhibitions', function(){
 

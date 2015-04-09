@@ -1,26 +1,94 @@
-var db = require("../js/db");
-var koa = require("koa");
-var handlebars = require("koa-handlebars");
-var parse = require("co-body");
-var parse_multi = require("koa-better-body");
-var fs = require("fs");
+var parse_multi = require("koa-better-body")(),
+    fs = require("fs"),
+    rq = require('co-request'),
+    Router = require('koa-router');
+
+
+
+module.exports = function(){
+    var administratorController = new Router();
+
+    administratorController
+        .get('/administrator', parse_multi, index)
+        .get('/administrator/new', new_administrator)
+        .get('/administrator/:id', show)
+        .get('/administrator/:id/edit', edit_administrator)
+        .post('/administrator', create)
+        .put('/administrator/:id', edit)
+        .delete('/administrator/:id', destroy)
+
+    return administratorController.routes();
+}
+
 
 /**
- * Render the Administrators page.
+ * Render the Administrator Web Page
  */
-exports.administrators = function(){
-    function *administrators(){
-        yield this.render("administrators", {
-            title : "Administrators",
-            admins : db.users});
+function *index(){
+    var response,
+    administrators;
+
+    try {
+        response = yield rq.get('http://localhost:4567/administrator')
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
     }
-    return administrators;
-};
+
+    //Parse
+    administrators = JSON.parse(response.body).administrators;
+
+
+    yield this.render('administrators', {
+        title : 'Administrators',
+        admins : administrators
+    });
+}
+/**
+ * Render view to create an Administrator Instance
+ */
+function *new_administrator(){
+
+}
+
+/**
+ * Show a single Administrator instance
+ */
+function *show(){
+
+}
+
+/**
+ * Render the Edit Administrator View
+ */
+function *edit_administrator(){
+
+}
+
+/**
+ * Create a new Administrator Instance
+ */
+function *create(){
+
+}
+
+/**
+ * Update an instance of Administrator
+ */
+function *edit(){
+
+}
+
+/**
+ * Destroy an instance of Administrator
+ */
+function *destroy(){
+
+}
 
 /**
  * Render the New Administrator page.
  */
-exports.new_admin = function(){
+new_admin = function(){
     function *new_admin(){
         yield this.render("new_admin",{
             title: "New Administrator"
@@ -34,7 +102,7 @@ exports.new_admin = function(){
  * If the id passed belongs to a user that is not an admin or a user
  * at all, render 404.
  */
-exports.edit_admin_page = function(){
+ edit_admin_page = function(){
     function *edit_admin_page(){
 
         var param_admin;
@@ -65,7 +133,7 @@ exports.edit_admin_page = function(){
 /**
  * Parse the user information to update information given.
  */
-exports.edit_admin = function(){
+edit_admin = function(){
     function *edit_admin(){
         var post = yield parse(this);
         console.log(post);
@@ -93,7 +161,7 @@ exports.edit_admin = function(){
  * Admins may be separated from users during integration.
  */
 
-exports.add_admin = function(){
+add_admin = function(){
     function *add_admin(){
         var post = yield parse(this);
         var max = db.users[0].id;
