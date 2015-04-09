@@ -23,6 +23,8 @@ var objects = require("./routes/objects");
 var articles = require("./routes/articles");
 var notifications = require("./routes/notifications");
 var users = require("./routes/users");
+var leaderboard = require("./routes/leaderboard");
+var administrators = require("./routes/administrators");
 
 
 //Start the app
@@ -196,18 +198,18 @@ route.get("/users", requireLogin, users.users());
 /**
  * Leaderboard routes
  */
-route.get("/leaderboard", requireLogin, leaderboard);
-route.post("/reset_score", requireLogin, reset_score);
-route.post("/reset_leaderboard", requireLogin, reset_leaderboard);
+route.get("/leaderboard", requireLogin, leaderboard.leaderboard());
+route.post("/reset_score", requireLogin, leaderboard.reset_score());
+route.post("/reset_leaderboard", requireLogin, leaderboard.reset_leaderboard());
 
 /**
  * Administrator routes
  */
-route.get("/administrators", requireLogin, administrators);
-route.get("/new_admin", requireLogin, new_admin);
-route.get("/edit_admin/:id", requireLogin, edit_admin_page);
-route.post("/edit_admin", requireLogin, edit_admin);
-route.post("/add_admin", requireLogin, add_admin);
+route.get("/administrators", requireLogin, administrators.administrators());
+route.get("/new_admin", requireLogin, administrators.new_admin());
+route.get("/edit_admin/:id", requireLogin, administrators.edit_admin_page());
+route.post("/edit_admin", requireLogin, administrators.edit_admin());
+route.post("/add_admin", requireLogin, administrators.add_admin());
 
 /**
  * Feedback Routes
@@ -278,145 +280,6 @@ function *index(){
     yield this.render("index", {title : "Home"});
 }
 
-
-
-/******************************************************************************
- * Leaderboard route definitions
- */
-
-/**
- * Render the Leaderboards page.
- * This user information is specific to the leaderboards.
- */
-function *leaderboard(){
-    //console.log(db.table.users);
-	yield this.render("leaderboard", {
-        title : "Leaderboard",
-        users : db.table.users});
-}
-
-/**
- * Parse user information to reset their score to 0
- */
-function *reset_score(){
-    var post = yield parse(this);
-    for(var i = 0; i < db.table.users.length; i++){
-        if(post.id == db.table.users[i].id) db.table.users[i].score = 0;
-    }
-    this.redirect("/leaderboard");
-
-
-}
-
-/**
- * Reset all users' score to 0.
- */
-function *reset_leaderboard(){
-    for(var i = 0; i < db.table.users.length; i++){
-        db.table.users[i].score = 0;
-    }
-    this.redirect("/leaderboard");
-}
-
-/******************************************************************************
- * Administrator route definitions
- */
-
-/**
- * Render the Administrators page.
- */
-function *administrators(){
-	yield this.render("administrators", {
-        title : "Administrators",
-        admins : db.users});
-}
-
-/**
- * Render the New Administrator page.
- */
-function *new_admin(){
-    yield this.render("new_admin",{
-        title: "New Administrator"
-    });
-}
-
-/**
- * Render the Edit Administrator page.
- * If the id passed belongs to a user that is not an admin or a user
- * at all, render 404.
- */
-function *edit_admin_page(){
-
-    var param_admin;
-    var set = false;
-    for(var i = 0; i < db.users.length; i++){
-        if(this.params.id == db.users[i].id){
-            param_admin = db.users[i];
-            set = true;
-            break;
-        }
-    }
-    if(set && param_admin.isAdmin) {
-        yield this.render("edit_admin", {
-            title: "Edit Administrator",
-            admin: param_admin
-        });
-    }
-    else{
-        this.status = 404;
-        yield this.render("404", {
-            title: "Wrong User"
-        });
-    }
-}
-
-/**
- * Parse the user information to update information given.
- */
-function *edit_admin(){
-    var post = yield parse(this);
-    console.log(post);
-    for(var i = 0; i<db.users.length; i++){
-        if(db.users[i].id == post.id) {
-            if(post.admin_first.length != 0)
-                db.users[i].first_name = post.admin_first;
-
-            if(post.admin_last.length != 0)
-                db.users[i].last_name = post.admin_last;
-
-            if(post.admin_email.length != 0)
-                db.users[i].email = post.admin_email;
-
-            break;
-        }
-    }
-    this.redirect("/administrators");
-}
-
-/**
- * Parse the user information to create a new admin (user).
- * Admins may be separated from users during integration.
- */
-function *add_admin(){
-    var post = yield parse(this);
-    var max = db.users[0].id;
-    for(var i = 0; i<db.users.length; i++){
-        if(db.users[i].id > max) max = db.users[i].id;
-    }
-    post.id = max + 1;
-
-    db.users.push({
-        id: post.id,
-        email:post.email,
-        first_name:post.first_name,
-        last_name:post.last_name,
-        gender:post.gender,
-        age:post.age,
-        banned:false,
-        isAdmin:true
-    });
-    this.redirect("/administrators");
-}
 
 /******************************************************************************
  * Feedback route definitions
