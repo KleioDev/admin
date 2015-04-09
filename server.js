@@ -16,6 +16,10 @@ var session = require("koa-session");
  * @type {exports} lists containing dummy information
  */
 var db = require("./js/db");
+var museum = require("./routes/museum");
+var exhibitions = require("./routes/exhibitions");
+var rooms = require("./routes/rooms");
+
 
 //Start the app
 var app = koa();
@@ -120,22 +124,23 @@ route.get("/logout", function*() {
     this.session = null;
     this.redirect("login");
 });
+route.get("/", requireLogin, index);
+
 /**
  * Museum routes
  */
-route.get("/", requireLogin, index);
-route.get("/museum", requireLogin, museum);
-route.get("/edit_museum_information", requireLogin, edit_museum_information);
-route.post("/edit_museum", requireLogin, edit_museum);
+route.get("/museum", requireLogin, museum.museum());
+route.get("/edit_museum_information", requireLogin, museum.edit_museum_information());
+route.post("/edit_museum", requireLogin, museum.edit_museum());
 
 /**
  * Exhibitions routes
  */
-route.get("/exhibitions", requireLogin, exhibitions);
-route.get("/exhibition/:id", requireLogin, exhibition);
-route.post("/new_exhibition", requireLogin, new_exhibition);
-route.post("/add_to_exhibition", requireLogin, add_to_exhibition);
-route.post("/remove_from_exhibition", requireLogin, remove_from_exhibition);//DELETE
+route.get("/exhibitions", requireLogin, exhibitions.exhibitions());
+route.get("/exhibition/:id", requireLogin, exhibitions.exhibition());
+route.post("/new_exhibition", requireLogin, exhibitions.new_exhibition());
+route.post("/add_to_exhibition", requireLogin, exhibitions.add_to_exhibition());
+route.post("/remove_from_exhibition", requireLogin, exhibitions.remove_from_exhibition());
 
 /**
  * Object routes
@@ -210,11 +215,11 @@ route.post("/delete_feedback", requireLogin, delete_feedback);//DELETE
 /**
  * Room routes
  */
-route.get("/rooms", requireLogin, rooms);
-route.get("/room/:id", requireLogin, room);
-route.post("/new_room", requireLogin, new_room);
-route.post("/add_to_room", requireLogin, add_to_room);
-route.post("/remove_ibeacon", requireLogin, remove_ibeacon);//DELETE
+route.get("/rooms", requireLogin, rooms.rooms());
+route.get("/room/:id", requireLogin, rooms.room());
+route.post("/new_room", requireLogin, rooms.new_room());
+route.post("/add_to_room", requireLogin, rooms.add_to_room());
+route.post("/remove_ibeacon", requireLogin, rooms.remove_ibeacon());
 
 /**
  * Miscellaneous
@@ -229,9 +234,7 @@ app.use(route.routes());
  */
 
 
-/******************************************************************************
- * Museum route definitions
- */
+
 
 /**
  * Parses the information, verifies that the user exists and matches the password.
@@ -273,282 +276,6 @@ function *login_page(){
 function *index(){
     yield this.render("index", {title : "Home"});
 }
-
-/**
- * Render the Museum page.
- */
-function *museum(){
-	yield this.render("museum_information", {
-        title : "Museum",
-        name : db.museum_info.name,
-        hours : db.museum_info.hours,
-        description : db.museum_info.description
-        });
-}
-
-/**
- * Render the Edit Museum Information page.
- */
-function *edit_museum_information(){
-    yield this.render("edit_museum_information", {
-        title : "Museum",
-        name : db.museum_info.name,
-        hours : db.museum_info.hours,
-        description : db.museum_info.description
-    });
-}
-
-/**
- * Parse the information, then place it in the database.
- * User may have filled out some fields, so if the field is empty it
- * doesn't change it.
- */
-function *edit_museum(){
-    var post = yield parse(this);
-    console.log(post.name);
-    
-    if(post.name.length != 0)
-        db.museum_info.name = post.name;
-
-    if(post.hours.length != 0)
-        db.museum_info.hours = post.hours;
-
-    if(post.description.length != 0)
-        db.museum_info.description = post.description;
-    
-    this.redirect("/museum");
-
-}
-
-/******************************************************************************
- * Exhibition route definitions
- */
-
-/**
- * Render the Exhibition page
- */
-function *exhibitions(){
-	yield this.render("exhibitions", {
-        title : "Exhibitions",
-        exhibitions: db.exhibitions
-    });
-}
-
-/**
- * Render the Single Exhibition Page.
- * If there is no exhibition with the id passed, render 404;
- */
-function *exhibition(){
-    var exhibition;
-    var set = false;
-    for(var i = 0; i < db.exhibitions.length; i++){
-        if(this.params.id == db.exhibitions[i].id){
-            exhibition = db.exhibitions[i];
-            set = true;
-            break;
-        }
-    }
-    if(!set){
-        this.status = 404;
-        yield this.render("404", {
-            title: "Wrong Exhibition"
-        });
-    }
-
-
-    else{
-        var list = [];
-        for(var i = 0; i < exhibition.object_list.length; i++){
-            for(var k = 0; k < db.objects.length; k++){
-                if(typeof db.objects[k] != 'undefined' && exhibition.object_list[i] == db.objects[k].id){
-                    list.push(db.objects[k]);
-                }
-            }
-        }
-        yield this.render("exhibition",{
-            title: exhibition.title,
-            description: exhibition.description,
-            object_list: list,
-            ibeacon:exhibition.ibeacon,
-            id: exhibition.id
-        });
-    }
-
-}
-
-/**
- * Parses the information for creating a new Exhibition.
- */
-function *new_exhibition(){
-    var post = yield parse(this);
-    post.object_list = [];
-    var max = db.exhibitions[0].id;
-    for(var i = 0; i < db.exhibitions.length; i++){//find the next highest for id
-        if(db.exhibitions[i].id > max) max = db.exhibitions[i].id;
-    }
-    post.id = max + 1;
-    db.exhibitions.push(post);
-    this.redirect("/exhibitions");
-}
-
-/**
- * Parses the information for adding an object to an exhibition,
- * or updating the iBeacon associated with the exhibition.
- */
-function *add_to_exhibition(){
-    var post = yield parse(this);
-    var present = false;
-    var exhibition_index;
-    for(var i = 0; i < db.exhibitions.length; i++){//find the position of the exhibition
-        if(post.id == db.exhibitions[i].id) {
-            exhibition_index = i;
-            break;
-        }
-    }
-    if(post.ibeacon.length != 0) db.exhibitions[exhibition_index].ibeacon = post.ibeacon;
-    if(isNaN(post.object) || post.object.length == 0){
-        this.redirect("/exhibition/" + post.id);
-    }
-    else{
-        for(var i = 0; i < db.exhibitions[exhibition_index].object_list.length; i++){//check if its already in the list
-            if(post.object == db.exhibitions[exhibition_index].object_list[i]) {
-                present = true;
-                break;
-            }
-        }
-        if(!present) db.exhibitions[exhibition_index].object_list.push(parseInt(post.object)); //if not, add it
-        console.log(db.exhibitions[exhibition_index].object_list);
-        this.redirect("/exhibition/" + post.id);
-    }
-}
-
-/**
- * Parses the object id to remove an object from an exhibition.
- */
-function *remove_from_exhibition(){
-    var post = yield parse(this);
-    var exhibition_index;
-    for(var i = 0; i < db.exhibitions.length; i++){//find the position of the exhibition
-        if(post.exhibition_id == db.exhibitions[i].id) {
-            exhibition_index = i;
-            break;
-        }
-    }
-    for(var i = 0; i < db.exhibitions[exhibition_index].object_list.length; i++){//check if its already in the list
-        if(post.object_id == db.exhibitions[exhibition_index].object_list[i]) {
-            db.exhibitions[exhibition_index].object_list.splice(i, 1);
-            break;
-        }
-    }
-    console.log(db.exhibitions[exhibition_index].object_list);
-
-    this.redirect("/exhibition/" + post.exhibition_id);
-}
-
-/******************************************************************************
- * Room route definitions
- */
-
-/**
- * Renders the Rooms page
- */
-function *rooms(){
-    yield this.render("rooms",{
-        title: "Rooms",
-        rooms : db.rooms
-    });
-}
-
-/**
- * Renders the Single Room page.
- * If there is no room with the id passed, render 404;
- */
-function *room(){
-    var room;
-    var set = false;
-    for(var i = 0; i < db.rooms.length; i++){
-        if(this.params.id == db.rooms[i].id){
-            room = db.rooms[i];
-            set = true;
-            break;
-        }
-    }
-    if(!set){
-        this.status = 404;
-        yield this.render("404", {
-            title: "Wrong Room"
-        });
-    }
-    else{
-        yield this.render("room", {
-            title: "Room " + room.number,
-            id: room.id,
-            ibeacon_list: room.current_id
-        });
-    }
-
-}
-
-/**
- * Add a new room.
- */
-function *new_room(){
-    db.rooms.push({
-        id: db.rooms.length + 1,
-        number: db.rooms.length + 1,
-        current_id: []
-    });
-    this.redirect("/rooms");
-
-}
-
-/**
- * Parse the iBeacon id to add it to a room and return to the Rooms page.
- */
-function *add_to_room(){
-    var post = yield parse(this);
-    var present = false;
-    var room_index;
-    for(var i = 0; i < db.rooms.length; i++){//find the position of the exhibition
-        if(post.room_id == db.rooms[i].id) {
-            room_index = i;
-            break;
-        }
-    }
-
-    for(var i = 0; i < db.rooms[room_index].current_id.length; i++){//check if its already in the list
-        if(post.ibeacon_id == db.rooms[room_index].current_id[i]) {
-            present = true;
-            break;
-        }
-    }
-    if(!present) db.rooms[room_index].current_id.push({id:post.ibeacon_id}); //if not, add it
-    this.redirect("/room/" + post.room_id);
-
-
-}
-
-/**
- * Parse the iBeacon id to remove an iBeacon from the room and return to the Single Rooms page.
- */
-function *remove_ibeacon(){
-    var post = yield parse(this);
-    var room_index;
-    for(var i = 0; i < db.rooms.length; i++){//find the position of the exhibition
-        if(post.room_id == db.rooms[i].id) {
-            room_index = i;
-            break;
-        }
-    }
-    for(var i = 0; i < db.rooms[room_index].current_id.length; i++){//check if its already in the list
-        if(post.ibeacon_id == db.rooms[room_index].current_id[i].id) {
-            db.rooms[room_index].current_id.splice(i, 1);
-            break;
-        }
-    }
-    this.redirect("/room/" + post.room_id);
-}
-
 
 /******************************************************************************
  * Object route definitions
