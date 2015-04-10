@@ -1,9 +1,12 @@
 var db = require("../public/js/db");
 var koa = require("koa");
 var handlebars = require("koa-handlebars");
+var rq = require('co-request');
 var parse = require("co-body");
 var fs = require("fs");
 var Router = require('koa-router');
+apiUrl = ' http://136.145.116.229:4567';
+
 
 module.exports = function(){
     var loginController = new Router();
@@ -29,23 +32,24 @@ function *index(){
  */
 function *login(){
     var post = yield parse(this);
-    var found = false;
-    for(var i = 0; i < db.users.length; i++){
-        if(post.email === db.users[i].email && db.users[i].isAdmin){
-            if (post.password === db.users[i].password) {
-                this.session.user = db.users[i];
-                this.redirect("/");
-                found = true;
-                break;
-            }
-            else {
+    console.log(post);
+    try {
+        response = yield rq.post(apiUrl + '/authenticate', {form:{
+            email:post.email,
+            password:post.password
+        }});
 
-                this.redirect("/login");
-                break;
-            }
+        if(response.statusCode == 401){
+            this.redirect("/login");
         }
+        else{
+            console.log(response.body);
+            this.session.user = response.body;
+            this.redirect("/");
+        }
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
     }
-    if(!found) this.redirect("/login");
 }
 
 /**
@@ -76,9 +80,3 @@ function *requireLogin(next){
         yield* next;
     }
 }
-
-
-
-exports.requireLogin = function(){
-    return requireLogin;
-};

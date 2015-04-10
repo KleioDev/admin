@@ -2,7 +2,7 @@ var parse_multi = require("koa-better-body")(),
     fs = require("fs"),
     rq = require('co-request'),
     Router = require('koa-router')
-    apiUrl = 'http://localhost:4567';
+    apiUrl = ' http://136.145.116.229:4567';
 
 
 
@@ -30,13 +30,21 @@ function *index(){
     administrators;
 
     try {
-        response = yield rq.get(apiUrl + '/administrator')
+        console.log(this.session.user);
+        response = yield rq({
+            uri : apiUrl + '/administrator',
+            method : 'GET',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+        //Parse
+        console.log(response.body);
+        administrators = JSON.parse(response.body).administrators;
+
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
 
-    //Parse
-    administrators = JSON.parse(response.body).administrators;
 
     yield this.render('administrators', {
         title : 'Administrators',

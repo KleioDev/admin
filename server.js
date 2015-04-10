@@ -31,6 +31,8 @@ var app = koa();
 
 //Authentication
 app.keys = ['secret'];
+app.duration = 24 * 60 * 60 * 1000;
+app.activeDuration = 24 * 60 * 60 * 1000;
 app.use(session(app));
 
 /**
@@ -38,22 +40,22 @@ app.use(session(app));
 * When logged in, delete the password from the session
 * for security purposes.
 */
-app.use(function *(next) {
-    if (this.session && this.session.user) {
-        for(var i = 0; i < db.users.length; i++){
-            if(this.session.email === db.users[i].email){//Find the user
-                this.request.user = db.users[i];
-                delete this.request.user.password; // delete the password from the session
-                this.session.user = db.users[i];  //refresh the session value
-                this.response.locals.user = db.users[i];
-            }
-        }
-        yield next;
-    }
-    else {
-        yield next;
-    }
-});
+//app.use(function *(next) {
+//    if (this.session && this.session.user) {
+//        for(var i = 0; i < db.users.length; i++){
+//            if(this.session.email === db.users[i].email){//Find the user
+//                this.request.user = db.users[i];
+//                delete this.request.user.password; // delete the password from the session
+//                this.session.user = db.users[i];  //refresh the session value
+//                this.response.locals.user = db.users[i];
+//            }
+//        }
+//        yield next;
+//    }
+//    else {
+//        yield next;
+//    }
+//});
 
 /**
 * handlebars()
@@ -103,7 +105,7 @@ app.use(handlebars({
 /**
 * Set the logger
 */
-//app.use(logger());
+app.use(logger());
 
 /**
 * Serve components for the web page
