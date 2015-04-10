@@ -1,39 +1,43 @@
-var db = require("./db");
+var db = require("../public/js/db");
 var koa = require("koa");
 var handlebars = require("koa-handlebars");
 var parse = require("co-body");
 var parse_multi = require("koa-better-body");
 var fs = require("fs");
+var Router = require('koa-router');
 
+
+
+module.exports = function(){
+    var museumController = new Router();
+    museumController
+        .get("/museum", requireLogin, museum)
+        .get("/edit_museum_information", requireLogin, edit_museum_information)
+        .post("/edit_museum", requireLogin, edit_museum);
+    return museumController.routes();
+};
 /**
  * Render the Museum page.
  */
-exports.museum = function(){
-    function *museum(){
-        yield this.render("museum_information", {
-            title : "Museum",
-            name : db.museum_info.name,
-            hours : db.museum_info.hours,
-            description : db.museum_info.description
-        });
-    }
-    return museum;
-};
+function *museum(){
+    yield this.render("museum_information", {
+        title : "Museum",
+        name : db.museum_info.name,
+        hours : db.museum_info.hours,
+        description : db.museum_info.description
+    });
+}
 
 /**
  * Render the Edit Museum Information page.
  */
-exports.edit_museum_information = function(){
-    function *edit_museum_information(){
-        yield this.render("edit_museum_information", {
-            title : "Museum",
-            name : db.museum_info.name,
-            hours : db.museum_info.hours,
-            description : db.museum_info.description
-        });
-    }
-
-    return edit_museum_information;
+function *edit_museum_information(){
+    yield this.render("edit_museum_information", {
+        title : "Museum",
+        name : db.museum_info.name,
+        hours : db.museum_info.hours,
+        description : db.museum_info.description
+    });
 }
 
 /**
@@ -41,22 +45,28 @@ exports.edit_museum_information = function(){
  * User may have filled out some fields, so if the field is empty it
  * doesn't change it.
  */
-exports.edit_museum = function(){
-    function *edit_museum(){
-        var post = yield parse(this);
-        console.log(post.name);
+function *edit_museum(){
+    var post = yield parse(this);
 
-        if(post.name.length != 0)
-            db.museum_info.name = post.name;
+    if(post.name.length != 0)
+        db.museum_info.name = post.name;
 
-        if(post.hours.length != 0)
-            db.museum_info.hours = post.hours;
+    if(post.hours.length != 0)
+        db.museum_info.hours = post.hours;
 
-        if(post.description.length != 0)
-            db.museum_info.description = post.description;
+    if(post.description.length != 0)
+        db.museum_info.description = post.description;
 
-        this.redirect("/museum");
+    this.redirect("/museum");
 
+}
+
+function *requireLogin(next){
+
+    if (!this.session.user) {
+        this.redirect("/login");
     }
-    return edit_museum;
+    else {
+        yield* next;
+    }
 }

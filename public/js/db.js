@@ -56,7 +56,7 @@ exports.objects = [{
         objectNumber:1,
         artist:"Van Gogh",
         active:true,
-        image: "../img/oil.jpg",
+        image: "../public/img/oil.jpg",
         audio_content:[
             {
                 id:1,
@@ -88,17 +88,17 @@ exports.objects = [{
             {
                 id:1,
                 title:"Fresh Prince Portrait",
-                image_path:"../img/fresh_prince.jpeg"
+                image_path:"../public/img/fresh_prince.jpeg"
             },
             {
                 id:2,
                 title:"Fresh Prince Uncle",
-                image_path:"../img/uncle_phil.jpg"
+                image_path:"../public/img/uncle_phil.jpg"
             },
             {
                 id:3,
                 title:"Fresh Prince Cousin",
-                image_path:"../img/carlton_banks.jpeg"
+                image_path:"../public/img/carlton_banks.jpeg"
             }
         ],
         text_content: [
@@ -135,7 +135,7 @@ exports.objects = [{
         objectNumber:2,
         artist:"Van Gogh",
         active:true,
-        image: "../img/oil.jpg",
+        image: "../public/img/oil.jpg",
         audio_content:[
             {
                 id:1,
@@ -163,17 +163,17 @@ exports.objects = [{
             {
                 id:1,
                 title:"Fresh Prince Portrait",
-                image_path:"../img/fresh_prince.jpeg"
+                image_path:"../public/img/fresh_prince.jpeg"
             },
             {
                 id:2,
                 title:"Fresh Prince Uncle",
-                image_path:"../img/uncle_phil.jpg"
+                image_path:"../public/img/uncle_phil.jpg"
             },
             {
                 id:3,
                 title:"Fresh Prince Cousin",
-                image_path:"../img/carlton_banks.jpeg"
+                image_path:"../public/img/carlton_banks.jpeg"
             }
         ],
         text_content: [
@@ -211,7 +211,7 @@ exports.objects = [{
         objectNumber:3,
         artist:"Van Gogh",
         active:true,
-        image: "../img/oil.jpg",
+        image: "../public/img/oil.jpg",
         audio_content:[
             {
                 id:1,
@@ -238,17 +238,17 @@ exports.objects = [{
             {
                 id:1,
                 title:"Fresh Prince Portrait",
-                image_path:"../img/fresh_prince.jpeg"
+                image_path:"../public/img/fresh_prince.jpeg"
             },
             {
                 id:2,
                 title:"Fresh Prince Uncle",
-                image_path:"../img/uncle_phil.jpg"
+                image_path:"../public/img/uncle_phil.jpg"
             },
             {
                 id:3,
                 title:"Fresh Prince Cousin",
-                image_path:"../img/carlton_banks.jpeg"
+                image_path:"../public/img/carlton_banks.jpeg"
             }
         ],
         text_content: [
@@ -286,7 +286,7 @@ exports.objects = [{
         objectNumber:4,
         artist:"Van Gogh",
         active:false,
-        image: "../img/oil.jpg",
+        image: "../public/img/oil.jpg",
         audio_content:[
             {
                 id:1,
@@ -314,17 +314,17 @@ exports.objects = [{
             {
                 id:1,
                 title:"Fresh Prince Portrait",
-                image_path:"../img/fresh_prince.jpeg"
+                image_path:"../public/img/fresh_prince.jpeg"
             },
             {
                 id:2,
                 title:"Fresh Prince Uncle",
-                image_path:"../img/uncle_phil.jpg"
+                image_path:"../public/img/uncle_phil.jpg"
             },
             {
                 id:3,
                 title:"Fresh Prince Cousin",
-                image_path:"../img/carlton_banks.jpeg"
+                image_path:"../public/img/carlton_banks.jpeg"
             }
         ],
         text_content: [
@@ -361,7 +361,7 @@ exports.objects = [{
         objectNumber:5,
         artist:"Van Gogh",
         active:false,
-        image: "../img/oil.jpg",
+        image: "../public/img/oil.jpg",
         audio_content:[
             {
                 id:1,
@@ -388,17 +388,17 @@ exports.objects = [{
             {
                 id:1,
                 title:"Fresh Prince Portrait",
-                image_path:"../img/fresh_prince.jpeg"
+                image_path:"../public/img/fresh_prince.jpeg"
             },
             {
                 id:2,
                 title:"Fresh Prince Uncle",
-                image_path:"../img/uncle_phil.jpg"
+                image_path:"../public/img/uncle_phil.jpg"
             },
             {
                 id:3,
                 title:"Fresh Prince Cousin",
-                image_path:"../img/carlton_banks.jpeg"
+                image_path:"../public/img/carlton_banks.jpeg"
             }
         ],
         text_content: [

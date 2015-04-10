@@ -1,20 +1,33 @@
-var db = require("./db");
+var db = require("../public/js/db");
 var koa = require("koa");
 var handlebars = require("koa-handlebars");
 var parse = require("co-body");
-var parse_multi = require("koa-better-body");
 var fs = require("fs");
+var Router = require('koa-router');
 
+module.exports = function(){
+    var userController = new Router();
+    userController
+        .get("/users", requireLogin, users);
+
+    return userController.routes();
+};
 
 /**
  * Render the Users page.
  */
-exports.users = function(){
-    function *users(){
-        yield this.render("users", {
-            title : "Users",
-            users : db.users});
-    }
+function *users(){
+    yield this.render("users", {
+        title : "Users",
+        users : db.users});
+}
 
-    return users;
-};
+function *requireLogin(next){
+
+    if (!this.session.user) {
+        this.redirect("/login");
+    }
+    else {
+        yield* next;
+    }
+}
