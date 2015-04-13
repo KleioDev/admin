@@ -30,7 +30,7 @@ function *index(){
     administrators;
 
     try {
-        console.log(this.session.user);
+        //console.log(this.session.user);
         response = yield rq({
             uri : apiUrl + '/administrator',
             method : 'GET',

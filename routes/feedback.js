@@ -4,6 +4,8 @@ var handlebars = require("koa-handlebars");
 var parse = require("co-body");
 var fs = require("fs");
 var Router = require('koa-router');
+var apiUrl = ' http://136.145.116.229:4567';
+var rq = require('co-request');
 
 module.exports = function(){
     var feedbackController = new Router();
@@ -18,23 +20,56 @@ module.exports = function(){
   * Render Feedback page.
   */
 function *feedback(){
+    var response,
+        feedback;
+
+    try {
+        //console.log(this.session.user);
+        response = yield rq({
+            uri : apiUrl + '/feedback',
+            method : 'GET',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+        //Parse
+        console.log(response.body);
+        feedback = JSON.parse(response.body).feedbacks;
+
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
 	yield this.render("feedback", {
         title : "Feedback",
-        feedback:db.feedback});
+        feedback: feedback});
 }
 
 /**
   * Parse feedback information to mark the feedback as solved.
   */
 function *solve_feedback(){
-    var post = yield parse(this);
-    for(var i = 0; i < db.feedback.length; i++){
-        if(post.id == db.feedback[i].id){
-            db.feedback[i].solved = true;
-            break;
-        }
+    var body = yield parse(this);
+    var id = body.id;
+    var response;
+    console.log(body);
+
+    if(!body) {
+        this.throw('Bad Request', 400);
     }
-    this.redirect("/feedback");
+
+    try {
+        response = yield rq({
+            uri : apiUrl + '/feedback/' + id,
+            method : 'PUT',
+            json : true,
+            body : {seen:true},
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+    } catch(err){
+        this.throw(err.message, err.status || 500);
+    }
+    console.log(response);
+    this.redirect('/feedback');
 
 }
 
@@ -43,14 +78,29 @@ function *solve_feedback(){
   * Only feedback marked as solved may be deleted.
   */
 function *delete_feedback(){
-    var post = yield parse(this);
-    for(var i = 0; i < db.feedback.length; i++){
-        if(post.id == db.feedback[i].id){
-            db.feedback.splice(i, 1);
-            break;
-        }
+    var body = yield parse(this);
+    var id = body.id;
+    var response;
+    console.log(body);
+
+    if(!body) {
+        this.throw('Bad Request', 400);
     }
-    this.redirect("/feedback");
+
+    try {
+        response = yield rq({
+            uri : apiUrl + '/feedback/' + id,
+            method : 'PUT',
+            json : true,
+            body : {resolved:true},
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+    } catch(err){
+        this.throw(err.message, err.status || 500);
+    }
+    console.log(response);
+    this.redirect('/feedback');
 }
 
 function *requireLogin(next){

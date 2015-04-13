@@ -5,6 +5,8 @@ var parse = require("co-body");
 var fs = require("fs");
 var Router = require('koa-router');
 var login = require("./login");
+var rq = require('co-request');
+var apiUrl = 'http://136.145.116.229:4567';
 
 
 
@@ -22,10 +24,26 @@ module.exports = function(){
  * This user information is specific to the leaderboards.
  */
 function *leaderboard(){
-    //console.log(db.table.users);
+    console.log(this.session.user);
+    var response, leaderboard;
+    try{
+        response = yield rq({
+            uri : apiUrl + '/leaderboard',
+            method : 'GET',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+        console.log(response.body);
+        leaderboard = JSON.parse(response.body).leaderboard;
+
+    } catch(err){
+        this.throw(err.message, err.status || 500);
+    }
+
     yield this.render("leaderboard", {
         title : "Leaderboard",
-        users : db.table.users});
+        users : leaderboard
+    });
 }
 
 
