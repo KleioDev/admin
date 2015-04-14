@@ -10,9 +10,9 @@
     <p>Posted on: {{date}}</p>
     <p>{{text}}</p>
 
-    <p style="text-align: right"><a href="/edit_article/{{id}}"><button type="button" class="btn btn-primary">Edit Article</button></a></p>
+    <p style="text-align: right"><a href="/event/{{id}}/edit"><button type="button" class="btn btn-primary">Edit Event</button></a></p>
     <br>
-    <p style="text-align: right"><a href="#" data-toggle="modal" data-target="#deleteConfirmation"><button type="button" class="btn btn-danger">Delete Article</button></a></p>
+    <p style="text-align: right"><a href="#" data-toggle="modal" data-target="#deleteConfirmation"><button type="button" class="btn btn-danger">Delete Event</button></a></p>
     <!-- may add confirmation modal, like on feedback -->
 
     <div class="modal fade" id="deleteConfirmation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -20,14 +20,14 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">Delete Article Confirmation</h4>
+                    <h4 class="modal-title" id="myModalLabel">Delete Event Confirmation</h4>
                 </div>
                 <div class="modal-body">
                     Would you like to delete this entry?
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <form action="/delete_article" method="post">
+                    <form action="/event/{{id}}/delete" method="post">
                         <input hidden="true" name="id" value="{{id}}">
                         <button class="btn btn-danger" type="submit">Remove</button>
                     </form>
