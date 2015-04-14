@@ -5,6 +5,8 @@ var parse = require("co-body");
 var parse_multi = require("koa-better-body");
 var fs = require("fs");
 var Router = require('koa-router');
+var apiUrl = ' http://136.145.116.229:4567';
+var rq = require('co-request');
 
 module.exports = function(){
     var articlesController = new Router();
@@ -23,9 +25,29 @@ module.exports = function(){
  * Render the Articles page
  */
 function *articles(){
+    var response,
+        news;
+
+    try {
+        //console.log(this.session.user);
+        response = yield rq({
+            uri : apiUrl + '/news',
+            method : 'GET',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+        //Parse
+        news = JSON.parse(response.body).news;
+        console.log(news);
+
+
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+
     yield this.render("articles", {
         title : "Articles",
-        articles:db.articles});
+        articles: news});
 }
 
 
@@ -34,30 +56,32 @@ function *articles(){
  * If the id passed does not belong to an article, render 404.
  */
 function *single_article(){// id as param
-    var param_article;
-    var set = false;
-    for(var i = 0; i < db.articles.length; i++){
-        if(this.params.id == db.articles[i].id){
-            param_article = db.articles[i];
-            set = true;
-            break;
-        }
+    var response, id = this.params.id, news;
+
+    try {
+        //console.log(this.session.user);
+        response = yield rq({
+            uri : apiUrl + '/news/' + id,
+            method : 'GET',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+        //Parse
+        news = JSON.parse(response.body);
+        console.log(news);
+
+
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
     }
 
-    if(!set){
-        this.status = 404;
-        yield this.render("404", {
-            title: "Wrong Article"
-        });
-    }
-    else{
-        yield this.render("single_article", {
-            title: param_article.title,
-            text: param_article.text,
-            date: param_article.date,
-            id: param_article.id
-        });
-    }
+    yield this.render("single_article", {
+        title: news.title,
+        text: news.description,
+        date: news.updatedAt,
+        id: news.id
+    });
+
 
 }
 
@@ -67,30 +91,30 @@ function *single_article(){// id as param
  * If the id passed does not belong to an article, render 404.
  */
 function *edit_article_page(){ //id as param
-    var param_article;
-    var set = false;
+    var response, id = this.params.id, news;
 
-    for(var i = 0; i < db.articles.length; i++){
-        if(this.params.id == db.articles[i].id) {
-            param_article = db.articles[i];
-            set = true;
-            break;
-        }
-    }
-    if(!set){
-        this.status = 404;
-        yield this.render("404", {
-            title: "Wrong Article"
+    try {
+        //console.log(this.session.user);
+        response = yield rq({
+            uri : apiUrl + '/news/' + id,
+            method : 'GET',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
         });
+        //Parse
+        news = JSON.parse(response.body);
+        console.log(news);
+
+
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
     }
-    else{
-        yield this.render("edit_article", {
-            title: param_article.title,
-            text: param_article.text,
-            date: param_article.date,
-            id: param_article.id
-        });
-    }
+    yield this.render("edit_article", {
+        title: news.title,
+        text: news.description,
+        id: news.id
+    });
+
 
 }
 
@@ -133,16 +157,30 @@ function *new_article(){
  */
 
 function *add_article(){
-    var post = yield parse(this);
-    post.date = new Date;
-    var max = db.articles[0].id;
-    for(var i = 0; i<db.articles.length; i++){
-        if(db.articles[i].id > max) max = db.articles[i].id;
+    var body = yield parse(this);
+    body.image = null;
+    var response;
+    console.log(this.session.user);
+    if(!body) {
+        this.throw('Bad Request', 400);
     }
-    post.id = max + 1;
-    db.articles.push(post);
-    this.redirect("/articles");
 
+    try {
+        response = yield rq({
+            uri : apiUrl + '/news',
+            method : 'POST',
+            json : true,
+            body : body,
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+    } catch(err){
+        this.throw(err.message, err.status || 500);
+    }
+
+    if(response.statusCode == 200){
+        this.redirect('/articles');
+    }
 
 }
 

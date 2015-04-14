@@ -74,8 +74,9 @@ function *exhibition(){
             });
         }
         //Parse
-        console.log(response.body);
-        if(response.statusCode != 404) exhibition = JSON.parse(response.body).exhibition;
+        exhibition = JSON.parse(response.body);
+        console.log(exhibition);
+
 
     } catch(err) {
         this.throw(err.message, err.status || 500);
@@ -85,8 +86,8 @@ function *exhibition(){
     yield this.render("exhibition",{
         title: exhibition.title,
         description: exhibition.description,
-        object_list: exhibition.list,
-        ibeacon:exhibition.ibeacon,
+        object_list: [],
+        ibeacon:[],
         id: exhibition.id
     });
 

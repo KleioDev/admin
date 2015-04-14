@@ -83,7 +83,7 @@ app.use(handlebars({
 /**
 * Set the logger
 */
-//app.use(logger());
+app.use(logger());
 
 /**
 * Serve components for the web page

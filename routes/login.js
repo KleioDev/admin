@@ -41,7 +41,7 @@ function *login(){
             body : post
         });
 
-        if(response.statusCode == 401){
+        if(response.statusCode == 401 || response.statusCode == 500){
             this.redirect("/login");
         }
         else{
@@ -51,6 +51,7 @@ function *login(){
         }
     } catch(err) {
         this.throw(err.message, err.status || 500);
+        this.redirect("/login");
     }
 }
 

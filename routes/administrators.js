@@ -1,7 +1,7 @@
 var parse_multi = require("koa-better-body")(),
     fs = require("fs"),
     rq = require('co-request'),
-    Router = require('koa-router')
+    Router = require('koa-router'),
     apiUrl = ' http://136.145.116.229:4567';
 
 
@@ -87,7 +87,12 @@ function *edit_administrator(){
         administrator;
 
     try {
-        response = yield rq.get(apiUrl + '/administrator/' + id);
+        response = yield rq.get({
+            uri : apiUrl + '/administrator/' + id,
+            method : 'GET',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
@@ -116,7 +121,9 @@ function *create(){
             uri : apiUrl + '/administrator/',
             method : 'POST',
             json : true,
-            body : body
+            body : body,
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
         });
     } catch(err){
         this.throw(err.message, err.status || 500);
@@ -144,7 +151,9 @@ function *edit(){
             uri : apiUrl + '/administrator/' + id,
             method : 'PUT',
             json : true,
-            body : body
+            body : body,
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
         });
     } catch(err){
         this.throw(err.message, err.status || 500);
@@ -165,7 +174,9 @@ function *destroy(){
     try {
         response = yield rq({
             uri : apiUrl + '/administrator/' + id,
-            method : 'DELETE'
+            method : 'DELETE',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
         });
     } catch(err) {
         this.throw(err.message, err.status || 500);
