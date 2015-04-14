@@ -34,10 +34,12 @@ function *login(){
     var post = yield parse(this);
     console.log(post);
     try {
-        response = yield rq.post(apiUrl + '/authenticate', {form:{
-            email:post.email,
-            password:post.password
-        }});
+        response = yield rq({
+            uri : apiUrl + '/authenticate',
+            method : 'POST',
+            json : true,
+            body : post
+        });
 
         if(response.statusCode == 401){
             this.redirect("/login");

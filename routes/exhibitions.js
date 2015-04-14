@@ -2,9 +2,11 @@ var db = require("../public/js/db");
 var koa = require("koa");
 var handlebars = require("koa-handlebars");
 var parse = require("co-body");
-var parse_multi = require("koa-better-body");
 var fs = require("fs");
 var Router = require('koa-router');
+var rq = require('co-request');
+var apiUrl = ' http://136.145.116.229:4567';
+
 
 
 module.exports = function(){
@@ -23,9 +25,28 @@ module.exports = function(){
  * Render the Exhibition page
  */
 function *exhibitions(){
+    var response,
+        exhibitions = [];
+
+    try {
+        //console.log(this.session.user);
+        response = yield rq({
+            uri : apiUrl + '/exhibition',
+            method : 'GET',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+        //Parse
+        if(response.statusCode != 404) exhibitions = JSON.parse(response.body).exhibitions;
+
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+    console.log(exhibitions);
+
     yield this.render("exhibitions", {
         title : "Exhibitions",
-        exhibitions: db.exhibitions
+        exhibitions: exhibitions
     });
 }
 
@@ -35,37 +56,40 @@ function *exhibitions(){
  */
 function *exhibition(){
     var exhibition;
-    var set = false;
-    for(var i = 0; i < db.exhibitions.length; i++){
-        if(this.params.id == db.exhibitions[i].id){
-            exhibition = db.exhibitions[i];
-            set = true;
-            break;
-        }
-    }
-    if(!set){
-        this.status = 404;
-        yield this.render("404", {
-            title: "Wrong Exhibition"
+    var response;
+    var id = this.params.id;
+
+    try {
+        //console.log(this.session.user);
+        response = yield rq({
+            uri : apiUrl + '/exhibition/' + id,
+            method : 'GET',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
         });
-    }
-    else{
-        var list = [];
-        for(var i = 0; i < exhibition.object_list.length; i++){
-            for(var k = 0; k < db.objects.length; k++){
-                if(typeof db.objects[k] != 'undefined' && exhibition.object_list[i] == db.objects[k].id){
-                    list.push(db.objects[k]);
-                }
-            }
+        if(response.statusCode == 404){
+            this.status = 404;
+            yield this.render("404", {
+                title: "Wrong Exhibition"
+            });
         }
-        yield this.render("exhibition",{
-            title: exhibition.title,
-            description: exhibition.description,
-            object_list: list,
-            ibeacon:exhibition.ibeacon,
-            id: exhibition.id
-        });
+        //Parse
+        console.log(response.body);
+        if(response.statusCode != 404) exhibition = JSON.parse(response.body).exhibition;
+
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
     }
+
+
+    yield this.render("exhibition",{
+        title: exhibition.title,
+        description: exhibition.description,
+        object_list: exhibition.list,
+        ibeacon:exhibition.ibeacon,
+        id: exhibition.id
+    });
+
 }
 
 
@@ -73,15 +97,31 @@ function *exhibition(){
  * Parses the information for creating a new Exhibition.
  */
 function *new_exhibition(){
-    var post = yield parse(this);
-    post.object_list = [];
-    var max = db.exhibitions[0].id;
-    for(var i = 0; i < db.exhibitions.length; i++){//find the next highest for id
-        if(db.exhibitions[i].id > max) max = db.exhibitions[i].id;
+    var body =  yield parse(this),
+        response;
+
+    if(!body) {
+        this.throw('Bad Request', 400);
     }
-    post.id = max + 1;
-    db.exhibitions.push(post);
-    this.redirect("/exhibitions");
+    body.MuseumId = 1;
+    console.log(body);
+    try {
+        response = yield rq({
+            uri : apiUrl + '/exhibition/',
+            method : 'POST',
+            json : true,
+            body : body,
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+
+        });
+    } catch(err){
+        this.throw(err.message, err.status || 500);
+    }
+
+    if(response.statusCode == 200){
+        this.redirect('/exhibitions');
+    }
 }
 
 
