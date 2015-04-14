@@ -24,6 +24,7 @@ var leaderboard = require("./routes/leaderboard");
 var administrator = require("./routes/administrators");
 var feedback = require("./routes/feedback");
 var login = require("./routes/login");
+var events = require("./routes/events");
 
 //Start the app
 var app = koa();
@@ -104,6 +105,7 @@ app.use(users());
 app.use(rooms());
 app.use(objects());
 app.use(exhibitions());
+app.use(events());
 
 //Set the app to listen at the port
 app.listen(3000);
