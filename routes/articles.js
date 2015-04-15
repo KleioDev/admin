@@ -1,8 +1,6 @@
-var db = require("../public/js/db");
 var koa = require("koa");
 var handlebars = require("koa-handlebars");
 var parse = require("co-body");
-var parse_multi = require("koa-better-body");
 var fs = require("fs");
 var Router = require('koa-router');
 var apiUrl = ' http://136.145.116.229:4567';
