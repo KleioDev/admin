@@ -80,10 +80,27 @@ function *reset_score(){
  * Reset all users' score to 0.
  */
 function *reset_leaderboard(){
-    for(var i = 0; i < db.table.users.length; i++){
-        db.table.users[i].score = 0;
+    var body = yield parse(this);
+    var response;
+
+    if(!body) {
+        this.throw('Bad Request', 400);
     }
-    this.redirect("/leaderboard");
+
+    try {
+        response = yield rq({
+            uri : apiUrl + '/leaderboard/reset',
+            method : 'PUT',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+    } catch(err){
+        this.throw(err.message, err.status || 500);
+    }
+
+    if(response.statusCode == 200){
+        this.redirect('/leaderboard');
+    }
 }
 
 function *requireLogin(next){
