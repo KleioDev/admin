@@ -66,14 +66,14 @@ app.use(handlebars({
              * String will be sorted once integrated with the database.
              * @returns {string} html source for a list of users
              */
-            list_user: function(){
+            list_user: function(obj){
                 var string = "";
-                for(var i = 0; i < db.table.users.length; i++){
+                for(var i = 0; i < obj.length; i++){
                     string += "<tr>" + "<td>" + (i+1) + "</td>";
-                    string += "<td>" + db.table.users[i].name + "</td>";
-                    string += "<td>" + db.table.users[i].score + "</td>";
+                    string += "<td>" + obj[i].firstName + " " + obj[i].lastName + "</td>";
+                    string += "<td>" + obj[i].points + "</td>";
                     string += "<td style=\"text-align:center;\"><form action=\"/reset_score\" method=\"post\"><input hidden=\"true\" value=\"" +
-                        db.table.users[i].id +
+                        obj[i].id +
                         "\" name=\"id\"><button type=\"submit\" class=\"btn btn-danger\"><i class=\"fa fa-trash-o fa-fw\"></i></button></form></td></tr>";
                     }
                 return string;
@@ -84,7 +84,7 @@ app.use(handlebars({
 /**
 * Set the logger
 */
-app.use(logger());
+//app.use(logger());
 
 /**
 * Serve components for the web page

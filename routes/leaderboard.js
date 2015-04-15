@@ -33,13 +33,13 @@ function *leaderboard(){
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
         });
-        console.log(response.body);
+        //console.log(response.body);
         leaderboard = JSON.parse(response.body).leaderboard;
 
     } catch(err){
         this.throw(err.message, err.status || 500);
     }
-
+    console.log(leaderboard);
     yield this.render("leaderboard", {
         title : "Leaderboard",
         users : leaderboard
@@ -51,11 +51,29 @@ function *leaderboard(){
  * Parse user information to reset their score to 0
  */
 function *reset_score(){
-    var post = yield parse(this);
-    for(var i = 0; i < db.table.users.length; i++){
-        if(post.id == db.table.users[i].id) db.table.users[i].score = 0;
+    var body = yield parse(this);
+    var response;
+    var id = body.id;
+    if(!body) {
+        this.throw('Bad Request', 400);
     }
-    this.redirect("/leaderboard");
+
+    try {
+        response = yield rq({
+            uri : apiUrl + '/user/' + id,
+            method : 'PUT',
+            json : true,
+            body : {points : 0},
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+    } catch(err){
+        this.throw(err.message, err.status || 500);
+    }
+
+    if(response.statusCode == 200){
+        this.redirect('/leaderboard');
+    }
 }
 
 /**
