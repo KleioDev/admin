@@ -123,22 +123,30 @@ function *edit_article_page(){ //id as param
  * Since the user may not fill out all the fields, update it as needed.
  */
 function *edit_article(){
-    var post = yield parse(this);
+    var body = yield parse(this);
+    var id = body.id;
+    var response;
 
-    for(var i = 0; i < db.articles.length; i++){
-        if(post.id == db.articles[i].id) {
-            if(post.title.length != 0){
-                db.articles[i].title = post.title;
-                db.articles[i].date = new Date;
-            }
-
-            if(post.text.length != 0){
-                db.articles[i].text = post.text;
-                db.articles[i].date = new Date;
-            }
-        }
+    if(!body) {
+        this.throw('Bad Request', 400);
     }
-    this.redirect("/articles");
+
+    try {
+        response = yield rq({
+            uri : apiUrl + '/news/' + id,
+            method : 'PUT',
+            json : true,
+            body : body,
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+    } catch(err){
+        this.throw(err.message, err.status || 500);
+    }
+
+    if(response.statusCode == 200){
+        this.redirect('/articles');
+    }
 }
 
 /**
@@ -190,15 +198,28 @@ function *add_article(){
  */
 
 function *delete_article(){
-    var post = yield parse(this);
-    for(var i = 0; i < db.articles.length; i++){
-        if(post.id == db.articles[i].id){
-            db.articles.splice(i, 1);
-            break;
-        }
+    var body = yield parse(this);
+    var id = body.id;
+    var response;
+
+    if(!body) {
+        this.throw('Bad Request', 400);
     }
 
-    this.redirect("/articles");
+    try {
+        response = yield rq({
+            uri : apiUrl + '/news/' + id,
+            method : 'DELETE',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+    } catch(err){
+        this.throw(err.message, err.status || 500);
+    }
+
+    if(response.statusCode == 200){
+        this.redirect('/articles');
+    }
 }
 
 

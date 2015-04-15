@@ -6,7 +6,7 @@
             <h1 class="page-header">{{title}}</h1>
         </div>
         <div class="col-lg-2"><br><br>
-            <a href="/event/new"><button type="button" class="btn btn-primary">New Article</button></a>
+            <a href="/new_event"><button type="button" class="btn btn-primary">New Event</button></a>
 
         </div>
     </div>
@@ -22,10 +22,10 @@
             </tr>
             </thead>
             <tbody id="table_body">
-            {{#each articles}}
+            {{#each events}}
                 <tr>
                     <td>{{title}}</td>
-                    <td>{{date}}</td>
+                    <td>{{eventDate}}</td>
                     <td>{{sample description}}</td>
                     <td style="text-align: center"><a href="/event/{{id}}">View</a></td>
 

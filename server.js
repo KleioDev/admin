@@ -12,7 +12,6 @@ var session = require("koa-session");
  * Require the dummy database
  * @type {exports} lists containing dummy information
  */
-var db = require("./public/js/db");
 var museum = require("./routes/museum");
 var exhibitions = require("./routes/exhibitions");
 var rooms = require("./routes/rooms");

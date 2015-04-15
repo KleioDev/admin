@@ -14,7 +14,7 @@ module.exports = function(){
         .get("/events", requireLogin, events)
         .get("/event/:id", requireLogin, single_event)
         .get("/event/:id/edit", requireLogin, edit_event_page)
-        .get("/event/new", requireLogin, new_event)
+        .get("/new_event", requireLogin, new_event)
         .post("/event/:id/edit", requireLogin, edit_event)
         .post("/event", requireLogin, add_event)
         .post("/event/:id/delete", requireLogin, delete_event);//DELETE
@@ -60,7 +60,7 @@ function *single_event(){// id as param
     try {
         //console.log(this.session.user);
         response = yield rq({
-            uri : apiUrl + '/event/' + id,
+            uri : apiUrl + '/events/' + id,
             method : 'GET',
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
@@ -95,7 +95,7 @@ function *edit_event_page(){ //id as param
     try {
         //console.log(this.session.user);
         response = yield rq({
-            uri : apiUrl + '/event/' + id,
+            uri : apiUrl + '/events/' + id,
             method : 'GET',
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
@@ -122,22 +122,30 @@ function *edit_event_page(){ //id as param
  * Since the user may not fill out all the fields, update it as needed.
  */
 function *edit_event(){
-    var post = yield parse(this);
+    var body = yield parse(this);
+    var id = body.id;
+    var response;
 
-    //for(var i = 0; i < db.events.length; i++){
-    //    if(post.id == db.events[i].id) {
-    //        if(post.title.length != 0){
-    //            db.events[i].title = post.title;
-    //            db.events[i].date = new Date;
-    //        }
-    //
-    //        if(post.text.length != 0){
-    //            db.events[i].text = post.text;
-    //            db.events[i].date = new Date;
-    //        }
-    //    }
-    //}
-    this.redirect("/events");
+    if(!body) {
+        this.throw('Bad Request', 400);
+    }
+
+    try {
+        response = yield rq({
+            uri : apiUrl + '/events/' + id,
+            method : 'PUT',
+            json : true,
+            body : body,
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+    } catch(err){
+        this.throw(err.message, err.status || 500);
+    }
+
+    if(response.statusCode == 200){
+        this.redirect('/events');
+    }
 }
 
 /**
@@ -189,15 +197,28 @@ function *add_event(){
  */
 
 function *delete_event(){
-    var post = yield parse(this);
-    //for(var i = 0; i < db.events.length; i++){
-    //    if(post.id == db.events[i].id){
-    //        db.events.splice(i, 1);
-    //        break;
-    //    }
-    //}
+    var body = yield parse(this);
+    var id = body.id;
+    var response;
 
-    this.redirect("/events");
+    if(!body) {
+        this.throw('Bad Request', 400);
+    }
+
+    try {
+        response = yield rq({
+            uri : apiUrl + '/events/' + id,
+            method : 'DELETE',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+    } catch(err){
+        this.throw(err.message, err.status || 500);
+    }
+
+    if(response.statusCode == 200){
+        this.redirect('/events');
+    }
 }
 
 
