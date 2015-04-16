@@ -7,22 +7,22 @@ var apiUrl = ' http://136.145.116.229:4567';
 var rq = require('co-request');
 
 module.exports = function(){
-    var articlesController = new Router();
-    articlesController
-        .get("/articles", requireLogin, articles)
-        .get("/article/:id", requireLogin, single_article)
+    var newsController = new Router();
+    newsController
+        .get("/news", requireLogin, news)
+        .get("/news/:id", requireLogin, single_article)
         .get("/edit_article/:id", requireLogin, edit_article_page)
         .get("/new_article", requireLogin, new_article)
         .post("/edit_article", requireLogin, edit_article)
         .post("/add_article", requireLogin, add_article)
         .post("/delete_article", requireLogin, delete_article);//DELETE
-    return articlesController.routes();
+    return newsController.routes();
 };
 
 /**
- * Render the Articles page
+ * Render the News page
  */
-function *articles(){
+function *news(){
     var response,
         news;
 
@@ -43,8 +43,8 @@ function *articles(){
         this.throw(err.message, err.status || 500);
     }
 
-    yield this.render("articles", {
-        title : "Articles",
+    yield this.render("news", {
+        title : "News",
         articles: news});
 }
 
@@ -143,7 +143,7 @@ function *edit_article(){
     }
 
     if(response.statusCode == 200){
-        this.redirect('/articles');
+        this.redirect('/news');
     }
 }
 
@@ -185,7 +185,7 @@ function *add_article(){
     }
 
     if(response.statusCode == 200){
-        this.redirect('/articles');
+        this.redirect('/news');
     }
 
 }
@@ -216,7 +216,7 @@ function *delete_article(){
     }
 
     if(response.statusCode == 200){
-        this.redirect('/articles');
+        this.redirect('/news');
     }
 }
 

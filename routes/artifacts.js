@@ -8,10 +8,10 @@ var Router = require('koa-router');
 
 
 module.exports = function(){
-    var objectController = new Router();
-    objectController
-        .get("/objects", requireLogin, objects)
-        .get("/single_object/:id", requireLogin, single_object)
+    var artifactController = new Router();
+    artifactController
+        .get("/artifacts", requireLogin, artifacts)
+        .get("/artifact/:id", requireLogin, artifact)
         .post("/upload_audio", requireLogin, parse_multi({
             multipart: true,
             formidable: {
@@ -31,15 +31,15 @@ module.exports = function(){
         .post("/add_video", requireLogin, add_video)
         .post("/delete_video", requireLogin, delete_video);
 
-    return objectController.routes();
+    return artifactController.routes();
 };
 
 /**
  * Render the Objects page.
  */
-function *objects(){
-    yield this.render("objects", {
-        title : "Objects",
+function *artifacts(){
+    yield this.render("artifacts", {
+        title : "Artifacts",
         objects: db.objects
     });
 }
@@ -48,7 +48,7 @@ function *objects(){
  * Render the Single Object page.
  * If the id passed does not belong to an object, render 404.
  */
-function *single_object(){
+function *artifact(){
     var object;
     var set = false;
 
@@ -66,7 +66,7 @@ function *single_object(){
         });
     }
     else{
-        yield this.render("single_object", {
+        yield this.render("artifact", {
             title: object.title,
             object : object
         });
@@ -97,7 +97,7 @@ function *single_object(){
 
         console.log(db.objects[id].audio_content);
 
-        this.redirect("/single_object/" + this.request.body.fields.object_id);
+        this.redirect("/artifact/" + this.request.body.fields.object_id);
     }
 /**
  * Parse audio entry information to remove the entry and delete the audio file.
@@ -117,7 +117,7 @@ function *delete_audio(){
             break;
         }
     }
-    this.redirect("/single_object/"+post.object_id);
+    this.redirect("/artifact/"+post.object_id);
 }
 
 /**
@@ -136,7 +136,7 @@ function *delete_text(){
             break;
         }
     }
-    this.redirect("/single_object/"+post.object_id);
+    this.redirect("/artifact/"+post.object_id);
 
 }
 
@@ -161,7 +161,7 @@ function *add_text(){
         text: post.text
     });
 
-    this.redirect("/single_object/" + post.object_id);
+    this.redirect("/artifact/" + post.object_id);
 }
 
 
@@ -182,7 +182,7 @@ function *delete_image(){
             break;
         }
     }
-    this.redirect("/single_object/"+post.object_id);
+    this.redirect("/artifact/"+post.object_id);
 }
 
 /**
@@ -207,7 +207,7 @@ function *add_image(){
 
     console.log(db.objects[id].image_content);
 
-    this.redirect("/single_object/" + this.request.body.fields.object_id);
+    this.redirect("/artifact/" + this.request.body.fields.object_id);
 }
 
 /**
@@ -226,7 +226,7 @@ function *delete_video(){
             break;
         }
     }
-    this.redirect("/single_object/"+post.object_id);
+    this.redirect("/artifact/"+post.object_id);
 }
 
 /**
@@ -251,7 +251,7 @@ function *add_video(){
         embed_id: post.text.substring(post.text.indexOf("=")+1)
     });
     console.log(db.objects[id].video_content);
-    this.redirect("/single_object/" + post.object_id);
+    this.redirect("/artifact/" + post.object_id);
 
 }
 
