@@ -5,7 +5,8 @@ var parse = require("co-body");
 var parse_multi = require("koa-better-body");
 var fs = require("fs");
 var Router = require('koa-router');
-
+var apiUrl = ' http://136.145.116.229:4567';
+var rq = require('co-request');
 
 module.exports = function(){
     var artifactController = new Router();
@@ -38,9 +39,29 @@ module.exports = function(){
  * Render the Objects page.
  */
 function *artifacts(){
+    var response, artifacts;
+
+    try {
+        //console.log(this.session.user);
+        response = yield rq({
+            uri : apiUrl + '/artifact',
+            method : 'GET',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+        //Parse
+        console.log(response.body);
+        artifacts = JSON.parse(response.body).artifacts;
+
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+
+
+
     yield this.render("artifacts", {
         title : "Artifacts",
-        objects: db.objects
+        objects: artifacts
     });
 }
 
@@ -49,56 +70,53 @@ function *artifacts(){
  * If the id passed does not belong to an object, render 404.
  */
 function *artifact(){
-    var object;
-    var set = false;
+    var response, artifact, id = this.params.id;
 
-    for(var i = 0; i < db.objects.length; i++){
-        if(db.objects[i].id == this.params.id){
-            object = db.objects[i];
-            set = true;
-            break;
-        }
-    }
-    if(!set){
-        this.status = 404;
-        yield this.render("404", {
-            title: "Wrong Object"
+    try {
+        //console.log(this.session.user);
+        response = yield rq({
+            uri : apiUrl + '/artifact/' + id,
+            method : 'GET',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
         });
-    }
-    else{
-        yield this.render("artifact", {
-            title: object.title,
-            object : object
-        });
-    }
+        //Parse
+        console.log(response.body);
+        artifact = JSON.parse(response.body);
 
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+    yield this.render("artifact", {
+        artifact : artifact
+    });
 }
 
 
 /**
  * Parses title information and handles the audio upload.
  */
-    function *upload_audio(){
-        console.log(this.request.body);
-        var id;
-        for(id = 0; id < db.objects.length; id++){//get the index
-            if(this.request.body.fields.object_id == db.objects[id].id) break;
-        }
-
-        var max = db.objects[id].audio_content[0].id;
-        for(var i = 0; i<db.objects[id].audio_content.length; i++){
-            if(db.objects[id].audio_content[i].id > max) max = db.objects[id].audio_content[i].id;
-        }
-        db.objects[id].audio_content.push({
-            id: max + 1,
-            title: this.request.body.fields.title,
-            audio: "../" + this.request.body.files.file.path
-        });
-
-        console.log(db.objects[id].audio_content);
-
-        this.redirect("/artifact/" + this.request.body.fields.object_id);
+function *upload_audio(){
+    console.log(this.request.body);
+    var id;
+    for(id = 0; id < db.objects.length; id++){//get the index
+        if(this.request.body.fields.object_id == db.objects[id].id) break;
     }
+
+    var max = db.objects[id].audio_content[0].id;
+    for(var i = 0; i<db.objects[id].audio_content.length; i++){
+        if(db.objects[id].audio_content[i].id > max) max = db.objects[id].audio_content[i].id;
+    }
+    db.objects[id].audio_content.push({
+        id: max + 1,
+        title: this.request.body.fields.title,
+        audio: "../" + this.request.body.files.file.path
+    });
+
+    console.log(db.objects[id].audio_content);
+
+    this.redirect("/artifact/" + this.request.body.fields.object_id);
+}
 /**
  * Parse audio entry information to remove the entry and delete the audio file.
  */
@@ -124,19 +142,25 @@ function *delete_audio(){
  * Parse the text entry information to remove it from the object
  */
 function *delete_text(){
-    var post = yield parse(this);
-    var id;
-    for(id = 0; id < db.objects.length; id++){//get the index
-        if(post.object_id == db.objects[id].id) break;
+    var body = yield parse(this), response;
+    if(!body) {
+        this.throw('Bad Request', 400);
     }
 
-    for(var i = 0; i<db.objects[id].text_content.length; i++){
-        if(db.objects[id].text_content[i].id == post.text_id){
-            db.objects[id].text_content.splice(i, 1);
-            break;
-        }
+    try {
+        response = yield rq({
+            uri : apiUrl + '/archive/' + body.text_id,
+            method : 'DELETE',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+    } catch(err){
+        this.throw(err.message, err.status || 500);
     }
-    this.redirect("/artifact/"+post.object_id);
+
+    if(response.statusCode == 200){
+        this.redirect("/artifact/" + body.artifact_id);
+    }
 
 }
 
@@ -144,24 +168,28 @@ function *delete_text(){
  * Parse title and text information to add it to the database.
  */
 function *add_text(){
-    var post = yield parse(this);
-    var id;
-    for(id = 0; id < db.objects.length; id++){//get the index
-        if(post.object_id == db.objects[id].id) break;
-    }
-    var max = db.objects[id].text_content[0].id;
-
-    for(var i = 0; i<db.objects[id].text_content.length; i++){
-        if(db.objects[id].text_content[i].id > max) max = db.objects[id].text_content[i].id;
+    var body = yield parse(this), response;
+    if(!body) {
+        this.throw('Bad Request', 400);
     }
 
-    db.objects[id].text_content.push({
-        id: max + 1,
-        title: post.title,
-        text: post.text
-    });
+    try {
+        response = yield rq({
+            uri : apiUrl + '/archive/',
+            method : 'POST',
+            json : true,
+            body : body,
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+    } catch(err){
+        this.throw(err.message, err.status || 500);
+    }
 
-    this.redirect("/artifact/" + post.object_id);
+    if(response.statusCode == 200){
+        this.redirect("/artifact/" + body.ArtifactId);
+    }
+
 }
 
 

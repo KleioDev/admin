@@ -3,7 +3,7 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">{{object.title}}</h1>
+            <h1 class="page-header">{{artifact.title}}</h1>
         </div>
     </div>
 
@@ -14,27 +14,35 @@
                     <tbody>
                     <tr>
                         <td><strong>Type</strong></td>
-                        <td>{{object.type}}</td>
+                        <td>{{artifact.type}}</td>
                     </tr>
                     <tr>
                         <td><strong>Dimensions</strong></td>
-                        <td>{{object.dimensions}}</td>
+                        <td>{{artifact.dimensions}}</td>
                     </tr>
                     <tr>
                         <td><strong>Dated</strong></td>
-                        <td>{{object.dated}}</td>
+                        <td>{{artifact.dated}}</td>
                     </tr>
                     <tr>
                         <td><strong>Artist</strong></td>
-                        <td>{{object.artist}}</td>
+                        <td>{{artifact.artist}}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Description</strong></td>
+                        <td>{{artifact.description}}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Medium</strong></td>
+                        <td>{{artifact.medium}}</td>
                     </tr>
                     <tr>
                         <td><strong>ID</strong></td>
-                        <td>{{object.id}}</td>
+                        <td>{{artifact.id}}</td>
                     </tr>
                     <tr>
                         <td><strong>Active</strong></td>
-                        <td>{{object.active}}</td>
+                        <td>{{artifact.active}}</td>
                     </tr>
 
 
@@ -43,7 +51,7 @@
             </div>
         </div>
         <div class="col-lg-4">
-            <img src="{{object.image}}" style="width:75%;height:75%">
+            <img src="{{artifact.image}}" style="width:75%;height:75%">
         </div>
     </div>
 
@@ -85,7 +93,7 @@
                                                     Your browser does not support the audio element.
                                                 </audio>
                                                 <br><form action="/delete_audio" method="post">
-                                                <input hidden="true" name="object_id" value="{{../object.id}}">
+                                                <input hidden="true" name="object_id" value="{{../artifact.id}}">
                                                 <input hidden="true" name="audio_id" value="{{id}}">
                                                 <button class="btn btn-danger" type="submit">Remove</button>
                                             </form>
@@ -107,7 +115,7 @@
                                                 <div class="form-group">
                                                     <label>New audio:</label>
                                                     <input class="form-control" placeholder="Enter title" name="title" style="width: 50%;">
-                                                    <input hidden="true" name="object_id" value="{{object.id}}">
+                                                    <input hidden="true" name="object_id" value="{{artifact.id}}">
                                                     <input type="file" name="file">
                                                     <br>
                                                     <button type="submit" class="btn btn-default">Submit</button>
@@ -144,7 +152,7 @@
 
                                                 <br>
                                                 <form action="/delete_video" method="post">
-                                                    <input hidden="true" name="object_id" value="{{../object.id}}">
+                                                    <input hidden="true" name="object_id" value="{{../artifact.id}}">
                                                     <input hidden="true" name="video_id" value="{{id}}">                                                    
                                                     <button class="btn btn-danger" type="submit">Remove</button>
                                                 </form>
@@ -166,7 +174,7 @@
                                                 <div class="form-group">
                                                     <label>New video:</label>
                                                     <input class="form-control" placeholder="Enter title" name="title" style="width: 50%;">
-                                                    <input hidden="true" name="object_id" value="{{object.id}}">
+                                                    <input hidden="true" name="object_id" value="{{artifact.id}}">
 
                                                     <br>
                                                     <input class="form-control" placeholder="Enter youtube url" name="text" style="width: 50%;">
@@ -201,7 +209,7 @@
                                                 <label>{{title}}</label><br>
                                                 <img src={{image_path}}>
                                                 <br><form action="/delete_image" method="post">
-                                                <input hidden="true" name="object_id" value="{{../object.id}}">
+                                                <input hidden="true" name="object_id" value="{{../artifact.id}}">
                                                 <input hidden="true" name="image_id" value="{{id}}">
                                                 <button class="btn btn-danger" type="submit">Remove</button>
                                             </form>
@@ -223,8 +231,8 @@
                                                 <div class="form-group">
                                                     <label>New image:</label>
                                                     <input class="form-control" placeholder="Enter title" name="title" style="width: 50%;">
-                                                    <input hidden="true" name="object_id" value="{{object.id}}">
-                                                    <input type="file" name="file">                                                    <input hidden="true" name="object_id" value="{{object.id}}">
+                                                    <input hidden="true" name="object_id" value="{{artifact.id}}">
+                                                    <input type="file" name="file">
 
                                                     <br>
                                                     <button type="submit" class="btn btn-default">Submit</button>
@@ -244,7 +252,7 @@
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <div class="panel-group" id="accordion">
-                                {{#each object.text_content}}
+                                {{#each artifact.Texts}}
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
                                             <h4 class="panel-title">
@@ -254,10 +262,10 @@
                                         <div id="collapseText{{id}}" class="panel-collapse collapse">
                                             <div class="panel-body">
                                                 <label>{{title}}</label>
-                                                <p>{{text}}</p>
+                                                <p>{{description}}</p>
                                                 <br>
                                                 <form action="/delete_text" method="post">
-                                                    <input hidden="true" name="object_id" value="{{../object.id}}">
+                                                    <input hidden="true" name="artifact_id" value="{{../artifact.id}}">
                                                     <input hidden="true" name="text_id" value="{{id}}">                                                    
                                                     <button class="btn btn-danger" type="submit">Remove</button>
                                                 </form>
@@ -279,10 +287,10 @@
                                                 <div class="form-group">
                                                     <label>New text:</label>
                                                     <input class="form-control" placeholder="Enter title" name="title" style="width: 50%;">
-                                                    <input hidden="true" name="object_id" value="{{object.id}}">
+                                                    <input hidden="true" name="ArtifactId" value="{{artifact.id}}">
 
                                                     <br>
-                                                    <textarea class="form-control" placeholder="Enter info" name="text" style="width: 50%;"></textarea>
+                                                    <textarea class="form-control" placeholder="Enter info" name="description" style="width: 50%;"></textarea>
                                                     <br>
                                                     <button type="submit" class="btn btn-default">Submit</button>
                                                 </div>
@@ -302,7 +310,7 @@
         </div>
 
     <h3>QR Code</h3>
-    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{object.id}}">
+    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{artifact.id}}">
 
     </div>
 
