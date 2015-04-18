@@ -4,6 +4,8 @@ var parse = require("co-body");
 var parse_multi = require("koa-better-body");
 var fs = require("fs");
 var Router = require('koa-router');
+var apiUrl = 'http://136.145.116.229:4567';
+var rq = require('co-request');
 
 
 
@@ -19,11 +21,30 @@ module.exports = function(){
  * Render the Museum page.
  */
 function *museum(){
+    var response,
+        museum;
+
+    try {
+        //console.log(this.session.user);
+        response = yield rq({
+            uri : apiUrl + '/museum',
+            method : 'GET',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+        //Parse
+        console.log(response.body);
+        museum = JSON.parse(response.body).museum;
+
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+
     yield this.render("museum_information", {
         title : "Museum",
-        name : db.museum_info.name,
-        hours : db.museum_info.hours,
-        description : db.museum_info.description
+        name : museum.name,
+        hours : museum.hoursOfOperation,
+        description : museum.description
     });
 }
 

@@ -26,7 +26,7 @@
                     </tr>
                     <tr>
                         <td><strong>Artist</strong></td>
-                        <td>{{artifact.artist}}</td>
+                        <td>{{artifact.Artist.name}}</td>
                     </tr>
                     <tr>
                         <td><strong>Description</strong></td>
@@ -93,7 +93,7 @@
                                                     Your browser does not support the audio element.
                                                 </audio>
                                                 <br><form action="/delete_audio" method="post">
-                                                <input hidden="true" name="object_id" value="{{../artifact.id}}">
+                                                <input hidden="true" name="artifact_id" value="{{../artifact.id}}">
                                                 <input hidden="true" name="audio_id" value="{{id}}">
                                                 <button class="btn btn-danger" type="submit">Remove</button>
                                             </form>
@@ -115,7 +115,7 @@
                                                 <div class="form-group">
                                                     <label>New audio:</label>
                                                     <input class="form-control" placeholder="Enter title" name="title" style="width: 50%;">
-                                                    <input hidden="true" name="object_id" value="{{artifact.id}}">
+                                                    <input hidden="true" name="artifact_id" value="{{artifact.id}}">
                                                     <input type="file" name="file">
                                                     <br>
                                                     <button type="submit" class="btn btn-default">Submit</button>
@@ -136,7 +136,7 @@
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <div class="panel-group" id="accordion">
-                                {{#each object.video_content}}
+                                {{#each artifact.Videos}}
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
                                             <h4 class="panel-title">
@@ -146,13 +146,14 @@
                                         <div id="collapseVideo{{id}}" class="panel-collapse collapse">
                                             <div class="panel-body">
                                                 <p>{{title}}</p>
-                                                <iframe id="ytplayer" type="text/html" width="480" height="240" src="http://www.youtube.com/embed/{{embed_id}}" frameborder="0">
+                                                <p>{{description}}</p>
+                                                <iframe id="ytplayer" type="text/html" width="480" height="240" src="http://www.youtube.com/embed/{{link}}" frameborder="0">
                                                     </iframe>
 
 
                                                 <br>
                                                 <form action="/delete_video" method="post">
-                                                    <input hidden="true" name="object_id" value="{{../artifact.id}}">
+                                                    <input hidden="true" name="artifact_id" value="{{../artifact.id}}">
                                                     <input hidden="true" name="video_id" value="{{id}}">                                                    
                                                     <button class="btn btn-danger" type="submit">Remove</button>
                                                 </form>
@@ -173,11 +174,12 @@
                                             <form role="form" action="/add_video" method="post">
                                                 <div class="form-group">
                                                     <label>New video:</label>
-                                                    <input class="form-control" placeholder="Enter title" name="title" style="width: 50%;">
-                                                    <input hidden="true" name="object_id" value="{{artifact.id}}">
-
+                                                    <input class="form-control" placeholder="Title" name="title" style="width: 50%;">
+                                                    <input hidden="true" name="ArtifactId" value="{{artifact.id}}">
                                                     <br>
-                                                    <input class="form-control" placeholder="Enter youtube url" name="text" style="width: 50%;">
+                                                    <input class="form-control" placeholder="Description" name="description" style="width: 50%;">
+                                                    <br>
+                                                    <input class="form-control" placeholder="Enter youtube url" name="link" style="width: 50%;">
 
                                                     <br>
                                                     <button type="submit" class="btn btn-default">Submit</button>
@@ -209,7 +211,7 @@
                                                 <label>{{title}}</label><br>
                                                 <img src={{image_path}}>
                                                 <br><form action="/delete_image" method="post">
-                                                <input hidden="true" name="object_id" value="{{../artifact.id}}">
+                                                <input hidden="true" name="artifact_id" value="{{../artifact.id}}">
                                                 <input hidden="true" name="image_id" value="{{id}}">
                                                 <button class="btn btn-danger" type="submit">Remove</button>
                                             </form>
@@ -231,7 +233,7 @@
                                                 <div class="form-group">
                                                     <label>New image:</label>
                                                     <input class="form-control" placeholder="Enter title" name="title" style="width: 50%;">
-                                                    <input hidden="true" name="object_id" value="{{artifact.id}}">
+                                                    <input hidden="true" name="artifact_id" value="{{artifact.id}}">
                                                     <input type="file" name="file">
 
                                                     <br>

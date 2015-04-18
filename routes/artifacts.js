@@ -5,7 +5,7 @@ var parse = require("co-body");
 var parse_multi = require("koa-better-body");
 var fs = require("fs");
 var Router = require('koa-router');
-var apiUrl = ' http://136.145.116.229:4567';
+var apiUrl = 'http://136.145.116.229:4567';
 var rq = require('co-request');
 
 module.exports = function(){
@@ -122,20 +122,26 @@ function *upload_audio(){
  */
 
 function *delete_audio(){
-    var post = yield parse(this);
-    var id;
-    for(id = 0; id < db.objects.length; id++){//get the index
-        if(post.object_id == db.objects[id].id) break;
+    //fs.unlinkSync("views/" + body.link);
+    var body = yield parse(this), response;
+    if(!body) {
+        this.throw('Bad Request', 400);
     }
 
-    for(var i = 0; i<db.objects[id].audio_content.length; i++){
-        if(db.objects[id].audio_content[i].id == post.audio_id){
-            fs.unlinkSync("views/" + db.objects[id].audio_content[i].audio);
-            db.objects[id].audio_content.splice(i, 1);
-            break;
-        }
+    try {
+        response = yield rq({
+            uri : apiUrl + '/audible/' + body.audio_id,
+            method : 'DELETE',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+    } catch(err){
+        this.throw(err.message, err.status || 500);
     }
-    this.redirect("/artifact/"+post.object_id);
+
+    if(response.statusCode == 200){
+        this.redirect("/artifact/" + body.artifact_id);
+    }
 }
 
 /**
@@ -197,20 +203,25 @@ function *add_text(){
  * Parse image content entry information to delete it from an object.
  */
 function *delete_image(){
-    var post = yield parse(this);
-    var id;
-    for(id = 0; id < db.objects.length; id++){//get the index
-        if(post.object_id == db.objects[id].id) break;
+    var body = yield parse(this), response;
+    if(!body) {
+        this.throw('Bad Request', 400);
     }
 
-    for(var i = 0; i<db.objects[id].image_content.length; i++){
-        if(db.objects[id].image_content[i].id == post.image_id){
-            fs.unlinkSync("views/" + db.objects[id].image_content[i].image_path);
-            db.objects[id].image_content.splice(i, 1);
-            break;
-        }
+    try {
+        response = yield rq({
+            uri : apiUrl + '/image/' + body.image_id,
+            method : 'DELETE',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+    } catch(err){
+        this.throw(err.message, err.status || 500);
     }
-    this.redirect("/artifact/"+post.object_id);
+
+    if(response.statusCode == 200){
+        this.redirect("/artifact/" + body.artifact_id);
+    }
 }
 
 /**
@@ -242,44 +253,53 @@ function *add_image(){
  * Parse video content information to delete the entry from the database.
  */
 function *delete_video(){
-    var post = yield parse(this);
-    var id;
-    for(id = 0; id < db.objects.length; id++){//get the index
-        if(post.object_id == db.objects[id].id) break;
+    var body = yield parse(this), response;
+    if(!body) {
+        this.throw('Bad Request', 400);
     }
 
-    for(var i = 0; i<db.objects[id].video_content.length; i++){
-        if(db.objects[id].video_content[i].id == post.video_id){
-            db.objects[id].video_content.splice(i, 1);
-            break;
-        }
+    try {
+        response = yield rq({
+            uri : apiUrl + '/video/' + body.text_id,
+            method : 'DELETE',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+    } catch(err){
+        this.throw(err.message, err.status || 500);
     }
-    this.redirect("/artifact/"+post.object_id);
+
+    if(response.statusCode == 200){
+        this.redirect("/artifact/" + body.artifact_id);
+    }
 }
 
 /**
  * Parse video content information to add the entry from the database.
  */
 function *add_video(){
-    var post = yield parse(this);
-    var id;
-    for(id = 0; id < db.objects.length; id++){//get the index
-        if(post.object_id == db.objects[id].id) break;
+    var body = yield parse(this), response;
+    if(!body) {
+        this.throw('Bad Request', 400);
     }
-    var max = db.objects[id].video_content[0].id;
+    body.link = body.link.substring(body.link.indexOf("=")+1);
 
-    for(var i = 0; i<db.objects[id].video_content.length; i++){
-        if(db.objects[id].video_content[i].id > max) max = db.objects[id].video_content[i].id;
+    try {
+        response = yield rq({
+            uri : apiUrl + '/video/',
+            method : 'POST',
+            json : true,
+            body : body,
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+    } catch(err){
+        this.throw(err.message, err.status || 500);
     }
 
-    db.objects[id].video_content.push({
-        id: max + 1,
-        title: post.title,
-        youtube_url: post.text,
-        embed_id: post.text.substring(post.text.indexOf("=")+1)
-    });
-    console.log(db.objects[id].video_content);
-    this.redirect("/artifact/" + post.object_id);
+    if(response.statusCode == 200){
+        this.redirect("/artifact/" + body.ArtifactId);
+    }
 
 }
 

@@ -32,7 +32,7 @@ function *index(){
  */
 function *login(){
     var post = yield parse(this);
-    console.log(post);
+    //console.log(post);
     try {
         response = yield rq({
             uri : apiUrl + '/authenticate',
@@ -45,7 +45,7 @@ function *login(){
             this.redirect("/login");
         }
         else{
-            console.log(response.body);
+            //console.log(response.body);
             this.session.user = response.body;
             this.redirect("/");
         }
@@ -66,7 +66,7 @@ function *login_page(){
  * Resets the session and redirects to the login page
  */
 function *logout() {
-    console.log(this.session.user);
+    //console.log(this.session.user);
     this.session = null;
     this.redirect("login");
 }
@@ -75,7 +75,7 @@ function *logout() {
  * Makes the application require login throughout the whole app.
  */
 function *requireLogin(next){
-    console.log(this.session.user);
+    //console.log(this.session.user);
     if (!this.session.user) {
         this.redirect("/login");
     }
