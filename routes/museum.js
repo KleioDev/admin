@@ -13,7 +13,12 @@ module.exports = function(){
     var museumController = new Router();
     museumController
         .get("/museum", requireLogin, museum)
-        .get("/edit_museum_information", requireLogin, edit_museum_information)
+        .get("/edit_museum_information", requireLogin, parse_multi({
+            multipart: true,
+            formidable: {
+                uploadDir: 'img/'
+            }
+        }), edit_museum_information)
         .post("/edit_museum", requireLogin, edit_museum);
     return museumController.routes();
 };
@@ -33,8 +38,7 @@ function *museum(){
                 Authorization : 'Bearer ' + this.session.user}
         });
         //Parse
-        console.log(response.body);
-        museum = JSON.parse(response.body).museum;
+        museum = JSON.parse(response.body);
 
     } catch(err) {
         this.throw(err.message, err.status || 500);
@@ -42,9 +46,7 @@ function *museum(){
 
     yield this.render("museum_information", {
         title : "Museum",
-        name : museum.name,
-        hours : museum.hoursOfOperation,
-        description : museum.description
+        museum : museum
     });
 }
 
@@ -52,11 +54,27 @@ function *museum(){
  * Render the Edit Museum Information page.
  */
 function *edit_museum_information(){
+    var response,
+        museum;
+
+    try {
+        //console.log(this.session.user);
+        response = yield rq({
+            uri : apiUrl + '/museum',
+            method : 'GET',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+        //Parse
+        museum = JSON.parse(response.body);
+
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+
     yield this.render("edit_museum_information", {
         title : "Museum",
-        name : db.museum_info.name,
-        hours : db.museum_info.hours,
-        description : db.museum_info.description
+        museum : museum
     });
 }
 
@@ -66,18 +84,27 @@ function *edit_museum_information(){
  * doesn't change it.
  */
 function *edit_museum(){
-    var post = yield parse(this);
+    var body = this.request.body, response; //this.request.body.fields
+    if(!body) {
+        this.throw('Bad Request', 400);
+    }
 
-    if(post.name.length != 0)
-        db.museum_info.name = post.name;
+    try {
+        response = yield rq({
+            uri : apiUrl + '/museum/',
+            method : 'POST',
+            json : true,
+            body : body.fields,
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+    } catch(err){
+        this.throw(err.message, err.status || 500);
+    }
 
-    if(post.hours.length != 0)
-        db.museum_info.hours = post.hours;
-
-    if(post.description.length != 0)
-        db.museum_info.description = post.description;
-
-    this.redirect("/museum");
+    if(response.statusCode == 200){
+        this.redirect("/museum");
+    }
 
 }
 

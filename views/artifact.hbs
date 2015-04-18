@@ -114,8 +114,11 @@
                                             <form role="form" action="/upload_audio" method="post" enctype="multipart/form-data">
                                                 <div class="form-group">
                                                     <label>New audio:</label>
-                                                    <input class="form-control" placeholder="Enter title" name="title" style="width: 50%;">
-                                                    <input hidden="true" name="artifact_id" value="{{artifact.id}}">
+                                                    <input class="form-control" placeholder="Title" name="title" style="width: 50%;">
+                                                    <input hidden="true" name="ArtifactId" value="{{artifact.id}}">
+                                                    <br>
+                                                    <input class="form-control" placeholder="Description" name="description" style="width: 50%;">
+
                                                     <input type="file" name="file">
                                                     <br>
                                                     <button type="submit" class="btn btn-default">Submit</button>
@@ -232,8 +235,10 @@
                                             <form role="form" action="/add_image" method="post" enctype="multipart/form-data">
                                                 <div class="form-group">
                                                     <label>New image:</label>
-                                                    <input class="form-control" placeholder="Enter title" name="title" style="width: 50%;">
-                                                    <input hidden="true" name="artifact_id" value="{{artifact.id}}">
+                                                    <input class="form-control" placeholder="Title" name="title" style="width: 50%;">
+                                                    <input hidden="true" name="ArtifactId" value="{{artifact.id}}">
+                                                    <br>
+                                                    <input class="form-control" placeholder="Description" name="description" style="width: 50%;">
                                                     <input type="file" name="file">
 
                                                     <br>
@@ -288,7 +293,7 @@
                                             <form role="form" action="/add_text" method="post">
                                                 <div class="form-group">
                                                     <label>New text:</label>
-                                                    <input class="form-control" placeholder="Enter title" name="title" style="width: 50%;">
+                                                    <input class="form-control" placeholder="Title" name="title" style="width: 50%;">
                                                     <input hidden="true" name="ArtifactId" value="{{artifact.id}}">
 
                                                     <br>
