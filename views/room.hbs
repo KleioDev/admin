@@ -6,7 +6,10 @@
             <h1 class="page-header">{{title}}</h1>
         </div>
     </div>
-
+    <h5>Name</h5>
+    <p>{{room.name}}</p>
+    <h5>Description:</h5>
+    <p>{{room.description}}</p>
 
 
     <div class="table-responsive">
@@ -18,14 +21,14 @@
             </tr>
             </thead>
             <tbody>
-            {{#each ibeacon_list}}
+            {{#each room.Beacons}}
                 <tr class="odd gradeX">
                     <td>{{id}}</td>
                     <td style="text-align: center">
                         <form action="/remove_ibeacon" method="post">
                             <input hidden="true" name="room_id" value="{{../id}}">
                             <input hidden="true" name="ibeacon_id" value="{{id}}">                            
-                            <button type="submit" class="btn btn-danger">Remove</a>
+                            <button type="submit" class="btn btn-danger">Remove</button>
                         </form></td>
             {{/each}}
 
@@ -35,9 +38,9 @@
 
     <form action="/add_to_room" method="post">
         <div class="form-group">
-            <label>To add to the exhibition, enter the ID of the desired iBeacon:</label>
+            <label>Add an iBeacon to the room:</label>
             <input hidden="true" name="room_id" value="{{id}}">
-            <input id="ibeacon_id" type="text" name="ibeacon_id" class="form-control" placeholder="Enter ID" style="width: 10%">
+            <input id="ibeacon_id" type="text" name="ibeacon_id" class="form-control" placeholder="Enter ID" style="width: 50%">
             <button class="btn btn-default" type="submit">Submit</button>
 
         </div>

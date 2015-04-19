@@ -4,6 +4,9 @@ var handlebars = require("koa-handlebars");
 var parse = require("co-body");
 var fs = require("fs");
 var Router = require('koa-router');
+var rq = require('co-request');
+var apiUrl = ' http://136.145.116.229:4567';
+
 
 
 module.exports = function(){
@@ -22,9 +25,27 @@ module.exports = function(){
  * Renders the Rooms page
  */
 function *rooms(){
+    var response,
+        rooms = [];
+
+    try {
+        //console.log(this.session.user);
+        response = yield rq({
+            uri : apiUrl + '/room',
+            method : 'GET',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+        //Parse
+        if(response.statusCode != 404) rooms = JSON.parse(response.body).rooms;
+
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+    console.log(rooms);
     yield this.render("rooms",{
         title: "Rooms",
-        rooms : db.rooms
+        rooms : rooms
     });
 }
 
@@ -33,40 +54,62 @@ function *rooms(){
  * If there is no room with the id passed, render 404;
  */
 function *room(){
-    var room;
-    var set = false;
-    for(var i = 0; i < db.rooms.length; i++){
-        if(this.params.id == db.rooms[i].id){
-            room = db.rooms[i];
-            set = true;
-            break;
+    var room, response, id = this.params.id;
+
+    try {
+        response = yield rq({
+            uri : apiUrl + '/room/' + id,
+            method : 'GET',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+        if(response.statusCode == 404){
+            this.status = 404;
+            yield this.render("404", {
+                title: "Wrong Room"
+            });
         }
+        //Parse
+        room = JSON.parse(response.body);
+        console.log(room);
+
+
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
     }
-    if(!set){
-        this.status = 404;
-        yield this.render("404", {
-            title: "Wrong Room"
-        });
-    }
-    else{
+
         yield this.render("room", {
-            title: "Room " + room.number,
-            id: room.id,
-            ibeacon_list: room.current_id
+            title: room.name,
+            room: room
         });
-    }
+
 }
 
 /**
  * Add a new room.
  */
 function *new_room(){
-    db.rooms.push({
-        id: db.rooms.length + 1,
-        number: db.rooms.length + 1,
-        current_id: []
-    });
-    this.redirect("/rooms");
+    var body = yield parse(this), response;
+    if(!body) {
+        this.throw('Bad Request', 400);
+    }
+
+    try {
+        response = yield rq({
+            uri : apiUrl + '/room',
+            method : 'POST',
+            json : true,
+            body : body,
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+    } catch(err){
+        this.throw(err.message, err.status || 500);
+    }
+
+    if(response.statusCode == 200){
+        this.redirect("/rooms/");
+    }
 }
 
 

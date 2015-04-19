@@ -75,7 +75,7 @@ function *logout() {
  * Makes the application require login throughout the whole app.
  */
 function *requireLogin(next){
-    //console.log(this.session.user);
+    console.log(this.session.user);
     if (!this.session.user) {
         this.redirect("/login");
     }

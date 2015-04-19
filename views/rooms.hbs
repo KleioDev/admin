@@ -8,24 +8,21 @@
     </div>
 
 
-    <p>
-        <form action="/new_room" method="post">
-            <button type="submit" class="btn btn-primary">Add Room</button>
-        </form>
-    </p>
-
     <div class="table-responsive" style="width: 50%">
         <table class="table table-striped table-bordered table-hover">
             <thead>
             <tr>
-                <th>Room Number</th>
+                <th>Room</th>
+                <th>Description</th>
+
                 <th style="text-align: center">View</th>
             </tr>
             </thead>
             <tbody>
             {{#each rooms}}
                 <tr class="odd gradeX">
-                    <td>{{number}}</td>
+                    <td>{{name}}</td>
+                    <td>{{description}}</td>
                     <td style="text-align: center"><a href="/room/{{id}}">View</a></td>
             {{/each}}
 
@@ -33,6 +30,16 @@
         </table>
     </div>
 
+    <h4>Add a new Room:</h4>
+    <form action="/new_room" method="post">
+        <label>Name</label>
+        <input type="text" name="name" class="form-control" style="width: 50%" placeholder="Enter name">
+        <label>Description</label>
+
+        <input type="text" name="description" class="form-control" style="width: 50%" placeholder="Enter short description">
+        <br>
+        <button type="submit" class="btn btn-primary">Add Room</button>
+    </form>
 </div>
 
 
