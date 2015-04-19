@@ -16,7 +16,7 @@ module.exports = function(){
         .get("/edit_museum_information", requireLogin, parse_multi({
             multipart: true,
             formidable: {
-                uploadDir: 'img/'
+                uploadDir: 'public/img/'
             }
         }), edit_museum_information)
         .post("/edit_museum", requireLogin, edit_museum);

@@ -202,7 +202,7 @@
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <div class="panel-group" id="accordion">
-                                {{#each object.image_content}}
+                                {{#each artifact.Images}}
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
                                             <h4 class="panel-title">
@@ -212,7 +212,7 @@
                                         <div id="collapseImage{{id}}" class="panel-collapse collapse">
                                             <div class="panel-body">
                                                 <label>{{title}}</label><br>
-                                                <img src={{image_path}}>
+                                                <img src={{link}}>
                                                 <br><form action="/delete_image" method="post">
                                                 <input hidden="true" name="artifact_id" value="{{../artifact.id}}">
                                                 <input hidden="true" name="image_id" value="{{id}}">

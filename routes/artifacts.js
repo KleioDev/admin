@@ -16,7 +16,7 @@ module.exports = function(){
         .post("/upload_audio", requireLogin, parse_multi({
             multipart: true,
             formidable: {
-                uploadDir: 'audio/'
+                uploadDir: 'public/audio/'
             }
         }), upload_audio)
         .post("/delete_audio", requireLogin, delete_audio)
@@ -25,7 +25,7 @@ module.exports = function(){
         .post("/add_image", requireLogin, parse_multi({
             multipart: true,
             formidable: {
-                uploadDir: 'img/'
+                uploadDir: 'public/img/'
             }
         }), add_image)
         .post("/delete_image", requireLogin, delete_image)
@@ -108,7 +108,7 @@ function *upload_audio(){
             method : 'POST',
             json : true,
             body : {
-                title: body.field.title,
+                title: body.fields.title,
                 description: body.fields.description,
                 link: "../" + body.files.file.path,
                 ArtifactId: body.fields.ArtifactId
@@ -152,32 +152,6 @@ function *delete_audio(){
 }
 
 /**
- * Parse the text entry information to remove it from the object
- */
-function *delete_text(){
-    var body = yield parse(this), response;
-    if(!body) {
-        this.throw('Bad Request', 400);
-    }
-
-    try {
-        response = yield rq({
-            uri : apiUrl + '/archive/' + body.text_id,
-            method : 'DELETE',
-            headers : {
-                Authorization : 'Bearer ' + this.session.user}
-        });
-    } catch(err){
-        this.throw(err.message, err.status || 500);
-    }
-
-    if(response.statusCode == 200){
-        this.redirect("/artifact/" + body.artifact_id);
-    }
-
-}
-
-/**
  * Parse title and text information to add it to the database.
  */
 function *add_text(){
@@ -205,11 +179,10 @@ function *add_text(){
 
 }
 
-
 /**
- * Parse image content entry information to delete it from an object.
+ * Parse the text entry information to remove it from the object
  */
-function *delete_image(){
+function *delete_text(){
     var body = yield parse(this), response;
     if(!body) {
         this.throw('Bad Request', 400);
@@ -217,7 +190,7 @@ function *delete_image(){
 
     try {
         response = yield rq({
-            uri : apiUrl + '/image/' + body.image_id,
+            uri : apiUrl + '/archive/' + body.text_id,
             method : 'DELETE',
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
@@ -229,6 +202,7 @@ function *delete_image(){
     if(response.statusCode == 200){
         this.redirect("/artifact/" + body.artifact_id);
     }
+
 }
 
 /**
@@ -239,14 +213,14 @@ function *add_image(){
     if(!body) {
         this.throw('Bad Request', 400);
     }
-
+    console.log(body.fields);
     try {
         response = yield rq({
             uri : apiUrl + '/image/',
             method : 'POST',
             json : true,
             body : {
-                title: body.field.title,
+                title: body.fields.title,
                 description: body.fields.description,
                 link: "../" + body.files.file.path,
                 ArtifactId: body.fields.ArtifactId
@@ -264,9 +238,9 @@ function *add_image(){
 }
 
 /**
- * Parse video content information to delete the entry from the database.
+ * Parse image content entry information to delete it from an object.
  */
-function *delete_video(){
+function *delete_image(){
     var body = yield parse(this), response;
     if(!body) {
         this.throw('Bad Request', 400);
@@ -274,7 +248,7 @@ function *delete_video(){
 
     try {
         response = yield rq({
-            uri : apiUrl + '/video/' + body.text_id,
+            uri : apiUrl + '/image/' + body.image_id,
             method : 'DELETE',
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
@@ -316,6 +290,33 @@ function *add_video(){
     }
 
 }
+
+/**
+ * Parse video content information to delete the entry from the database.
+ */
+function *delete_video(){
+    var body = yield parse(this), response;
+    if(!body) {
+        this.throw('Bad Request', 400);
+    }
+
+    try {
+        response = yield rq({
+            uri : apiUrl + '/video/' + body.text_id,
+            method : 'DELETE',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+    } catch(err){
+        this.throw(err.message, err.status || 500);
+    }
+
+    if(response.statusCode == 200){
+        this.redirect("/artifact/" + body.artifact_id);
+    }
+}
+
+
 
 
 function *requireLogin(next){

@@ -29,4 +29,5 @@ bower_components
 .lock-wscript
 .DS_Store
 .idea
-audio
+public/img
+public/audio
