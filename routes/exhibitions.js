@@ -55,12 +55,10 @@ function *exhibitions(){
  * If there is no exhibition with the id passed, render 404;
  */
 function *exhibition(){
-    var exhibition;
-    var response;
+    var exhibition, beacon_list, response;
     var id = this.params.id;
 
     try {
-        //console.log(this.session.user);
         response = yield rq({
             uri : apiUrl + '/exhibition/' + id,
             method : 'GET',
@@ -82,12 +80,34 @@ function *exhibition(){
         this.throw(err.message, err.status || 500);
     }
 
+    try {
+        response = yield rq({
+            uri : apiUrl + '/exhibition/beacon/' + id,
+            method : 'GET',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+        if(response.statusCode == 404){
+            this.status = 404;
+            yield this.render("404", {
+                title: "Wrong Exhibition"
+            });
+        }
+        //Parse
+        beacon_list = JSON.parse(response.body);
+        console.log(beacon_list);
+
+
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+
 
     yield this.render("exhibition",{
         title: exhibition.title,
         description: exhibition.description,
-        object_list: [],
-        ibeacon:[],
+        object_list: exhibition.Artifacts,
+        beacon_list:beacon_list,
         id: exhibition.id
     });
 
@@ -127,33 +147,31 @@ function *new_exhibition(){
 
 
 /**
- * Parses the information for adding an object to an exhibition,
- * or updating the iBeacon associated with the exhibition.
+ * Parses the information for adding an iBeacon to an exhibition.
  */
 function *add_to_exhibition(){
-    var post = yield parse(this);
-    var present = false;
-    var exhibition_index;
-    for(var i = 0; i < db.exhibitions.length; i++){//find the position of the exhibition
-        if(post.id == db.exhibitions[i].id) {
-            exhibition_index = i;
-            break;
-        }
+    var body =  yield parse(this),
+        response;
+
+    if(!body) {
+        this.throw('Bad Request', 400);
     }
-    if(post.ibeacon.length != 0) db.exhibitions[exhibition_index].ibeacon = post.ibeacon;
-    if(isNaN(post.object) || post.object.length == 0){
-        this.redirect("/exhibition/" + post.id);
+    try {
+        response = yield rq({
+            uri : apiUrl + '/exhibition/beacon',
+            method : 'POST',
+            json : true,
+            body : body,
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+
+        });
+    } catch(err){
+        this.throw(err.message, err.status || 500);
     }
-    else{
-        for(var i = 0; i < db.exhibitions[exhibition_index].object_list.length; i++){//check if its already in the list
-            if(post.object == db.exhibitions[exhibition_index].object_list[i]) {
-                present = true;
-                break;
-            }
-        }
-        if(!present) db.exhibitions[exhibition_index].object_list.push(parseInt(post.object)); //if not, add it
-        console.log(db.exhibitions[exhibition_index].object_list);
-        this.redirect("/exhibition/" + post.id);
+
+    if(response.statusCode == 201){
+        this.redirect('/exhibition/' + body.ExhibitionId);
     }
 }
 
@@ -161,23 +179,31 @@ function *add_to_exhibition(){
  * Parses the object id to remove an object from an exhibition.
  */
 function *remove_from_exhibition(){
-    var post = yield parse(this);
-    var exhibition_index;
-    for(var i = 0; i < db.exhibitions.length; i++){//find the position of the exhibition
-        if(post.exhibition_id == db.exhibitions[i].id) {
-            exhibition_index = i;
-            break;
-        }
-    }
-    for(var i = 0; i < db.exhibitions[exhibition_index].object_list.length; i++){//check if its already in the list
-        if(post.object_id == db.exhibitions[exhibition_index].object_list[i]) {
-            db.exhibitions[exhibition_index].object_list.splice(i, 1);
-            break;
-        }
-    }
-    console.log(db.exhibitions[exhibition_index].object_list);
+    var body =  yield parse(this),
+        response;
 
-    this.redirect("/exhibition/" + post.exhibition_id);
+    if(!body) {
+        this.throw('Bad Request', 400);
+    }
+    body.MuseumId = 1;
+    console.log(body);
+    try {
+        response = yield rq({
+            uri : apiUrl + '/exhibition/beacon/' + body.BeaconID,
+            method : 'POST',
+            json : true,
+            body : body,
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+
+        });
+    } catch(err){
+        this.throw(err.message, err.status || 500);
+    }
+
+    if(response.statusCode == 200){
+        this.redirect('/exhibition/' + body.ExhibitionId);
+    }
 }
 
 function *requireLogin(next){

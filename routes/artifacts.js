@@ -30,7 +30,8 @@ module.exports = function(){
         }), add_image)
         .post("/delete_image", requireLogin, delete_image)
         .post("/add_video", requireLogin, add_video)
-        .post("/delete_video", requireLogin, delete_video);
+        .post("/delete_video", requireLogin, delete_video)
+        .post("/add_to_exhibition", requireLogin, add_to_exhibition);
 
     return artifactController.routes();
 };
@@ -70,7 +71,7 @@ function *artifacts(){
  * If the id passed does not belong to an object, render 404.
  */
 function *artifact(){
-    var response, artifact, id = this.params.id;
+    var response, artifact, exhibitions, id = this.params.id;
 
     try {
         //console.log(this.session.user);
@@ -87,8 +88,24 @@ function *artifact(){
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
+
+    try {
+        //console.log(this.session.user);
+        response = yield rq({
+            uri : apiUrl + '/exhibition',
+            method : 'GET',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+        //Parse
+        if(response.statusCode != 404) exhibitions = JSON.parse(response.body).exhibitions;
+
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
     yield this.render("artifact", {
-        artifact : artifact
+        artifact : artifact,
+        exhibitions : exhibitions
     });
 }
 
@@ -120,7 +137,7 @@ function *upload_audio(){
         this.throw(err.message, err.status || 500);
     }
 
-    if(response.statusCode == 200){
+    if(response.statusCode == 201){
         this.redirect("/artifact/" + body.fields.ArtifactId);
     }
 }
@@ -173,7 +190,7 @@ function *add_text(){
         this.throw(err.message, err.status || 500);
     }
 
-    if(response.statusCode == 200){
+    if(response.statusCode == 201){
         this.redirect("/artifact/" + body.ArtifactId);
     }
 
@@ -232,7 +249,7 @@ function *add_image(){
         this.throw(err.message, err.status || 500);
     }
 
-    if(response.statusCode == 200){
+    if(response.statusCode == 201){
         this.redirect("/artifact/" + body.fields.ArtifactId);
     }
 }
@@ -285,7 +302,7 @@ function *add_video(){
         this.throw(err.message, err.status || 500);
     }
 
-    if(response.statusCode == 200){
+    if(response.statusCode == 201){
         this.redirect("/artifact/" + body.ArtifactId);
     }
 
@@ -316,7 +333,29 @@ function *delete_video(){
     }
 }
 
+function *add_to_exhibition(){
+    var body = yield parse(this), response;
+    if(!body) {
+        this.throw('Bad Request', 400);
+    }
 
+    try {
+        response = yield rq({
+            uri : apiUrl + '/artifact/' + body.ArtifactId,
+            method : 'PUT',
+            json: true,
+            body:{ExhibitionId: body.id},
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+    } catch(err){
+        this.throw(err.message, err.status || 500);
+    }
+    console.log(body);
+    if(response.statusCode == 201){
+        this.redirect("/artifact/" + body.ArtifactId);
+    }
+}
 
 
 function *requireLogin(next){

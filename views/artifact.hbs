@@ -316,6 +316,21 @@
 
         </div>
 
+    <h3>Exhibition</h3>
+    <form role="form" action="/add_to_exhibition" method="post">
+        <div class="form-group">
+            <label>Add object to an exhibitions</label>
+            <select class="form-control">
+                <option>Select an exhibition...</option>
+                {{#each exhibitions}}
+                    <option name="id" value="{{id}}">{{title}} - {{#sample description}}{{/sample}}</option>
+                {{/each}}
+            </select>
+            <input hidden="true" name="ArtifactId" value="{{artifact.id}}">
+            <button type="submit" class="btn btn-default">Submit</button>
+        </div>
+    </form>
+
     <h3>QR Code</h3>
     <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{artifact.id}}">
 
