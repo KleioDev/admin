@@ -23,11 +23,11 @@
             <tbody>
             {{#each room.Beacons}}
                 <tr class="odd gradeX">
-                    <td>{{id}}</td>
+                    <td>{{code}}</td>
                     <td style="text-align: center">
                         <form action="/remove_ibeacon" method="post">
-                            <input hidden="true" name="room_id" value="{{../id}}">
-                            <input hidden="true" name="ibeacon_id" value="{{id}}">                            
+                            <input hidden="true" name="RoomId" value="{{../room.id}}">
+                            <input hidden="true" name="ibeacon_id" value="{{id}}">
                             <button type="submit" class="btn btn-danger">Remove</button>
                         </form></td>
             {{/each}}
@@ -39,8 +39,16 @@
     <form action="/add_to_room" method="post">
         <div class="form-group">
             <label>Add an iBeacon to the room:</label>
-            <input hidden="true" name="room_id" value="{{id}}">
-            <input id="ibeacon_id" type="text" name="ibeacon_id" class="form-control" placeholder="Enter ID" style="width: 50%">
+            <input hidden="true" name="RoomId" value="{{room.id}}">
+            <input id="ibeacon_id" type="text" name="code" class="form-control" placeholder="Enter ID" style="width: 50%">
+            <p class="help-block">Enter the UUID directly followed by both Major ID's</p>
+            <p class="help-block">For example this beacon:
+                UUID: B9407F30-F5F8-466E-AFF9-25556B57FE6D
+                Major ID: 1
+                Minor ID: 2
+            </p>
+            <p class="help-block">Would be entered as: B9407F30-F5F8-466E-AFF9-25556B57FE6D12</p>
+
             <button class="btn btn-default" type="submit">Submit</button>
 
         </div>

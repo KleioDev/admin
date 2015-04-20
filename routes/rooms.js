@@ -29,7 +29,6 @@ function *rooms(){
         rooms = [];
 
     try {
-        //console.log(this.session.user);
         response = yield rq({
             uri : apiUrl + '/room',
             method : 'GET',
@@ -38,7 +37,6 @@ function *rooms(){
         });
         //Parse
         if(response.statusCode != 404) rooms = JSON.parse(response.body).rooms;
-
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
@@ -117,24 +115,29 @@ function *new_room(){
  * Parse the iBeacon id to add it to a room and return to the Rooms page.
  */
 function *add_to_room(){
-    var post = yield parse(this);
-    var present = false;
-    var room_index;
-    for(var i = 0; i < db.rooms.length; i++){//find the position of the exhibition
-        if(post.room_id == db.rooms[i].id) {
-            room_index = i;
-            break;
-        }
+    var body = yield parse(this), response;
+    if(!body) {
+        this.throw('Bad Request', 400);
     }
 
-    for(var i = 0; i < db.rooms[room_index].current_id.length; i++){//check if its already in the list
-        if(post.ibeacon_id == db.rooms[room_index].current_id[i]) {
-            present = true;
-            break;
-        }
+    try {
+        response = yield rq({
+            uri : apiUrl + '/beacon',
+            method : 'POST',
+            json : true,
+            body : body,
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+
+    } catch(err){
+        console.log(err);
+        this.throw(err.message, err.status || 500);
     }
-    if(!present) db.rooms[room_index].current_id.push({id:post.ibeacon_id}); //if not, add it
-    this.redirect("/room/" + post.room_id);
+    console.log(body);
+    if(response.statusCode == 201){
+        this.redirect("/room/" + body.RoomId);
+    }
 }
 
 
@@ -142,21 +145,27 @@ function *add_to_room(){
  * Parse the iBeacon id to remove an iBeacon from the room and return to the Single Rooms page.
  */
 function *remove_ibeacon(){
-    var post = yield parse(this);
-    var room_index;
-    for(var i = 0; i < db.rooms.length; i++){//find the position of the exhibition
-        if(post.room_id == db.rooms[i].id) {
-            room_index = i;
-            break;
-        }
+    var body = yield parse(this), response;
+    if(!body) {
+        this.throw('Bad Request', 400);
     }
-    for(var i = 0; i < db.rooms[room_index].current_id.length; i++){//check if its already in the list
-        if(post.ibeacon_id == db.rooms[room_index].current_id[i].id) {
-            db.rooms[room_index].current_id.splice(i, 1);
-            break;
-        }
+
+    try {
+        response = yield rq({
+            uri : apiUrl + '/beacon/' + body.ibeacon_id,
+            method : 'DELETE',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+
+    } catch(err){
+        //console.log(err);
+        this.throw(err.message, err.status || 500);
     }
-    this.redirect("/room/" + post.room_id);
+    console.log(body);
+    if(response.statusCode == 200){
+        this.redirect("/room/" + body.RoomId);
+    }
 }
 
 function *requireLogin(next){

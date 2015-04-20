@@ -16,7 +16,7 @@ module.exports = function(){
         .get('/administrator/:id/edit', edit_administrator)
         .post('/administrator', parse_multi, create)
         .post('/administrator/:id', parse_multi, edit)
-        .delete('/administrator/:id', destroy)
+        .delete('/administrator/:id', destroy);
 
     return administratorController.routes();
 }
