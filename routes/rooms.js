@@ -39,7 +39,7 @@ function *rooms(){
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
-    console.log(rooms);
+    //console.log(rooms);
     yield this.render("rooms",{
         title: "Rooms",
         rooms : rooms
@@ -68,7 +68,7 @@ function *room(){
         }
         //Parse
         room = JSON.parse(response.body);
-        console.log(room);
+        //console.log(room);
 
 
     } catch(err) {
@@ -130,10 +130,10 @@ function *add_to_room(){
         });
 
     } catch(err){
-        console.log(err);
+        //console.log(err);
         this.throw(err.message, err.status || 500);
     }
-    console.log(body);
+    //console.log(body);
     if(response.statusCode == 201){
         this.redirect("/room/" + body.RoomId);
     }
@@ -161,7 +161,7 @@ function *remove_ibeacon(){
         //console.log(err);
         this.throw(err.message, err.status || 500);
     }
-    console.log(body);
+    //console.log(body);
     if(response.statusCode == 200){
         this.redirect("/room/" + body.RoomId);
     }

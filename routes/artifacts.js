@@ -31,7 +31,7 @@ module.exports = function(){
         .post("/delete_image", requireLogin, delete_image)
         .post("/add_video", requireLogin, add_video)
         .post("/delete_video", requireLogin, delete_video)
-        .post("/add_to_exhibition", requireLogin, add_to_exhibition);
+        .post("/add_exhibition", requireLogin, add_exhibition);
 
     return artifactController.routes();
 };
@@ -51,7 +51,7 @@ function *artifacts(){
                 Authorization : 'Bearer ' + this.session.user}
         });
         //Parse
-        console.log(response.body);
+        //console.log(response.body);
         artifacts = JSON.parse(response.body).artifacts;
 
     } catch(err) {
@@ -82,7 +82,7 @@ function *artifact(){
                 Authorization : 'Bearer ' + this.session.user}
         });
         //Parse
-        console.log(response.body);
+        //console.log(response.body);
         artifact = JSON.parse(response.body);
 
     } catch(err) {
@@ -230,7 +230,7 @@ function *add_image(){
     if(!body) {
         this.throw('Bad Request', 400);
     }
-    console.log(body.fields);
+    //console.log(body.fields);
     try {
         response = yield rq({
             uri : apiUrl + '/image/',
@@ -333,7 +333,7 @@ function *delete_video(){
     }
 }
 
-function *add_to_exhibition(){
+function *add_exhibition(){
     var body = yield parse(this), response;
     if(!body) {
         this.throw('Bad Request', 400);
@@ -351,7 +351,7 @@ function *add_to_exhibition(){
     } catch(err){
         this.throw(err.message, err.status || 500);
     }
-    console.log(body);
+    //console.log(body);
     if(response.statusCode == 201){
         this.redirect("/artifact/" + body.ArtifactId);
     }

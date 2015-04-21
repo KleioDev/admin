@@ -31,7 +31,7 @@ function *feedback(){
                 Authorization : 'Bearer ' + this.session.user}
         });
         //Parse
-        console.log(response.body);
+        //console.log(response.body);
         feedback = JSON.parse(response.body).feedbacks;
 
     } catch(err) {
@@ -49,7 +49,7 @@ function *solve_feedback(){
     var body = yield parse(this);
     var id = body.id;
     var response;
-    console.log(body);
+    //console.log(body);
 
     if(!body) {
         this.throw('Bad Request', 400);
@@ -67,7 +67,7 @@ function *solve_feedback(){
     } catch(err){
         this.throw(err.message, err.status || 500);
     }
-    console.log(response);
+    //console.log(response);
     this.redirect('/feedback');
 
 }
@@ -80,7 +80,7 @@ function *delete_feedback(){
     var body = yield parse(this);
     var id = body.id;
     var response;
-    console.log(body);
+    //console.log(body);
 
     if(!body) {
         this.throw('Bad Request', 400);
@@ -98,7 +98,7 @@ function *delete_feedback(){
     } catch(err){
         this.throw(err.message, err.status || 500);
     }
-    console.log(response);
+    //console.log(response);
     this.redirect('/feedback');
 }
 

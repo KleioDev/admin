@@ -23,7 +23,7 @@ module.exports = function(){
  * This user information is specific to the leaderboards.
  */
 function *leaderboard(){
-    console.log(this.session.user);
+    //console.log(this.session.user);
     var response, leaderboard;
     try{
         response = yield rq({
@@ -38,7 +38,7 @@ function *leaderboard(){
     } catch(err){
         this.throw(err.message, err.status || 500);
     }
-    console.log(leaderboard);
+    //console.log(leaderboard);
     yield this.render("leaderboard", {
         title : "Leaderboard",
         users : leaderboard

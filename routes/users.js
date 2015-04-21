@@ -30,7 +30,7 @@ function *users(){
         });
         //Parse
         users = JSON.parse(response.body).users;
-        console.log(users);
+        //console.log(users);
 
 
     } catch(err) {

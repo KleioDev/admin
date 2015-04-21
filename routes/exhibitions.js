@@ -1,4 +1,3 @@
-var db = require("../public/js/db");
 var koa = require("koa");
 var handlebars = require("koa-handlebars");
 var parse = require("co-body");
@@ -6,7 +5,6 @@ var fs = require("fs");
 var Router = require('koa-router');
 var rq = require('co-request');
 var apiUrl = ' http://136.145.116.229:4567';
-
 
 
 module.exports = function(){
@@ -133,9 +131,7 @@ function *new_exhibition(){
  */
 function *add_to_exhibition(){
     var body =  yield parse(this), response;
-    console.log("Hello");
-
-    console.log(typeof body.BeaconId);
+    console.log(body);
     if(!body) {
         this.throw('Bad Request', 400);
     }
@@ -152,7 +148,7 @@ function *add_to_exhibition(){
         this.throw(err.message, err.status || 500);
     }
 
-    if(response.statusCode == 200){
+    if(response.statusCode == 201){
         this.redirect('/exhibition/' + body.ExhibitionId);
     }
 }

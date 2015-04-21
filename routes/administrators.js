@@ -38,7 +38,7 @@ function *index(){
                 Authorization : 'Bearer ' + this.session.user}
         });
         //Parse
-        console.log(response.body);
+        //console.log(response.body);
         administrators = JSON.parse(response.body).administrators;
 
     } catch(err) {

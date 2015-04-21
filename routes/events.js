@@ -35,7 +35,7 @@ function *events(){
         });
         //Parse
         events = JSON.parse(response.body).events;
-        console.log(events);
+        //console.log(events);
 
 
     } catch(err) {
@@ -65,7 +65,7 @@ function *single_event(){// id as param
         });
         //Parse
         event = JSON.parse(response.body);
-        console.log(event);
+        //console.log(event);
 
 
     } catch(err) {
@@ -100,7 +100,7 @@ function *edit_event_page(){ //id as param
         });
         //Parse
         event = JSON.parse(response.body);
-        console.log(event);
+        //console.log(event);
 
 
     } catch(err) {
@@ -165,7 +165,7 @@ function *add_event(){
     var body = yield parse(this);
     body.image = null;
     var response;
-    console.log(this.session.user);
+    //console.log(this.session.user);
     if(!body) {
         this.throw('Bad Request', 400);
     }
