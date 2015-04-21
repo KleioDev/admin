@@ -18,12 +18,12 @@
             </tr>
             </thead>
             <tbody>
-            {{#each beacon_list}}
+            {{#each Beacons}}
                 <tr class="odd gradeX">
                     <td>{{code}}</td>
                     <td style="text-align: center">
                         <form action="/remove_from_exhibition" method="post">
-                            <input hidden="true" name="BeaconId" value={{id}}>
+                            <input hidden="true" name="BeaconId" value={{ExhibitionBeacon.id}}>
                             <input hidden="true" name="ExhibitionId" value={{../id}}>
 
                             <button type="submit" class="btn btn-danger">Remove</button>
@@ -57,7 +57,7 @@
                     <td>{{type}}</td>
                     <td>{{dimensions}}</td>
                     <td>{{dated}}</td>
-                    <td>{{artist}}</td>
+                    <td>{{Artist.name}}</td>
                     <td>{{id}}</td>
 
                 {{#if active}}
@@ -83,14 +83,12 @@
     <form action="/add_to_exhibition" method="post">
         <div class="form-group">
             <label>Add an iBeacon to the exhibition:</label>
-            <input type="text" name="BeaconId" class="form-control" placeholder="Enter iBeacon" style="width: 20%">
-            <p class="help-block">Enter the UUID directly followed by both Major ID's</p>
-            <p class="help-block">For example this beacon:
-                UUID: B9407F30-F5F8-466E-AFF9-25556B57FE6D
-                Major ID: 1
-                Minor ID: 2
-            </p>
-            <p class="help-block">Would be entered as: B9407F30-F5F8-466E-AFF9-25556B57FE6D12</p>
+            <select name="BeaconId" class="form-control">
+                <option>Select an beacon...</option>
+                {{#each beacon_list}}
+                    <option  value={{id}}>Room {{RoomId}} - Code: {{code}}</option>
+                {{/each}}
+            </select>
             <input hidden="true" name="ExhibitionId" value="{{id}}">
             <button class="btn btn-default" type="submit">Submit</button>
         </div>

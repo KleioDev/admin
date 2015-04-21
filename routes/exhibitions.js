@@ -29,7 +29,6 @@ function *exhibitions(){
         exhibitions = [];
 
     try {
-        //console.log(this.session.user);
         response = yield rq({
             uri : apiUrl + '/exhibition',
             method : 'GET',
@@ -42,7 +41,6 @@ function *exhibitions(){
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
-    console.log(exhibitions);
 
     yield this.render("exhibitions", {
         title : "Exhibitions",
@@ -73,40 +71,27 @@ function *exhibition(){
         }
         //Parse
         exhibition = JSON.parse(response.body);
-        console.log(exhibition);
-
-
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
 
     try {
         response = yield rq({
-            uri : apiUrl + '/exhibition/beacon/' + id,
+            uri : apiUrl + '/beacon',
             method : 'GET',
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
         });
-        if(response.statusCode == 404){
-            this.status = 404;
-            yield this.render("404", {
-                title: "Wrong Exhibition"
-            });
-        }
-        //Parse
-        beacon_list = JSON.parse(response.body);
-        console.log(beacon_list);
-
-
+        if(response.statusCode != 404) beacon_list = JSON.parse(response.body).beacons;
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
-
 
     yield this.render("exhibition",{
         title: exhibition.title,
         description: exhibition.description,
         object_list: exhibition.Artifacts,
+        Beacons:exhibition.Beacons,
         beacon_list:beacon_list,
         id: exhibition.id
     });
@@ -125,16 +110,13 @@ function *new_exhibition(){
         this.throw('Bad Request', 400);
     }
     body.MuseumId = 1;
-    console.log(body);
     try {
         response = yield rq({
             uri : apiUrl + '/exhibition/',
             method : 'POST',
             json : true,
             body : body,
-            headers : {
-                Authorization : 'Bearer ' + this.session.user}
-
+            headers : { Authorization : 'Bearer ' + this.session.user}
         });
     } catch(err){
         this.throw(err.message, err.status || 500);
@@ -150,9 +132,10 @@ function *new_exhibition(){
  * Parses the information for adding an iBeacon to an exhibition.
  */
 function *add_to_exhibition(){
-    var body =  yield parse(this),
-        response;
+    var body =  yield parse(this), response;
+    console.log("Hello");
 
+    console.log(typeof body.BeaconId);
     if(!body) {
         this.throw('Bad Request', 400);
     }
@@ -164,13 +147,12 @@ function *add_to_exhibition(){
             body : body,
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
-
         });
     } catch(err){
         this.throw(err.message, err.status || 500);
     }
 
-    if(response.statusCode == 201){
+    if(response.statusCode == 200){
         this.redirect('/exhibition/' + body.ExhibitionId);
     }
 }
@@ -179,20 +161,14 @@ function *add_to_exhibition(){
  * Parses the object id to remove an object from an exhibition.
  */
 function *remove_from_exhibition(){
-    var body =  yield parse(this),
-        response;
-
+    var body =  yield parse(this), response;
     if(!body) {
         this.throw('Bad Request', 400);
     }
-    body.MuseumId = 1;
-    console.log(body);
     try {
         response = yield rq({
-            uri : apiUrl + '/exhibition/beacon/' + body.BeaconID,
-            method : 'POST',
-            json : true,
-            body : body,
+            uri : apiUrl + '/exhibition/beacon/' + body.BeaconId,
+            method : 'DELETE',
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
 
