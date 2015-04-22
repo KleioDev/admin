@@ -52,11 +52,12 @@ function *leaderboard(){
 function *reset_score(){
     var body = yield parse(this);
     var response;
+    console.log(body);
+
     var id = body.id;
     if(!body) {
         this.throw('Bad Request', 400);
     }
-
     try {
         response = yield rq({
             uri : apiUrl + '/user/' + id,
@@ -82,13 +83,13 @@ function *reset_leaderboard(){
     var body = yield parse(this);
     var response;
 
-    if(!body) {
-        this.throw('Bad Request', 400);
-    }
+    //if(!body) {
+    //    this.throw('Bad Request', 400);
+    //}
 
     try {
         response = yield rq({
-            uri : apiUrl + '/leaderboard/reset',
+            uri : apiUrl + '/leaderboard',
             method : 'PUT',
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
