@@ -5,6 +5,7 @@ var fs = require("fs");
 var Router = require('koa-router');
 var apiUrl = ' http://136.145.116.229:4567';
 var rq = require('co-request');
+var moment = require("moment");
 
 module.exports = function(){
     var eventController = new Router();
@@ -38,9 +39,16 @@ function *events(){
         //console.log(events);
 
 
+        for(var i = 0; i < events.length; i++){
+            console.log(events[i].eventDate);
+            events[i].eventDate = moment(events[0].eventDate).format(" MMM DD, YYYY hh:mm a");
+        }
+        //console.log(moment(events[0].eventDate).format("YYYY-MM-DD HH:mm"));
+
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
+
 
     yield this.render("events", {
         title : "Events",
@@ -75,7 +83,8 @@ function *single_event(){// id as param
     yield this.render("event", {
         title: event.title,
         text: event.description,
-        date: event.updatedAt,
+        date: moment(event.updatedAt).format(" MMM DD, YYYY hh:mm a"),
+        eventDate: moment(event.eventDate).format(" MMM DD, YYYY hh:mm a"),
         id: event.id
     });
 
