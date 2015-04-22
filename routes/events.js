@@ -118,6 +118,7 @@ function *edit_event_page(){ //id as param
     yield this.render("edit_event", {
         title: event.title,
         text: event.description,
+        eventDate : moment(event.eventDate).format(" MMM DD, YYYY hh:mm a"),
         id: event.id
     });
 
@@ -126,16 +127,21 @@ function *edit_event_page(){ //id as param
 
 /**
  * Parse event information to edit the it.
- * Since the user may not fill out all the fields, update it as needed.
  */
 function *edit_event(){
     var body = yield parse(this);
     var id = body.id;
     var response;
-
+    console.log(body);
+    body.eventDate = body.date+"T"+body.time+":00.000-04";
+    delete body.date, body.time;
+    console.log(body);
     if(!body) {
         this.throw('Bad Request', 400);
     }
+    //2015-05-06T08:00:00.000-04
+    //2015-05-02T03:24:00.000Z
+
 
     try {
         response = yield rq({
@@ -172,8 +178,13 @@ function *new_event(){
 
 function *add_event(){
     var body = yield parse(this);
-    body.image = null;
+    //body.image = null;
     var response;
+    body.eventDate = body.date+"T"+body.time+":00.000-04";
+    delete body.date;
+    delete body.time;
+    console.log(body);
+
     //console.log(this.session.user);
     if(!body) {
         this.throw('Bad Request', 400);
@@ -192,7 +203,7 @@ function *add_event(){
         this.throw(err.message, err.status || 500);
     }
 
-    if(response.statusCode == 200){
+    if(response.statusCode >= 200 && response.statusCode < 300){
         this.redirect('/events');
     }
 

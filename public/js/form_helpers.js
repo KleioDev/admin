@@ -39,14 +39,14 @@ $(document).ready(function() {
         $('#admin_email').change(validate_edit_admin);
     }
     //Article
-    if($('#article_title').length != 0) {
-        validate_article();
-        $('#article_title').change(validate_article);
-    }
-    if($('#article_text').length != 0) {
-        validate_article();
-        $('#article_text').change(validate_article);
-    }
+    //if($('#article_title').length != 0) {
+    //    validate_article();
+    //    $('#article_title').change(validate_article);
+    //}
+    //if($('#article_text').length != 0) {
+    //    validate_article();
+    //    $('#article_text').change(validate_article);
+    //}
 
     //Formless post
     //$(function() {
@@ -87,7 +87,7 @@ function validate_edit_admin(){
     }
 }
 function validate_article(){
-    if ($('#article_title').val().length > 0 && $('#article_text').val().length > 0) {
+    if ($('#article_title').val().length > 0 && $('#article_text').val().length > 0 && $('#article_date').val().length > 0 && $('#article_time').val().length > 0) {
         $("button[type=submit]").prop("disabled", false);
     }
     else {
