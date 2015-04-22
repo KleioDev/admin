@@ -69,6 +69,7 @@ function *exhibition(){
         }
         //Parse
         exhibition = JSON.parse(response.body);
+        //console.log(exhibition);
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }

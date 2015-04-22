@@ -7,33 +7,78 @@
         </div>
     </div>
 
-    <form action="/edit_museum" method="post">
+    <form role="form" action="/edit_museum" method="post" enctype="multipart/form-data" >
         <div class="form-group">
+
             <label>Picture</label>
-            <input type="file">
+            <input type="file" name="file">
+
             <label>Name</label>
-            <input id="museum_name" type="text" name="name" class="form-control" placeholder="Enter museum name.">
+            <input type="text" name="name" class="form-control" placeholder="Enter museum name.">
             <p class="help-block">Was: {{museum.name}}</p>
 
             <label>Hours</label>
-            <input id="museum_hours" type="text" name="hoursOfOperation" class="form-control" placeholder="Enter hours information.">
+            <div class="row" >
+                <div class="col-lg-2">
+                    <label>Monday from</label>
+                    <input class="form-control" type="time" name="mon_op">
+                    <label>to</label>
+                    <input class="form-control" type="time" name="mon_cl">
+                </div>
+                <div class="col-lg-2">
+                    <label>Tuesday from</label>
+                    <input class="form-control" type="time" name="tue_op">
+                    <label>to</label>
+                    <input class="form-control" type="time" name="tue_cl">
+                </div>
+                <div class="col-lg-2">
+                    <label>Wednesday from</label>
+                    <input class="form-control" type="time" name="wed_op">
+                    <label>to</label>
+                    <input class="form-control" type="time" name="wed_cl">
+                </div>
+                <div class="col-lg-2">
+                    <label>Thursday from</label>
+                    <input class="form-control" type="time" name="thu_op">
+                    <label>to</label>
+                    <input class="form-control" type="time" name="thu_cl">
+                </div>
+                <div class="col-lg-2">
+                    <label>Friday from</label>
+                    <input class="form-control" type="time" name="fri_op">
+                    <label>to</label>
+                    <input class="form-control" type="time" name="fri_cl">
+                </div>
+
+            </div>
             <p class="help-block">Was: {{museum.hoursOfOperation}}</p>
 
+            <br>
+
             <label>Description</label>
-            <textarea id="museum_desc" type="text" name="description" class="form-control" placeholder="Enter short description."></textarea>
+            <textarea name="description" class="form-control" placeholder="Enter short description."></textarea>
             <p class="help-block">Was: {{museum.description}}</p>
 
             <label>Phone</label>
-            <input id="museum_hours" type="tel" name="phone" class="form-control" placeholder="Enter hours information.">
+            <input type="tel" name="phone" class="form-control" placeholder="Enter phone.">
             <p class="help-block">Was: {{museum.phone}}</p>
 
             <label>Email</label>
-            <input id="museum_hours" type="email" name="email" class="form-control" placeholder="Enter hours information.">
+            <input type="email" name="email" class="form-control" placeholder="Enter email.">
             <p class="help-block">Was: {{museum.email}}</p>
 
             <label>Location</label>
-            <input id="museum_hours" type="url" name="location" class="form-control" placeholder="Enter hours information.">
+            <input type="url" name="location" class="form-control" placeholder="Enter Google Maps link.">
             <p class="help-block">Was: {{museum.location}}</p>
+
+            <label>Terms</label>
+            <textarea name="terms" class="form-control" placeholder="Enter Terms of Service."></textarea>
+            <p class="help-block">Was: {{museum.terms}}</p>
+
+            <label>About</label>
+            <textarea name="about" class="form-control" placeholder="Enter about information."></textarea>
+            <p class="help-block">Was: {{museum.about}}</p>
+
 
             <button class="btn btn-default" type="submit">Submit</button>
 

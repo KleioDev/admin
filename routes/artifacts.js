@@ -22,12 +22,14 @@ module.exports = function(){
         .post("/delete_audio", requireLogin, delete_audio)
         .post("/add_text", requireLogin, add_text)
         .post("/delete_text", requireLogin, delete_text)
-        .post("/add_image", requireLogin, parse_multi({
+        .post("/add_image", requireLogin,
+        parse_multi({
             multipart: true,
             formidable: {
                 uploadDir: 'public/img/'
             }
-        }), add_image)
+        }),
+        add_image)
         .post("/delete_image", requireLogin, delete_image)
         .post("/add_video", requireLogin, add_video)
         .post("/delete_video", requireLogin, delete_video)
@@ -104,6 +106,7 @@ function *artifact(){
         this.throw(err.message, err.status || 500);
     }
     yield this.render("artifact", {
+        title: "Artifact: " + artifact.title,
         artifact : artifact,
         exhibitions : exhibitions
     });
@@ -137,7 +140,7 @@ function *upload_audio(){
         this.throw(err.message, err.status || 500);
     }
 
-    if(response.statusCode == 201){
+    if(response.statusCode >= 200 && response.statusCode < 300){
         this.redirect("/artifact/" + body.fields.ArtifactId);
     }
 }
@@ -190,7 +193,7 @@ function *add_text(){
         this.throw(err.message, err.status || 500);
     }
 
-    if(response.statusCode == 201){
+    if(response.statusCode >= 200 && response.statusCode < 300){
         this.redirect("/artifact/" + body.ArtifactId);
     }
 
@@ -216,7 +219,7 @@ function *delete_text(){
         this.throw(err.message, err.status || 500);
     }
 
-    if(response.statusCode == 200){
+    if(response.statusCode >= 200 && response.statusCode < 300){
         this.redirect("/artifact/" + body.artifact_id);
     }
 
@@ -226,6 +229,7 @@ function *delete_text(){
  * Parse title to create an image content entry and upload the file.
  */
 function *add_image(){
+    console.log(this.request.body);
     var body = this.request.body, response; //this.request.body.fields
     if(!body) {
         this.throw('Bad Request', 400);
@@ -249,7 +253,7 @@ function *add_image(){
         this.throw(err.message, err.status || 500);
     }
 
-    if(response.statusCode == 201){
+    if(response.statusCode >= 200 && response.statusCode < 300){
         this.redirect("/artifact/" + body.fields.ArtifactId);
     }
 }
@@ -302,7 +306,7 @@ function *add_video(){
         this.throw(err.message, err.status || 500);
     }
 
-    if(response.statusCode == 201){
+    if(response.statusCode >= 200 && response.statusCode < 300){
         this.redirect("/artifact/" + body.ArtifactId);
     }
 
@@ -352,7 +356,7 @@ function *add_exhibition(){
         this.throw(err.message, err.status || 500);
     }
     //console.log(body);
-    if(response.statusCode == 201){
+    if(response.statusCode >= 200 && response.statusCode < 300){
         this.redirect("/artifact/" + body.ArtifactId);
     }
 }

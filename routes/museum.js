@@ -13,13 +13,14 @@ module.exports = function(){
     var museumController = new Router();
     museumController
         .get("/museum", requireLogin, museum)
-        .get("/edit_museum_information", requireLogin, parse_multi({
+        .get("/edit_museum_information", requireLogin, edit_museum_information)
+        .post("/edit_museum", requireLogin,
+        parse_multi({
             multipart: true,
             formidable: {
                 uploadDir: 'public/img/'
             }
-        }), edit_museum_information)
-        .post("/edit_museum", requireLogin, edit_museum);
+        }),edit_museum);
     return museumController.routes();
 };
 /**
@@ -84,17 +85,46 @@ function *edit_museum_information(){
  * doesn't change it.
  */
 function *edit_museum(){
-    var body = this.request.body, response; //this.request.body.fields
+
+    //console.log(this.request);
+    var body = this.request.body.fields;
+    var response;
+    //var post = yield parse(this);
+    //console.log(post);
+
     if(!body) {
         this.throw('Bad Request', 400);
     }
-
+    for(prop in body){
+        if(body[prop] == ""){
+            delete body[prop];
+        }
+    }
+    //dirty hack
+    if(body.mon_op != "") {
+        body.hoursOfOperation = "Lunes " + body.mon_op + " - " + body.mon_cl + "\n";
+        body.hoursOfOperation += " Martes " + body.tue_op + " - " + body.tue_cl + "\n";
+        body.hoursOfOperation += " Miercoles " + body.wed_op + " - " + body.wed_cl + "\n";
+        body.hoursOfOperation += " Jueves " + body.thu_op + " - " + body.thu_cl + "\n";
+        body.hoursOfOperation += " Viernes " + body.fri_op + " - " + body.fri_cl + "\n";
+        delete body.mon_op;
+        delete body.mon_cl;
+        delete body.tue_op;
+        delete body.tue_cl;
+        delete body.wed_op;
+        delete body.wed_cl;
+        delete body.thu_op;
+        delete body.thu_cl;
+        delete body.fri_op;
+        delete body.fri_cl;
+    }
+    //console.log(body);
     try {
         response = yield rq({
-            uri : apiUrl + '/museum/',
-            method : 'POST',
+            uri : apiUrl + '/museum/1',
+            method : 'PUT',
             json : true,
-            body : body.fields,
+            body : body,
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
         });
@@ -102,7 +132,7 @@ function *edit_museum(){
         this.throw(err.message, err.status || 500);
     }
 
-    if(response.statusCode == 200){
+    if(response.statusCode >= 200 && response.statusCode < 300){
         this.redirect("/museum");
     }
 
