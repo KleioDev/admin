@@ -40,7 +40,7 @@ function *events(){
 
 
         for(var i = 0; i < events.length; i++){
-            console.log(events[i].eventDate);
+            //console.log(events[i].eventDate);
             events[i].eventDate = moment(events[0].eventDate).format(" MMM DD, YYYY hh:mm a");
         }
         //console.log(moment(events[0].eventDate).format("YYYY-MM-DD HH:mm"));

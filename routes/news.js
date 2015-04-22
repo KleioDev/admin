@@ -5,6 +5,7 @@ var fs = require("fs");
 var Router = require('koa-router');
 var apiUrl = ' http://136.145.116.229:4567';
 var rq = require('co-request');
+var moment = require("moment");
 
 module.exports = function(){
     var newsController = new Router();
@@ -27,7 +28,6 @@ function *news(){
         news;
 
     try {
-        //console.log(this.session.user);
         response = yield rq({
             uri : apiUrl + '/news',
             method : 'GET',
@@ -36,8 +36,9 @@ function *news(){
         });
         //Parse
         news = JSON.parse(response.body).news;
-        console.log(news);
-
+        for(var i = 0; i < news.length; i++){
+            news[i].updatedAt = moment(news[0].updatedAt).format(" MMM DD, YYYY hh:mm a");
+        }
 
     } catch(err) {
         this.throw(err.message, err.status || 500);
@@ -76,7 +77,7 @@ function *single_article(){// id as param
     yield this.render("single_article", {
         title: news.title,
         text: news.description,
-        date: news.updatedAt,
+        date: moment(news.updatedAt).format(" MMM DD, YYYY hh:mm a"),
         id: news.id
     });
 
