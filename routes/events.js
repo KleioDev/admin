@@ -6,6 +6,9 @@ var Router = require('koa-router');
 var apiUrl = ' http://136.145.116.229:4567';
 var rq = require('co-request');
 var moment = require("moment");
+var http = require('http');
+var apn = require('apn');
+var url = require('url');
 
 module.exports = function(){
     var eventController = new Router();
@@ -16,7 +19,8 @@ module.exports = function(){
         .get("/new_event", requireLogin, new_event)
         .post("/event/:id/edit", requireLogin, edit_event)
         .post("/event", requireLogin, add_event)
-        .post("/event/:id/delete", requireLogin, delete_event);//DELETE
+        .post("/event/:id/delete", requireLogin, delete_event)
+        .post('/event/:id/notify', requireLogin, notify);
     return eventController.routes();
 };
 
@@ -237,6 +241,56 @@ function *delete_event(){
     if(response.statusCode == 200){
         this.redirect('/events');
     }
+}
+
+function *notify(){
+    var response, id = this.params.id, event;
+
+    try {
+        response = yield rq({
+            uri : apiUrl + '/events/' + id,
+            method : 'GET',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+        //Parse
+        event = JSON.parse(response.body);
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+
+
+    var iphone = "ac84931e1113520ded04aa0f64dbb5abe99bad27b23141925c65c34719ef6087";
+    var device = new apn.Device(iphone);
+
+    var note = new apn.Notification();
+    note.badge = 1;
+    note.sound = "beep.wav";
+    note.contentAvailable = 1;
+    note.alert = "New Event! " + event.title;
+    note.payload = {'messageFrom': 'MuSA'};
+    note.device = device;
+
+    var callback = function(errorNum, notification){
+        console.log('Error is: %s', errorNum);
+        console.log("Note " + JSON.stringify(notification));
+    }
+    var options = {
+        gateway: 'gateway.sandbox.push.apple.com',
+        errorCallback: callback,
+        cert: 'PushMuSACert.pem',
+        key:  'PushMuSAKey.pem',
+        passphrase: 'musa',
+        port: 2195,
+        enhanced: true,
+        cacheLength: 100
+    }
+    var apnsConnection = new apn.Connection(options);
+    console.log("Note " + JSON.stringify(note));
+    apnsConnection.sendNotification(note);
+
+    this.redirect("/event/" + id);
+
 }
 
 

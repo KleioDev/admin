@@ -10,8 +10,13 @@
     <p>Posted on: {{date}}</p>
     <p>{{text}}</p>
 
+    <form action="/news/{{id}}/notify" method="post">
+        <button class="btn btn-primary" type="submit">Send Notification</button>
+    </form>
+    <br>
     <p style="text-align: right"><a href="/edit_article/{{id}}"><button type="button" class="btn btn-primary">Edit Article</button></a></p>
     <br>
+
     <p style="text-align: right"><a href="#" data-toggle="modal" data-target="#deleteConfirmation"><button type="button" class="btn btn-danger">Delete Article</button></a></p>
     <!-- may add confirmation modal, like on feedback -->
 

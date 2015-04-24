@@ -11,6 +11,11 @@
     <p>Scheduled for: {{eventDate}}</p>
     <p>{{text}}</p>
 
+    <form action="/event/{{id}}/notify" method="post">
+        <button class="btn btn-primary" type="submit">Send Notification</button>
+    </form>
+    <br>
+
     <p style="text-align: right"><a href="/event/{{id}}/edit"><button type="button" class="btn btn-primary">Edit Event</button></a></p>
     <br>
     <p style="text-align: right"><a href="#" data-toggle="modal" data-target="#deleteConfirmation"><button type="button" class="btn btn-danger">Delete Event</button></a></p>
