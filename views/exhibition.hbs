@@ -8,13 +8,27 @@
     </div>
     <p>{{description}}</p>
 
+    <form action="/add_to_exhibition" method="post">
+        <div class="form-group">
+            <h4>Add an iBeacon to the exhibition:</h4>
+            <select name="BeaconId" class="form-control">
+                <option>Select an beacon...</option>
+                {{#each beacon_list}}
+                    <option  value={{id}}>Room {{RoomId}} - Code: {{code}}</option>
+                {{/each}}
+            </select>
+            <input hidden="true" name="ExhibitionId" value="{{id}}">
+            <button class="btn btn-default" type="submit">Submit</button>
+        </div>
+    </form>
+
     <h4>iBeacons belonging to this exhibition:</h4>
     <div class="table-responsive">
         <table class="table table-striped table-bordered table-hover">
             <thead>
             <tr>
                 <th>Code</th>
-                <th>Delete</th>
+                <th style="text-align: center">Remove</th>
             </tr>
             </thead>
             <tbody>
@@ -46,13 +60,13 @@
                 <th>Date Added</th>
                 <th>ID</th>
                 <th>Active</th>
-                <th>Delete</th>
+                <th style="text-align: center">Remove</th>
             </tr>
             </thead>
             <tbody>
             {{#each object_list}}
                 <tr class="odd gradeX">
-                    <td>{{title}}</td>
+                    <td><a href="/artifact/{{id}}">{{title}}</a></td>
                     <td>{{type}}</td>
                     <td>{{dimensions}}</td>
                     <td>{{dated}}</td>
@@ -78,19 +92,7 @@
         </table>
     </div>
 
-    <form action="/add_to_exhibition" method="post">
-        <div class="form-group">
-            <label>Add an iBeacon to the exhibition:</label>
-            <select name="BeaconId" class="form-control">
-                <option>Select an beacon...</option>
-                {{#each beacon_list}}
-                    <option  value={{id}}>Room {{RoomId}} - Code: {{code}}</option>
-                {{/each}}
-            </select>
-            <input hidden="true" name="ExhibitionId" value="{{id}}">
-            <button class="btn btn-default" type="submit">Submit</button>
-        </div>
-    </form>
+
 
 
 

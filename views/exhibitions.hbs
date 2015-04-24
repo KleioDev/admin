@@ -15,7 +15,7 @@
             <tr>
                 <th>Exhibition Title</th>
                 <th>Description Sample</th>
-                <th>View</th>
+                <th style="text-align: center">View</th>
             </tr>
             </thead>
             <tbody>
@@ -23,7 +23,7 @@
                 <tr class="odd gradeX">
                     <td>{{title}}</td>
                     <td>{{sample description}}</td>
-                    <td style="text-align: center"><a href="/exhibition/{{id}}">View</a></td>
+                    <td style="text-align: center"><a href="/exhibition/{{id}}"><button class="btn btn-primary">View</button></a></td>
             {{/each}}
 
             </tbody>
@@ -32,12 +32,16 @@
 
     <form action="/new_exhibition" method="post">
         <div class="form-group">
-            <label>Add a new exhibition:</label><br>
+            <h3>Add a new exhibition:</h3>
+            <div style=" border-bottom: 1px solid #eee;"></div>
+            <br>
+
             <label>Title</label>
             <input id="title" type="text" name="title" class="form-control" placeholder="Enter title" style="width: 50%">
             <label>Description</label>
 
-            <textarea id="description" type="text" name="description" class="form-control" rows="4"></textarea>
+            <textarea id="description" type="text" name="description" class="form-control" rows="4" placeholder="Enter a description for the exhibition"></textarea>
+            <br>
             <button class="btn btn-default" type="submit">Submit</button>
 
         </div>
