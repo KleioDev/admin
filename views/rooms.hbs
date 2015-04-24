@@ -23,23 +23,25 @@
                 <tr class="odd gradeX">
                     <td>{{name}}</td>
                     <td>{{description}}</td>
-                    <td style="text-align: center"><a href="/room/{{id}}">View</a></td>
+                    <td style="text-align: center"><a href="/room/{{id}}"><button class="btn btn-primary">View</button></a></td>
             {{/each}}
 
             </tbody>
         </table>
     </div>
 
-    <h4>Add a new Room:</h4>
+
+    <h3>Add a new room:</h3>
+    <div style=" border-bottom: 1px solid #eee;"></div>
+    <br>
     <form action="/new_room" method="post">
         <label>Name</label>
         <input type="text" name="name" class="form-control" style="width: 50%" placeholder="Enter name">
         <label>Description</label>
-
         <input type="text" name="description" class="form-control" style="width: 50%" placeholder="Enter short description">
-        <br>
         <button type="submit" class="btn btn-primary">Add Room</button>
     </form>
+    <br>
 </div>
 
 

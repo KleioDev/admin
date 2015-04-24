@@ -40,11 +40,6 @@
                         <td><strong>ID</strong></td>
                         <td>{{artifact.id}}</td>
                     </tr>
-                    <tr>
-                        <td><strong>Active</strong></td>
-                        <td>{{artifact.active}}</td>
-                    </tr>
-
 
                     </tbody>
                 </table>
@@ -58,7 +53,7 @@
     <br><br>
 
     <div class="panel panel-default">
-        <div class="panel-heading">Extra Content</div>
+        <div class="panel-heading" style="font-size: large">Extra Content</div>
         <div class="panel-body">
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#audio" data-toggle="tab">Audio</a>
@@ -317,6 +312,9 @@
         </div>
 
     <h3>Exhibition</h3>
+    <div style=" border-bottom: 1px solid #eee;"></div>
+    <br>
+
     <form role="form" action="/add_exhibition" method="post">
         <div class="form-group">
             <label>Add object to an exhibitions</label>
@@ -332,8 +330,12 @@
     </form>
 
     <h3>QR Code</h3>
-    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{artifact.id}}">
+    <div style=" border-bottom: 1px solid #eee;"></div>
+    <br>
 
+    <img src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&data={{artifact.id}}" >
+    <br>
+    <br>
     </div>
 
 

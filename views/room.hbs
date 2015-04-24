@@ -6,11 +6,13 @@
             <h1 class="page-header">{{title}}</h1>
         </div>
     </div>
-    <h5>Name</h5>
-    <p>{{room.name}}</p>
     <h5>Description:</h5>
     <p>{{room.description}}</p>
+    <div style=" border-bottom: 1px solid #eee;"></div>
+    <br>
 
+
+    <h4>iBeacons belonging to this exhibition:</h4>
 
     <div class="table-responsive">
         <table class="table table-striped table-bordered table-hover">
@@ -38,9 +40,12 @@
 
     <form action="/add_to_room" method="post">
         <div class="form-group">
-            <label>Add an iBeacon to the room:</label>
+            <h3>Add an iBeacon to the room:</h3>
+            <div style=" border-bottom: 1px solid #eee;"></div>
+            <br>
+
             <input hidden="true" name="RoomId" value="{{room.id}}">
-            <input id="ibeacon_id" type="text" name="code" class="form-control" placeholder="Enter ID" style="width: 50%">
+            <input id="ibeacon_id" type="text" name="code" class="form-control" placeholder="Enter UUID" style="width: 50%">
             <p class="help-block">Enter the UUID directly followed by both Major ID's</p>
             <p class="help-block">For example this beacon:
                 UUID: B9407F30-F5F8-466E-AFF9-25556B57FE6D
@@ -53,6 +58,8 @@
 
         </div>
     </form>
+    <br>
+    <br>
 
 </div>
 

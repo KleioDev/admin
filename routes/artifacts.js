@@ -61,7 +61,7 @@ function *artifacts(){
     }
 
 
-
+    console.log(artifacts);
     yield this.render("artifacts", {
         title : "Artifacts",
         objects: artifacts

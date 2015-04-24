@@ -33,7 +33,7 @@
                 <td>{{type}}</td>
                 <td>{{dimensions}}</td>
                 <td>{{dated}}</td>
-                <td>{{artist}}</td>
+                <td>{{Artist.name}}</td>
                 <td>{{id}}</td>
 
                 {{#if active}}
@@ -41,7 +41,7 @@
                 {{else}}
                 <td>Inactive</td>
                 {{/if}}
-                <td style="text-align: center"><a href="/artifact/{{id}}">View</a></td>
+                <td style="text-align: center"><a href="/artifact/{{id}}"><button class="btn btn-primary">View</button></a></td>
 
             </tr>
 
