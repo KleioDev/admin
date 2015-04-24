@@ -3,34 +3,32 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-10">
-            <h1 class="page-header">{{title}}</h1>
+            <h1 class="page-header">{{title}}
+                <small>View general museum information here.</small></h1>
         </div>
         <div class="col-lg-2"><br><br>
             <a href="/edit_museum_information"><button type="button" class="btn btn-default">Edit Information</button></a>
         </div>
     </div>
-
     <img src="{{museum.image}}" style="width:50%;height:50%">
-
-    <h5>Name:</h5>
+    <br>
+    <h4>Name:</h4>
     <p>{{museum.name}}</p>
-
-    <h5>Hours of Operation:</h5>
+    <div style="border-bottom: 1px solid darkgray;"></div>
+    <h4>Hours of Operation:</h4>
     <p>{{museum.hoursOfOperation}}</p>
-
-    <h5>Description:</h5>
+    <div style="border-bottom: 1px solid darkgray;"></div>
+    <h4>Description:</h4>
     <p>{{museum.description}}</p>
-
-    <h5>Phone:</h5>
+    <div style="border-bottom: 1px solid darkgray;"></div>
+    <h4>Phone:</h4>
     <p>{{museum.phone}}</p>
-
-    <h5>Email:</h5>
+    <div style="border-bottom: 1px solid darkgray;"></div>
+    <h4>Email:</h4>
     <p>{{museum.email}}</p>
-
-    <h5>Location:</h5>
+    <div style="border-bottom: 1px solid darkgray;"></div>
+    <h4>Location:</h4>
     <p>{{museum.location}}</p>
-
-
-
-
+    <div style="border-bottom: 1px solid darkgray;"></div>
+    <br>
 </div>

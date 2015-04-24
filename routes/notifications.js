@@ -9,9 +9,9 @@ var Router = require('koa-router');
 module.exports = function(){
     var notificationController = new Router();
     notificationController
-        .get("/notifications", requireLogin, notifications)
+        //.get("/notifications", requireLogin, notifications)
         .post("/create_notification", requireLogin, create_notification)
-        .post("/delete_notification", requireLogin, delete_notification);//DELETE
+        //.post("/delete_notification", requireLogin, delete_notification);//DELETE
     return notificationController.routes();
 };
 /**

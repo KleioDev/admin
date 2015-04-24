@@ -95,12 +95,6 @@ function *edit_museum(){
     if(!body) {
         this.throw('Bad Request', 400);
     }
-    for(prop in body){
-        if(body[prop] == ""){
-            delete body[prop];
-        }
-    }
-    //dirty hack
     if(body.mon_op != "") {
         body.hoursOfOperation = "Lunes " + body.mon_op + " - " + body.mon_cl + "\n";
         body.hoursOfOperation += " Martes " + body.tue_op + " - " + body.tue_cl + "\n";
@@ -118,6 +112,12 @@ function *edit_museum(){
         delete body.fri_op;
         delete body.fri_cl;
     }
+    for(prop in body){
+        if(body[prop] == ""){
+            delete body[prop];
+        }
+    }
+
     //console.log(body);
     try {
         response = yield rq({
