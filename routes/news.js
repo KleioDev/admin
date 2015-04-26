@@ -243,6 +243,7 @@ function *notify(){
 
 
     var iphone = "ac84931e1113520ded04aa0f64dbb5abe99bad27b23141925c65c34719ef6087";
+    //this should be an array when sending to multiple devices
     var device = new apn.Device(iphone);
 
     var note = new apn.Notification();
@@ -269,6 +270,7 @@ function *notify(){
     }
     var apnsConnection = new apn.Connection(options);
     console.log("Note " + JSON.stringify(note));
+    //pushNotification takes (note, recipients) where recipients is the array of udid's
     apnsConnection.sendNotification(note);
 
     this.redirect("/news/" + id);
