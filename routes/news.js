@@ -147,7 +147,7 @@ function *edit_article(){
         this.throw(err.message, err.status || 500);
     }
 
-    if(response.statusCode == 200){
+    if(response.statusCode >= 200 && response.statusCode < 300){
         this.redirect('/news');
     }
 }
@@ -189,7 +189,7 @@ function *add_article(){
         this.throw(err.message, err.status || 500);
     }
 
-    if(response.statusCode == 200){
+    if(response.statusCode >= 200 && response.statusCode < 300){
         this.redirect('/news');
     }
 
@@ -220,7 +220,7 @@ function *delete_article(){
         this.throw(err.message, err.status || 500);
     }
 
-    if(response.statusCode == 200){
+    if(response.statusCode >= 200 && response.statusCode < 300){
         this.redirect('/news');
     }
 }

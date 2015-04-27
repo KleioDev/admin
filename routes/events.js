@@ -45,7 +45,7 @@ function *events(){
 
         for(var i = 0; i < events.length; i++){
             //console.log(events[i].eventDate);
-            events[i].eventDate = moment(events[0].eventDate).format(" MMM DD, YYYY hh:mm a");
+            events[i].eventDate = moment(events[i].eventDate).format(" MMM DD, YYYY hh:mm a");
         }
         //console.log(moment(events[0].eventDate).format("YYYY-MM-DD HH:mm"));
 
@@ -53,7 +53,7 @@ function *events(){
         this.throw(err.message, err.status || 500);
     }
 
-
+    console.log(events);
     yield this.render("events", {
         title : "Events",
         events: events});
@@ -160,7 +160,7 @@ function *edit_event(){
         this.throw(err.message, err.status || 500);
     }
 
-    if(response.statusCode == 200){
+    if(response.statusCode >= 200 && response.statusCode < 300){
         this.redirect('/events');
     }
 }
@@ -184,10 +184,13 @@ function *add_event(){
     var body = yield parse(this);
     //body.image = null;
     var response;
-    body.eventDate = body.date+"T"+body.time+":00.000-04";
+    var date = body.date+"T"+body.time+":00.000-04";
+    console.log(date);
+    body.eventDate = new moment(date);
+
     delete body.date;
     delete body.time;
-    console.log(body);
+    console.log(body.eventDate);
 
     //console.log(this.session.user);
     if(!body) {
@@ -238,7 +241,7 @@ function *delete_event(){
         this.throw(err.message, err.status || 500);
     }
 
-    if(response.statusCode == 200){
+    if(response.statusCode >= 200 && response.statusCode < 300){
         this.redirect('/events');
     }
 }
