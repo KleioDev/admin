@@ -61,7 +61,7 @@ function *artifacts(){
     }
 
 
-    console.log(artifacts);
+    //console.log(artifacts);
     yield this.render("artifacts", {
         title : "Artifacts",
         objects: artifacts
@@ -229,7 +229,7 @@ function *delete_text(){
  * Parse title to create an image content entry and upload the file.
  */
 function *add_image(){
-    console.log(this.request.body);
+    //console.log(this.request.body);
     var body = this.request.body, response; //this.request.body.fields
     if(!body) {
         this.throw('Bad Request', 400);

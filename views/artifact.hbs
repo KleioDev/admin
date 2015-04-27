@@ -88,8 +88,8 @@
                                                     Your browser does not support the audio element.
                                                 </audio>
                                                 <br><form action="/delete_audio" method="post">
-                                                <input hidden="true" name="artifact_id" value="{{../artifact.id}}">
-                                                <input hidden="true" name="audio_id" value="{{id}}">
+                                                <input required hidden="true" name="artifact_id" value="{{../artifact.id}}">
+                                                <input required hidden="true" name="audio_id" value="{{id}}">
                                                 <button class="btn btn-danger" type="submit">Remove</button>
                                             </form>
 
@@ -109,12 +109,12 @@
                                             <form role="form" action="/upload_audio" method="post" enctype="multipart/form-data">
                                                 <div class="form-group">
                                                     <label>New audio:</label>
-                                                    <input class="form-control" placeholder="Title" name="title" style="width: 50%;">
+                                                    <input required class="form-control" placeholder="Title" name="title" style="width: 50%;">
                                                     <input hidden="true" name="ArtifactId" value="{{artifact.id}}">
                                                     <br>
-                                                    <input class="form-control" placeholder="Description" name="description" style="width: 50%;">
+                                                    <input required class="form-control" placeholder="Description" name="description" style="width: 50%;">
 
-                                                    <input type="file" name="file">
+                                                    <input required type="file" name="file">
                                                     <br>
                                                     <button type="submit" class="btn btn-default">Submit</button>
                                                 </div>
@@ -151,8 +151,8 @@
 
                                                 <br>
                                                 <form action="/delete_video" method="post">
-                                                    <input hidden="true" name="artifact_id" value="{{../artifact.id}}">
-                                                    <input hidden="true" name="video_id" value="{{id}}">                                                    
+                                                    <input required hidden="true" name="artifact_id" value="{{../artifact.id}}">
+                                                    <input required hidden="true" name="video_id" value="{{id}}">
                                                     <button class="btn btn-danger" type="submit">Remove</button>
                                                 </form>
 
@@ -172,12 +172,12 @@
                                             <form role="form" action="/add_video" method="post">
                                                 <div class="form-group">
                                                     <label>New video:</label>
-                                                    <input class="form-control" placeholder="Title" name="title" style="width: 50%;">
+                                                    <input required class="form-control" placeholder="Title" name="title" style="width: 50%;">
                                                     <input hidden="true" name="ArtifactId" value="{{artifact.id}}">
                                                     <br>
-                                                    <input class="form-control" placeholder="Description" name="description" style="width: 50%;">
+                                                    <input required class="form-control" placeholder="Description" name="description" style="width: 50%;">
                                                     <br>
-                                                    <input class="form-control" placeholder="Enter youtube url" name="link" style="width: 50%;">
+                                                    <input required class="form-control" placeholder="Enter youtube url" name="link" style="width: 50%;">
 
                                                     <br>
                                                     <button type="submit" class="btn btn-default">Submit</button>
@@ -209,8 +209,8 @@
                                                 <label>{{title}}</label><br>
                                                 <img src={{link}}>
                                                 <br><form action="/delete_image" method="post">
-                                                <input hidden="true" name="artifact_id" value="{{../artifact.id}}">
-                                                <input hidden="true" name="image_id" value="{{id}}">
+                                                <input required hidden="true" name="artifact_id" value="{{../artifact.id}}">
+                                                <input required hidden="true" name="image_id" value="{{id}}">
                                                 <button class="btn btn-danger" type="submit">Remove</button>
                                             </form>
 
@@ -230,11 +230,11 @@
                                             <form role="form" action="/add_image" method="post" enctype="multipart/form-data">
                                                 <div class="form-group">
                                                     <label>New image:</label>
-                                                    <input class="form-control" placeholder="Title" name="title" style="width: 50%;">
+                                                    <input required class="form-control" placeholder="Title" name="title" style="width: 50%;">
                                                     <input hidden="true" name="ArtifactId" value="{{artifact.id}}">
                                                     <br>
-                                                    <input class="form-control" placeholder="Description" name="description" style="width: 50%;">
-                                                    <input type="file" name="file">
+                                                    <input required class="form-control" placeholder="Description" name="description" style="width: 50%;">
+                                                    <input required type="file" name="file">
 
                                                     <br>
                                                     <button type="submit" class="btn btn-default">Submit</button>
@@ -267,8 +267,8 @@
                                                 <p>{{description}}</p>
                                                 <br>
                                                 <form action="/delete_text" method="post">
-                                                    <input hidden="true" name="artifact_id" value="{{../artifact.id}}">
-                                                    <input hidden="true" name="text_id" value="{{id}}">                                                    
+                                                    <input required hidden="true" name="artifact_id" value="{{../artifact.id}}">
+                                                    <input required hidden="true" name="text_id" value="{{id}}">
                                                     <button class="btn btn-danger" type="submit">Remove</button>
                                                 </form>
 
@@ -288,11 +288,11 @@
                                             <form role="form" action="/add_text" method="post">
                                                 <div class="form-group">
                                                     <label>New text:</label>
-                                                    <input class="form-control" placeholder="Title" name="title" style="width: 50%;">
+                                                    <input required class="form-control" placeholder="Title" name="title" style="width: 50%;">
                                                     <input hidden="true" name="ArtifactId" value="{{artifact.id}}">
 
                                                     <br>
-                                                    <textarea class="form-control" placeholder="Enter info" name="description" style="width: 50%;"></textarea>
+                                                    <textarea required class="form-control" placeholder="Enter info" name="description" style="width: 50%;"></textarea>
                                                     <br>
                                                     <button type="submit" class="btn btn-default">Submit</button>
                                                 </div>
