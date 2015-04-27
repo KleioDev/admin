@@ -16,7 +16,7 @@ module.exports = function(){
         .get('/administrator/:id/edit', edit_administrator)
         .post('/administrator', parse_multi, create)
         .post('/administrator/:id', parse_multi, edit)
-        .delete('/administrator/:id', destroy);
+        .post('/administrator/:id/delete', destroy);
 
     return administratorController.routes();
 }
@@ -129,7 +129,7 @@ function *create(){
         this.throw(err.message, err.status || 500);
     }
 
-    if(response.statusCode == 200){
+    if(response.statusCode >= 200 && response.statusCode < 300){
         this.redirect('/administrator');
     }
 }
@@ -182,7 +182,7 @@ function *destroy(){
         this.throw(err.message, err.status || 500);
     }
 
-    if(response.statusCode == 200){
+    if(response.statusCode >= 200 && response.statusCode < 300){
         this.redirect('/administrator');
     }
 }

@@ -37,6 +37,7 @@
     "datatables-responsive": "~1.0.3",
     "bootstrap-social": "~4.8.0",
     "flot.tooltip": "~0.8.4",
-    "bootstrap3-wysihtml5-bower": "~0.3.3"
+    "bootstrap3-wysihtml5-bower": "~0.3.3",
+    "jquery-validation": "~1.13.1"
   }
 }
