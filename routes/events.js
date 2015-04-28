@@ -9,6 +9,8 @@ var moment = require("moment");
 var http = require('http');
 var apn = require('apn');
 var url = require('url');
+var gcm = require('node-gcm');
+
 
 module.exports = function(){
     var eventController = new Router();
@@ -262,35 +264,73 @@ function *notify(){
         this.throw(err.message, err.status || 500);
     }
 
-
-    var iphone = "ac84931e1113520ded04aa0f64dbb5abe99bad27b23141925c65c34719ef6087";
-    var device = new apn.Device(iphone);
-
-    var note = new apn.Notification();
-    note.badge = 1;
-    note.sound = "beep.wav";
-    note.contentAvailable = 1;
-    note.alert = "New Event! " + event.title;
-    note.payload = {'messageFrom': 'MuSA'};
-    note.device = device;
-
-    var callback = function(errorNum, notification){
-        console.log('Error is: %s', errorNum);
-        console.log("Note " + JSON.stringify(notification));
+    //IOS notifications
+    //var iphone = "ac84931e1113520ded04aa0f64dbb5abe99bad27b23141925c65c34719ef6087";
+    //var device = new apn.Device(iphone);
+    var iosDevices = [];
+    try {
+        response = yield rq({
+            uri : apiUrl + '/users/ios',
+            method : 'GET',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+        //Parse
+        iosDevices = JSON.parse(response.body);
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
     }
-    var options = {
-        gateway: 'gateway.sandbox.push.apple.com',
-        errorCallback: callback,
-        cert: 'PushMuSACert.pem',
-        key:  'PushMuSAKey.pem',
-        passphrase: 'musa',
-        port: 2195,
-        enhanced: true,
-        cacheLength: 100
+    if(iosDevices) {
+        var note = new apn.Notification();
+        note.badge = 1;
+        note.sound = "beep.wav";
+        note.contentAvailable = 1;
+        note.alert = "New Event! " + event.title;
+        note.payload = {'messageFrom': 'MuSA'};
+        var options = {
+            gateway: 'gateway.sandbox.push.apple.com',
+            errorCallback: function (errorNum, notification) {
+                console.log('Error is: %s', errorNum);
+                console.log("Note " + JSON.stringify(notification));
+            },
+            cert: 'PushMuSACert.pem',
+            key: 'PushMuSAKey.pem',
+            passphrase: 'musa',
+            port: 2195,
+            enhanced: true,
+            cacheLength: 100
+        }
+        var apnsConnection = new apn.Connection(options);
+        console.log("Note " + JSON.stringify(note));
+        apnsConnection.pushNotification(note, iosDevices);
     }
-    var apnsConnection = new apn.Connection(options);
-    console.log("Note " + JSON.stringify(note));
-    apnsConnection.sendNotification(note);
+
+    //Android notifications
+    var androidDevices = [];
+    try {
+        response = yield rq({
+            uri : apiUrl + '/users/android',
+            method : 'GET',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+        //Parse
+        androidDevices = JSON.parse(response.body);
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+    if(androidDevices) {
+        var message = new gcm.Message();
+        var sender = new gcm.Sender('AIzaSyB5q4frCAMgfJIIkoLYvZeu7aIB6VJJzds');
+        message.addData('message', event.title);
+        message.addData('title', 'New Event at Musa!');
+        message.addData('msgcnt', '3');
+        message.timeToLive = 3000;
+        sender.send(message, androidDevices, 4, function (result) {
+            console.log(result); //null is actually success
+        });
+    }
+
 
     this.redirect("/event/" + id);
 

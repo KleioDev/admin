@@ -14,7 +14,9 @@ module.exports = function(){
         .post("/login", login)
         .get("/login", login_page)
         .get("/logout", logout)
-        .get("/", requireLogin, index);
+        .get("/", requireLogin, index)
+        .get("/forgot", forgot)
+        .post("/forgot", reset_password);
     return loginController.routes();
 };
 
@@ -69,6 +71,18 @@ function *logout() {
     //console.log(this.session.user);
     this.session = null;
     this.redirect("login");
+}
+
+function *forgot(){
+    yield this.render("forgot");
+
+}
+
+function *reset_password(){
+
+    //Update admin account with random password
+    //send email with updated pw
+    //admin can then enter with that one
 }
 
 /**

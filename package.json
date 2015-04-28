@@ -26,6 +26,7 @@
     "koa-views": "^3.0.0",
     "mocha": "^2.2.1",
     "moment": "^2.10.2",
+    "node-gcm": "^0.9.15",
     "supertest": "^0.15.0",
     "supertest-as-promised": "^1.0.0"
   },
