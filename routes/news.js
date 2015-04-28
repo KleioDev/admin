@@ -22,7 +22,7 @@ module.exports = function(){
         .post("/edit_article", requireLogin, edit_article)
         .post("/add_article", requireLogin, add_article)
         .post("/delete_article", requireLogin, delete_article)
-        .post("/news/:id/notify", requireLogin, notify);
+        .post("/news/:id/notify", requireLogin, notifyNews);
     return newsController.routes();
 };
 
@@ -84,7 +84,8 @@ function *single_article(){// id as param
         title: news.title,
         text: news.description,
         date: moment(news.updatedAt).format(" MMM DD, YYYY hh:mm a"),
-        id: news.id
+        id: news.id,
+        sent: news.notified
     });
 
 
@@ -227,7 +228,7 @@ function *delete_article(){
     }
 }
 
-function *notify(){
+function *notifyNews(){
     var response, id = this.params.id, news;
 
     try {
@@ -238,25 +239,21 @@ function *notify(){
                 Authorization : 'Bearer ' + this.session.user}
         });
         //Parse
-        news = JSON.parse(response.body);
+        if(response.statusCode != 404) news = JSON.parse(response.body);
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
 
-
-    //IOS notifications
-    //var iphone = "ac84931e1113520ded04aa0f64dbb5abe99bad27b23141925c65c34719ef6087";
-    //var device = new apn.Device(iphone);
     var iosDevices = [];
     try {
         response = yield rq({
-            uri : apiUrl + '/users/ios',
+            uri : apiUrl + '/phones?os=ios',
             method : 'GET',
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
         });
         //Parse
-        iosDevices = JSON.parse(response.body);
+        if(response.statusCode != 404) iosDevices = JSON.parse(response.body).phones;
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
@@ -266,7 +263,7 @@ function *notify(){
         note.sound = "beep.wav";
         note.contentAvailable = 1;
         note.alert = "New Article! " + news.title;
-        note.payload = {'messageFrom': 'MuSA'};
+        note.payload = {'messageFrom': 'MuSA', 'action':{type:"news", id:news.id}};
         var options = {
             gateway: 'gateway.sandbox.push.apple.com',
             errorCallback: function (errorNum, notification) {
@@ -280,22 +277,25 @@ function *notify(){
             enhanced: true,
             cacheLength: 100
         }
+        var tokens = [];
+        for(var i = 0; i < iosDevices.length; i++)
+            tokens.push(iosDevices[i].token);
+
         var apnsConnection = new apn.Connection(options);
-        console.log("Note " + JSON.stringify(note));
-        apnsConnection.pushNotification(note, iosDevices);
+        apnsConnection.pushNotification(note, tokens);
     }
 
     //Android notifications
     var androidDevices = [];
     try {
         response = yield rq({
-            uri : apiUrl + '/users/android',
+            uri : apiUrl + '/phones?os=android',
             method : 'GET',
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
         });
         //Parse
-        androidDevices = JSON.parse(response.body);
+        if(response.statusCode != 404) androidDevices = JSON.parse(response.body).phones;
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
@@ -305,12 +305,29 @@ function *notify(){
         message.addData('message', news.title);
         message.addData('title', 'New Article at Musa!');
         message.addData('msgcnt', '3');
+        message.addData('type', "news");
+        message.addData('news', news.id);
         message.timeToLive = 3000;
-        sender.send(message, androidDevices, 4, function (result) {
+        var tokens = [];
+        for(var i = 0; i < androidDevices.length; i++)
+            tokens.push(androidDevices[i].token);
+        sender.send(message, tokens, 4, function (result) {
             console.log(result); //null is actually success
         });
     }
 
+    try {
+        response = yield rq({
+            uri : apiUrl + '/news/' + id,
+            method : 'PUT',
+            json:true,
+            body: {notified: true},
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
 
     this.redirect("/news/" + id);
 

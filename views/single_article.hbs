@@ -10,6 +10,11 @@
                 <button class="btn btn-primary" type="submit">Send Notification</button>
             </form>
         </div>
+        {{#if sent}}
+            <small style="text-align: center">Notification was sent.</small>
+        {{else}}
+            <small style="text-align: center">Notification has not been sent.</small>
+        {{/if}}
     </div>
 
     <p>Posted on: {{date}}</p>

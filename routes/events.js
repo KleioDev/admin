@@ -22,7 +22,7 @@ module.exports = function(){
         .post("/event/:id/edit", requireLogin, edit_event)
         .post("/event", requireLogin, add_event)
         .post("/event/:id/delete", requireLogin, delete_event)
-        .post('/event/:id/notify', requireLogin, notify);
+        .post('/event/:id/notify', requireLogin, notifyEvent);
     return eventController.routes();
 };
 
@@ -33,7 +33,6 @@ function *events(){
     var response, events;
 
     try {
-        //console.log(this.session.user);
         response = yield rq({
             uri : apiUrl + '/events',
             method : 'GET',
@@ -42,20 +41,16 @@ function *events(){
         });
         //Parse
         events = JSON.parse(response.body).events;
-        //console.log(events);
 
 
         for(var i = 0; i < events.length; i++){
-            //console.log(events[i].eventDate);
             events[i].eventDate = moment(events[i].eventDate).format(" MMM DD, YYYY hh:mm a");
         }
-        //console.log(moment(events[0].eventDate).format("YYYY-MM-DD HH:mm"));
 
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
 
-    console.log(events);
     yield this.render("events", {
         title : "Events",
         events: events});
@@ -70,7 +65,6 @@ function *single_event(){// id as param
     var response, id = this.params.id, event;
 
     try {
-        //console.log(this.session.user);
         response = yield rq({
             uri : apiUrl + '/events/' + id,
             method : 'GET',
@@ -79,8 +73,6 @@ function *single_event(){// id as param
         });
         //Parse
         event = JSON.parse(response.body);
-        //console.log(event);
-
 
     } catch(err) {
         this.throw(err.message, err.status || 500);
@@ -91,7 +83,8 @@ function *single_event(){// id as param
         text: event.description,
         date: moment(event.updatedAt).format(" MMM DD, YYYY hh:mm a"),
         eventDate: moment(event.eventDate).format(" MMM DD, YYYY hh:mm a"),
-        id: event.id
+        id: event.id,
+        sent: event.notified
     });
 
 
@@ -106,7 +99,6 @@ function *edit_event_page(){ //id as param
     var response, id = this.params.id, event;
 
     try {
-        //console.log(this.session.user);
         response = yield rq({
             uri : apiUrl + '/events/' + id,
             method : 'GET',
@@ -115,7 +107,6 @@ function *edit_event_page(){ //id as param
         });
         //Parse
         event = JSON.parse(response.body);
-        //console.log(event);
 
 
     } catch(err) {
@@ -138,10 +129,8 @@ function *edit_event(){
     var body = yield parse(this);
     var id = body.id;
     var response;
-    console.log(body);
     body.eventDate = body.date+"T"+body.time+":00.000-04";
     delete body.date, body.time;
-    console.log(body);
     if(!body) {
         this.throw('Bad Request', 400);
     }
@@ -187,14 +176,11 @@ function *add_event(){
     //body.image = null;
     var response;
     var date = body.date+"T"+body.time+":00.000-04";
-    console.log(date);
     body.eventDate = new moment(date);
 
     delete body.date;
     delete body.time;
-    console.log(body.eventDate);
 
-    //console.log(this.session.user);
     if(!body) {
         this.throw('Bad Request', 400);
     }
@@ -248,7 +234,7 @@ function *delete_event(){
     }
 }
 
-function *notify(){
+function *notifyEvent(){
     var response, id = this.params.id, event;
 
     try {
@@ -259,24 +245,21 @@ function *notify(){
                 Authorization : 'Bearer ' + this.session.user}
         });
         //Parse
-        event = JSON.parse(response.body);
+        if(response.statusCode != 404) event = JSON.parse(response.body);
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
 
-    //IOS notifications
-    //var iphone = "ac84931e1113520ded04aa0f64dbb5abe99bad27b23141925c65c34719ef6087";
-    //var device = new apn.Device(iphone);
     var iosDevices = [];
     try {
         response = yield rq({
-            uri : apiUrl + '/users/ios',
+            uri : apiUrl + '/phones?os=ios',
             method : 'GET',
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
         });
         //Parse
-        iosDevices = JSON.parse(response.body);
+        if(response.statusCode != 404)  iosDevices = JSON.parse(response.body).phones;
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
@@ -286,7 +269,7 @@ function *notify(){
         note.sound = "beep.wav";
         note.contentAvailable = 1;
         note.alert = "New Event! " + event.title;
-        note.payload = {'messageFrom': 'MuSA'};
+        note.payload = {'messageFrom': 'MuSA', 'action':{type:"event", id:event.id}};
         var options = {
             gateway: 'gateway.sandbox.push.apple.com',
             errorCallback: function (errorNum, notification) {
@@ -300,22 +283,25 @@ function *notify(){
             enhanced: true,
             cacheLength: 100
         }
+        var tokens = [];
+        for(var i = 0; i < iosDevices.length; i++)
+            tokens.push(iosDevices[i].token);
+
         var apnsConnection = new apn.Connection(options);
-        console.log("Note " + JSON.stringify(note));
-        apnsConnection.pushNotification(note, iosDevices);
+        apnsConnection.pushNotification(note, tokens);
     }
 
     //Android notifications
     var androidDevices = [];
     try {
         response = yield rq({
-            uri : apiUrl + '/users/android',
+            uri : apiUrl + '/phones?os=android',
             method : 'GET',
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
         });
         //Parse
-        androidDevices = JSON.parse(response.body);
+        if(response.statusCode != 404) androidDevices = JSON.parse(response.body).phones;
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
@@ -325,12 +311,28 @@ function *notify(){
         message.addData('message', event.title);
         message.addData('title', 'New Event at Musa!');
         message.addData('msgcnt', '3');
+        message.addData('type', "event");
+        message.addData('event', event.id);
         message.timeToLive = 3000;
-        sender.send(message, androidDevices, 4, function (result) {
+        var tokens = [];
+        for(var i = 0; i < androidDevices.length; i++)
+            tokens.push(androidDevices[i].token);
+        sender.send(message, tokens, 4, function (result) {
             console.log(result); //null is actually success
         });
     }
-
+    try {
+        response = yield rq({
+            uri : apiUrl + '/events/' + id,
+            method : 'PUT',
+            json:true,
+            body:{notified:true},
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
 
     this.redirect("/event/" + id);
 

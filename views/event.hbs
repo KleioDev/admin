@@ -7,9 +7,15 @@
         </div>
         <br><br>
         <div class="col-lg-2">
-            <form action="/news/{{id}}/notify" method="post">
+            <form action="/event/{{id}}/notify" method="post">
                 <button class="btn btn-primary" type="submit">Send Notification</button>
             </form>
+            {{#if sent}}
+                <small style="text-align: center">Notification was sent.</small>
+            {{else}}
+                <small style="text-align: center">Notification has not been sent.</small>
+
+            {{/if}}
         </div>
     </div>
 
