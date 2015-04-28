@@ -5,7 +5,8 @@ var rq = require('co-request');
 var parse = require("co-body");
 var fs = require("fs");
 var Router = require('koa-router');
-apiUrl = ' http://136.145.116.229:4567';
+apiUrl = 'http://136.145.116.229:4567';
+var Email = require("email").Email;
 
 
 module.exports = function(){
@@ -81,8 +82,42 @@ function *forgot(){
 function *reset_password(){
 
     //Update admin account with random password
-    //send email with updated pw
-    //admin can then enter with that one
+    var body = yield parse(this), response, admin, password = makeid();
+    try {
+        response = yield rq({
+            uri : apiUrl + '/administrator?email=' + body.email,
+            method : 'GET',
+            json : true,
+            body : body
+        });
+        admin = JSON.parse(response.body).administrators;
+        console.log(admin);
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+    var id = admin.id;
+    try {
+        response = yield rq({
+            uri : apiUrl + '/administrator/' + id,
+            method : 'PUT',
+            json : true,
+            body : {password:password}
+        });
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+    if(response.statusCode == 200) {
+        //send email with updated pw
+        var message = new Email({
+            from: "kleio.team@gmail.com",
+            to: admin.email,
+            subject: "Password Recovery",
+            body: "Your temporary password is: " + password + ".Please access " + apiUrl + " and change your password in the administrator page."
+        });
+        message.send();
+        //admin can then enter with that one
+        this.redirect("/login");
+    }
 }
 
 /**
@@ -96,4 +131,15 @@ function *requireLogin(next){
     else {
         yield* next;
     }
+}
+
+function makeid()
+{
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for( var i=0; i < 6; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
 }
