@@ -35,7 +35,7 @@ function *index(){
  */
 function *login(){
     var post = yield parse(this);
-    //console.log(post);
+    console.log(post);
     try {
         response = yield rq({
             uri : apiUrl + '/authenticate',
@@ -44,7 +44,7 @@ function *login(){
             body : post
         });
 
-        if(response.statusCode == 401 || response.statusCode == 500){
+        if(response.statusCode == 403 || response.statusCode == 500){
             this.redirect("/login");
         }
         else{
