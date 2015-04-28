@@ -15,7 +15,41 @@
     <p>{{museum.name}}</p>
     <div style="border-bottom: 1px solid darkgray;"></div>
     <h4>Hours of Operation:</h4>
-    <p>{{museum.hoursOfOperation}}</p>
+    {{#if museum.hoursOfOperation.monday.closed}}
+        <p>Monday: Closed</p>
+    {{else}}
+        <p>Monday: {{museum.hoursOfOperation.monday.open}} to {{museum.hoursOfOperation.monday.close}}</p>
+    {{/if}}
+    {{#if museum.hoursOfOperation.tuesday.closed}}
+        <p>Tuesday: Closed</p>
+    {{else}}
+        <p>Tuesday: {{museum.hoursOfOperation.tuesday.open}} to {{museum.hoursOfOperation.tuesday.close}}</p>
+    {{/if}}
+    {{#if museum.hoursOfOperation.wednesday.closed}}
+        <p>Wednesday: Closed</p>
+    {{else}}
+        <p>Wednesday: {{museum.hoursOfOperation.wednesday.open}} to {{museum.hoursOfOperation.wednesday.close}}</p>
+    {{/if}}
+    {{#if museum.hoursOfOperation.thursday.closed}}
+        <p>Thursday: Closed</p>
+    {{else}}
+        <p>Thursday: {{museum.hoursOfOperation.thurday.open}} to {{museum.hoursOfOperation.thursday.close}}</p>
+    {{/if}}
+    {{#if museum.hoursOfOperation.friday.closed}}
+        <p>Friday: Closed</p>
+    {{else}}
+        <p>Friday: {{museum.hoursOfOperation.friday.open}} to {{museum.hoursOfOperation.friday.close}}</p>
+    {{/if}}
+    {{#if museum.hoursOfOperation.saturday.closed}}
+        <p>Saturday: Closed</p>
+    {{else}}
+        <p>Saturday: {{museum.hoursOfOperation.saturday.open}} to {{museum.hoursOfOperation.saturday.close}}</p>
+    {{/if}}
+    {{#if museum.hoursOfOperation.sunday.closed}}
+        <p>Sunday: Closed</p>
+    {{else}}
+        <p>Sunday: {{museum.hoursOfOperation.sunday.open}} to {{museum.hoursOfOperation.sunday.close}}</p>
+    {{/if}}
     <div style="border-bottom: 1px solid darkgray;"></div>
     <h4>Description:</h4>
     <p>{{{museum.description}}}</p>

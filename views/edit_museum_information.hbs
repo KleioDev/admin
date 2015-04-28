@@ -22,41 +22,88 @@
             <div class="row" >
                 <div class="col-lg-2">
                     <p>Monday from</p>
-                    <input class="form-control" type="time" name="mon_op">
+                    <input class="form-control" type="time" name="mon_op" id="mon_op">
                     <p>to</p>
-                    <input class="form-control" type="time" name="mon_cl">
+                    <input class="form-control" type="time" name="mon_cl" id="mon_cl">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="mon_closed" value="true" id="mon_closed">Closed
+                        </label>
+                    </div>
                 </div>
+
                 <div class="col-lg-2">
                     <p>Tuesday from</p>
-                    <input class="form-control" type="time" name="tue_op">
+                    <input class="form-control" type="time" name="tue_op" id="tue_op">
                     <p>to</p>
-                    <input class="form-control" type="time" name="tue_cl">
+                    <input class="form-control" type="time" name="tue_cl" id="tue_cl">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="tue_closed" value="true" id="tue_closed">Closed
+                        </label>
+                    </div>
                 </div>
                 <div class="col-lg-2">
                     <p>Wednesday from</p>
-                    <input class="form-control" type="time" name="wed_op">
+                    <input class="form-control" type="time" name="wed_op" id="wed_op">
                     <p>to</p>
-                    <input class="form-control" type="time" name="wed_cl">
+                    <input class="form-control" type="time" name="wed_cl" id="wed_cl">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="wed_closed" value="true" id="wed_closed">Closed
+                        </label>
+                    </div>
                 </div>
                 <div class="col-lg-2">
                     <p>Thursday from</p>
-                    <input class="form-control" type="time" name="thu_op">
+                    <input class="form-control" type="time" name="thu_op" id="thu_op">
                     <p>to</p>
-                    <input class="form-control" type="time" name="thu_cl">
+                    <input class="form-control" type="time" name="thu_cl" id="thu_cl">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="thu_closed" value="true" id="thu_closed">Closed
+                        </label>
+                    </div>
                 </div>
                 <div class="col-lg-2">
                     <p>Friday from</p>
-                    <input class="form-control" type="time" name="fri_op">
+                    <input class="form-control" type="time" name="fri_op" id="fri_op">
                     <p>to</p>
-                    <input class="form-control" type="time" name="fri_cl">
+                    <input class="form-control" type="time" name="fri_cl" id="fri_cl">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="fri_closed" value="true" id="fri_closed">Closed
+                        </label>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <p>Saturday from</p>
+                    <input class="form-control" type="time" name="sat_op" id="sat_op">
+                    <p>to</p>
+                    <input class="form-control" type="time" name="sat_cl" id="sat_cl">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="sat_closed" value="true" id="sat_closed">Closed
+                        </label>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <p>Sunday from</p>
+                    <input class="form-control" type="time" name="sun_op" id="sun_op">
+                    <p>to</p>
+                    <input class="form-control" type="time" name="sun_cl" id="sun_cl">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="sun_closed" value="true" id="sun_closed">Closed
+                        </label>
+                    </div>
                 </div>
 
             </div>
-            <p class="help-block">Was: {{museum.hoursOfOperation}}</p>
 
             <h3>Description</h3>
             <textarea name="description" class="form-control" placeholder="Enter short description."></textarea>
-            <p class="help-block">Was: {{museum.description}}</p>
+            <p class="help-block">Was: {{{museum.description}}}</p>
 
             <h3>Phone</h3>
             <input type="tel" name="phone" class="form-control" placeholder="Enter phone.">
@@ -72,11 +119,11 @@
 
             <h3>Terms</h3>
             <textarea name="terms" class="form-control" placeholder="Enter Terms of Service."></textarea>
-            <p class="help-block">Was: {{museum.terms}}</p>
+            <p class="help-block">Was: {{{museum.terms}}}</p>
 
             <h3>About</h3>
             <textarea name="about" class="form-control" placeholder="Enter about information."></textarea>
-            <p class="help-block">Was: {{museum.about}}</p>
+            <p class="help-block">Was: {{{museum.about}}}</p>
             <br>
 
             <button class="btn btn-lg btn-block btn-primary" type="submit">Submit</button>
@@ -84,8 +131,6 @@
 
         </div>
     </form>
-
-
 
 
 </div>

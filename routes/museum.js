@@ -85,38 +85,43 @@ function *edit_museum_information(){
  * doesn't change it.
  */
 function *edit_museum(){
-
-    //console.log(this.request);
     var body = this.request.body.fields;
     var response;
-    //var post = yield parse(this);
-    //console.log(post);
-
     if(!body) {
         this.throw('Bad Request', 400);
     }
-    if(body.mon_op != "") {
-        body.hoursOfOperation = "Lunes " + body.mon_op + " - " + body.mon_cl + "\n";
-        body.hoursOfOperation += " Martes " + body.tue_op + " - " + body.tue_cl + "\n";
-        body.hoursOfOperation += " Miercoles " + body.wed_op + " - " + body.wed_cl + "\n";
-        body.hoursOfOperation += " Jueves " + body.thu_op + " - " + body.thu_cl + "\n";
-        body.hoursOfOperation += " Viernes " + body.fri_op + " - " + body.fri_cl + "\n";
-        delete body.mon_op;
-        delete body.mon_cl;
-        delete body.tue_op;
-        delete body.tue_cl;
-        delete body.wed_op;
-        delete body.wed_cl;
-        delete body.thu_op;
-        delete body.thu_cl;
-        delete body.fri_op;
-        delete body.fri_cl;
-    }
-    for(prop in body){
-        if(body[prop] == ""){
-            delete body[prop];
-        }
-    }
+
+    var schedule = {monday:{},tuesday:{},wednesday:{}, thursday:{},friday:{},saturday:{},sunday:{}};
+    if(body.mon_op) schedule.monday.open = body.mon_op;
+    if(body.mon_cl) schedule.monday.close = body.mon_cl;
+    if(body.mon_closed) schedule.monday.closed = body.mon_closed;
+
+    if(body.tue_op) schedule.tuesday.open = body.tue_op;
+    if(body.tue_cl) schedule.tuesday.close = body.tue_cl;
+    if(body.tue_closed) schedule.tuesday.closed = body.tue_closed;
+
+    if(body.wed_op) schedule.wednesday.open = body.wed_op;
+    if(body.wed_cl) schedule.wednesday.close = body.wed_cl;
+    if(body.wed_closed) schedule.wednesday.closed = body.wed_closed;
+
+    if(body.thu_op) schedule.thursday.open = body.thu_op;
+    if(body.thu_cl) schedule.thursday.close = body.thu_cl;
+    if(body.thu_closed) schedule.thursday.closed = body.thu_closed;
+
+    if(body.fri_op) schedule.friday.open = body.fri_op;
+    if(body.fri_cl) schedule.friday.close = body.fri_cl;
+    if(body.fri_closed) schedule.friday.closed = body.fri_closed;
+
+    if(body.sat_op) schedule.saturday.open = body.sat_op;
+    if(body.sat_cl) schedule.saturday.close = body.sat_cl;
+    if(body.sat_closed) schedule.saturday.closed = body.sat_closed;
+
+    if(body.sun_op) schedule.sunday.open = body.sun_op;
+    if(body.sun_cl) schedule.sunday.close = body.sun_cl;
+    if(body.sun_closed) schedule.sunday.closed = body.sun_closed;
+
+
+    body.hoursOfOperation = JSON.stringify(schedule);
 
     //console.log(body);
     try {
