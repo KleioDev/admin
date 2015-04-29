@@ -33,3 +33,4 @@ public/img
 public/audio
 PushMuSACert.pem
 PushMuSAKey.pem
+config/.env

@@ -3,7 +3,7 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-10">
-            <h1 class="page-header">{{title}}</h1>
+            <h1 class="page-header">Event: {{title}}</h1>
         </div>
         <br><br>
         <div class="col-lg-2">
@@ -11,9 +11,9 @@
                 <button class="btn btn-primary" type="submit">Send Notification</button>
             </form>
             {{#if sent}}
-                <small style="text-align: center">Notification was sent.</small>
+                <p class="help-block" style="text-align: center">Notification was sent.</p>
             {{else}}
-                <small style="text-align: center">Notification has not been sent.</small>
+                <p class="help-block" style="text-align: center">Notification has not been sent.</p>
 
             {{/if}}
         </div>

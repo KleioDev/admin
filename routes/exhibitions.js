@@ -4,7 +4,7 @@ var parse = require("co-body");
 var fs = require("fs");
 var Router = require('koa-router');
 var rq = require('co-request');
-var apiUrl = ' http://136.145.116.229:4567';
+var apiUrl = require("../config/config").url;
 
 
 module.exports = function(){

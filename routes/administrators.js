@@ -2,7 +2,7 @@ var parse_multi = require("koa-better-body")(),
     fs = require("fs"),
     rq = require('co-request'),
     Router = require('koa-router'),
-    apiUrl = ' http://136.145.116.229:4567';
+    apiUrl = require("../config/config").url;
 
 
 

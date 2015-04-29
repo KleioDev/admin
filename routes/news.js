@@ -3,7 +3,7 @@ var handlebars = require("koa-handlebars");
 var parse = require("co-body");
 var fs = require("fs");
 var Router = require('koa-router');
-var apiUrl = ' http://136.145.116.229:4567';
+var apiUrl = require("../config/config").url;
 var rq = require('co-request');
 var moment = require("moment");
 var http = require('http');
@@ -81,7 +81,7 @@ function *single_article(){// id as param
     }
 
     yield this.render("single_article", {
-        title: news.title,
+        title: "News: " + news.title,
         text: news.description,
         date: moment(news.updatedAt).format(" MMM DD, YYYY hh:mm a"),
         id: news.id,

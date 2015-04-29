@@ -8,6 +8,7 @@ var handlebars = require("koa-handlebars");
 var fs = require("fs");
 var session = require("koa-session");
 
+
 /**
  * Require the dummy database
  * @type {exports} lists containing dummy information
@@ -17,21 +18,23 @@ var exhibitions = require("./routes/exhibitions");
 var rooms = require("./routes/rooms");
 var artifacts = require("./routes/artifacts");
 var news = require("./routes/news");
-var notifications = require("./routes/notifications");
 var users = require("./routes/users");
 var leaderboard = require("./routes/leaderboard");
 var administrator = require("./routes/administrators");
 var feedback = require("./routes/feedback");
 var login = require("./routes/login");
 var events = require("./routes/events");
+var config = require("./config/config");
+
+
 
 //Start the app
 var app = koa();
 
 //Authentication
-app.keys = ['secret'];
-app.duration = 24 * 60 * 60 * 1000;
-app.activeDuration = 24 * 60 * 60 * 1000;
+app.keys = [config.secret];
+app.duration = config.sessionDuration;
+app.activeDuration = config.sessionActiveDuration;
 app.use(session(app));
 
 
@@ -98,7 +101,6 @@ app.use(leaderboard());
 app.use(feedback());
 app.use(login());
 app.use(museum());
-app.use(notifications());
 app.use(news());
 app.use(users());
 app.use(rooms());

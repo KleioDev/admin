@@ -3,7 +3,7 @@ var handlebars = require("koa-handlebars");
 var parse = require("co-body");
 var fs = require("fs");
 var Router = require('koa-router');
-var apiUrl = ' http://136.145.116.229:4567';
+var apiUrl = require("../config/config").url;
 var rq = require('co-request');
 
 module.exports = function(){
