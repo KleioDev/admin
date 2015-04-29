@@ -12,6 +12,9 @@ module.exports = function(){
     exhibitionController
         .get("/exhibitions", requireLogin, exhibitions)
         .get("/exhibition/:id", requireLogin, exhibition)
+        .get("/exhibition/:id/edit", requireLogin, edit_exhibition_page)
+        .post("/exhibition/:id/edit", requireLogin, edit_exhibition)
+        .post("/exhibition/:id/delete", requireLogin, delete_exhibion)
         .post("/new_exhibition", requireLogin, new_exhibition)
         .post("/add_to_exhibition", requireLogin, add_to_exhibition)
         .post("/remove_from_exhibition", requireLogin, remove_from_exhibition);
@@ -176,6 +179,74 @@ function *remove_from_exhibition(){
 
     if(response.statusCode == 200){
         this.redirect('/exhibition/' + body.ExhibitionId);
+    }
+}
+
+function *edit_exhibition_page(){
+    var id = this.params.id, response;
+    try {
+        response = yield rq({
+            uri : apiUrl + '/exhibition/' + id,
+            method : 'GET',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+        var exhibition = JSON.parse(response.body);
+
+    } catch(err){
+        //console.log(err);
+        this.throw(err.message, err.status || 500);
+    }
+    console.log(exhibition);
+    yield this.render("edit_exhibition",{
+        title: exhibition.title,
+        exhibition: exhibition
+    });
+}
+
+function *edit_exhibition(){
+    var body = yield parse(this), response, id = this.params.id;
+    if(!body) {
+        this.throw('Bad Request', 400);
+    }
+
+    try {
+        response = yield rq({
+            uri : apiUrl + '/exhibition/' + id,
+            method : 'PUT',
+            json : true,
+            body : body,
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+
+    } catch(err){
+        //console.log(err);
+        this.throw(err.message, err.status || 500);
+    }
+    //console.log(body);
+    if(response.statusCode == 200){
+        this.redirect("/exhibition/" + id);
+    }
+}
+
+function *delete_exhibion(){
+    var id = this.params.id, response;
+    try {
+        response = yield rq({
+            uri : apiUrl + '/exhibition/' + id,
+            method : 'DELETE',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+
+    } catch(err){
+        //console.log(err);
+        this.throw(err.message, err.status || 500);
+    }
+    //console.log(body);
+    if(response.statusCode == 200){
+        this.redirect("/exhibitions");
     }
 }
 
