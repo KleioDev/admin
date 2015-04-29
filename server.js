@@ -128,25 +128,3 @@ exports.app = app;
 //function *database(){
 //	yield this.render("database", {title : "Database"});
 //}
-
-///**
-//* Anonymous function:
-//* When logged in, delete the password from the session
-//* for security purposes.
-//*/
-//app.use(function *(next) {
-//    if (this.session && this.session.user) {
-//        for(var i = 0; i < db.users.length; i++){
-//            if(this.session.email === db.users[i].email){//Find the user
-//                this.request.user = db.users[i];
-//                delete this.request.user.password; // delete the password from the session
-//                this.session.user = db.users[i];  //refresh the session value
-//                this.response.locals.user = db.users[i];
-//            }
-//        }
-//        yield next;
-//    }
-//    else {
-//        yield next;
-//    }
-//});

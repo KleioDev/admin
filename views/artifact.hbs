@@ -74,7 +74,7 @@
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <div class="panel-group" id="accordion">
-                                {{#each object.audio_content}}
+                                {{#each artifact.Audibles}}
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
                                             <h4 class="panel-title">
@@ -83,8 +83,10 @@
                                         </div>
                                         <div id="collapseAudio{{id}}" class="panel-collapse collapse">
                                             <div class="panel-body">
+                                                <p>{{description}}</p>
+
                                                 <audio controls>
-                                                    <source id={{id}} src={{audio}} type="audio/mpeg">
+                                                    <source id={{id}} src={{link}} type="audio/mpeg">
                                                     Your browser does not support the audio element.
                                                 </audio>
                                                 <br><form action="/delete_audio" method="post">

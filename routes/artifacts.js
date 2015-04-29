@@ -14,7 +14,7 @@ module.exports = function(){
         .get("/artifacts", requireLogin, artifacts)
         .get("/artifact/:id", requireLogin, artifact)
         .post("/upload_audio", requireLogin, parse_multi({
-            multipart: true,
+            multipart: ['multipart/form-data'],//SOLUTION IS ON REQUEST PAGE IN GITHUB//////////////////////////
             formidable: {
                 uploadDir: 'public/audio/'
             }
@@ -24,7 +24,7 @@ module.exports = function(){
         .post("/delete_text", requireLogin, delete_text)
         .post("/add_image", requireLogin,
         parse_multi({
-            multipart: true,
+            multipart: ['multipart/form-data'],
             formidable: {
                 uploadDir: 'public/img/'
             }
@@ -43,25 +43,18 @@ module.exports = function(){
  */
 function *artifacts(){
     var response, artifacts;
-
     try {
-        //console.log(this.session.user);
         response = yield rq({
             uri : apiUrl + '/artifact',
             method : 'GET',
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
         });
-        //Parse
-        //console.log(response.body);
         artifacts = JSON.parse(response.body).artifacts;
 
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
-
-
-    //console.log(artifacts);
     yield this.render("artifacts", {
         title : "Artifacts",
         objects: artifacts
@@ -76,15 +69,12 @@ function *artifact(){
     var response, artifact, exhibitions, id = this.params.id;
 
     try {
-        //console.log(this.session.user);
         response = yield rq({
             uri : apiUrl + '/artifact/' + id,
             method : 'GET',
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
         });
-        //Parse
-        //console.log(response.body);
         artifact = JSON.parse(response.body);
 
     } catch(err) {
@@ -92,14 +82,12 @@ function *artifact(){
     }
 
     try {
-        //console.log(this.session.user);
         response = yield rq({
             uri : apiUrl + '/exhibition',
             method : 'GET',
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
         });
-        //Parse
         if(response.statusCode != 404) exhibitions = JSON.parse(response.body).exhibitions;
 
     } catch(err) {
@@ -121,16 +109,15 @@ function *upload_audio(){
     if(!body) {
         this.throw('Bad Request', 400);
     }
-
+    console.log(body.file);
     try {
         response = yield rq({
-            uri : apiUrl + '/audio/',
-            method : 'POST',
-            json : true,
-            body : {
+            uri: apiUrl + "/audible",
+            method: "POST",
+            formData: {
+                file: fs.createReadStream(body.files.file.path),
                 title: body.fields.title,
                 description: body.fields.description,
-                link: "../" + body.files.file.path,
                 ArtifactId: body.fields.ArtifactId
             },
             headers : {
@@ -229,21 +216,18 @@ function *delete_text(){
  * Parse title to create an image content entry and upload the file.
  */
 function *add_image(){
-    //console.log(this.request.body);
     var body = this.request.body, response; //this.request.body.fields
     if(!body) {
         this.throw('Bad Request', 400);
     }
-    //console.log(body.fields);
     try {
         response = yield rq({
-            uri : apiUrl + '/image/',
-            method : 'POST',
-            json : true,
-            body : {
+            uri: apiUrl + "/image",
+            method: "POST",
+            formData: {
+                file: fs.createReadStream(body.files.file.path),
                 title: body.fields.title,
                 description: body.fields.description,
-                link: "../" + body.files.file.path,
                 ArtifactId: body.fields.ArtifactId
             },
             headers : {
@@ -252,7 +236,6 @@ function *add_image(){
     } catch(err){
         this.throw(err.message, err.status || 500);
     }
-
     if(response.statusCode >= 200 && response.statusCode < 300){
         this.redirect("/artifact/" + body.fields.ArtifactId);
     }
