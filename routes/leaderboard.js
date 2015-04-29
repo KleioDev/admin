@@ -13,7 +13,7 @@ module.exports = function(){
     var leaderboardController = new Router();
     leaderboardController
         .get("/leaderboard", requireLogin, leaderboard)
-        .post("/reset_score", requireLogin, reset_score)
+        .post("/reset_score/:id", requireLogin, reset_score)
         .post("/reset_leaderboard", requireLogin, reset_leaderboard);
     return leaderboardController.routes();
 };
@@ -50,20 +50,16 @@ function *leaderboard(){
  * Parse user information to reset their score to 0
  */
 function *reset_score(){
-    var body = yield parse(this);
+    var id = this.params.id;
     var response;
-    console.log(body);
+    //console.log(body);
 
-    var id = body.id;
-    if(!body) {
-        this.throw('Bad Request', 400);
-    }
     try {
         response = yield rq({
             uri : apiUrl + '/user/' + id,
             method : 'PUT',
             json : true,
-            body : {points : 0},
+            body : {active : false, points: 0},
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
         });
@@ -80,13 +76,7 @@ function *reset_score(){
  * Reset all users' score to 0.
  */
 function *reset_leaderboard(){
-    var body = yield parse(this);
     var response;
-
-    //if(!body) {
-    //    this.throw('Bad Request', 400);
-    //}
-
     try {
         response = yield rq({
             uri : apiUrl + '/leaderboard',
