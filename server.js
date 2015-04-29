@@ -53,7 +53,8 @@ app.use(handlebars({
              * @returns {string} A string consisting of the first 80, or less, characters
              */
             sample: function(obj) {
-                return obj.substring(0, 80) + "(...)";
+                if(obj.length < 60) return obj;
+                else return obj.substring(0, 60) + "(...)";
             },
             /**
              * Prints out information about the current object

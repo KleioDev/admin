@@ -2,10 +2,15 @@
 
 <div id="page-wrapper">
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-10">
             <h1 class="page-header">{{title}}</h1>
         </div>
+        <div class="col-lg-2">
+            <br><br>
+            <a href="/room/{{room.id}}/edit"><button class="btn btn-primary">Edit room</button></a>
+        </div>
     </div>
+
     <h5>Description:</h5>
     <p>{{room.description}}</p>
     <div style=" border-bottom: 1px solid #eee;"></div>

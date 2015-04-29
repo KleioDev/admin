@@ -13,9 +13,12 @@ module.exports = function(){
     roomController
         .get("/rooms", requireLogin, rooms)
         .get("/room/:id", requireLogin, room)
+        .get("/room/:id/edit", requireLogin, edit_room_page)
         .post("/new_room", requireLogin, new_room)
         .post("/add_to_room", requireLogin, add_to_room)
-        .post("/remove_ibeacon", requireLogin, remove_ibeacon);
+        .post("/remove_ibeacon", requireLogin, remove_ibeacon)
+        .post("/room/:id/edit", requireLogin, edit_room)
+        .post("/room/:id/delete", requireLogin, delete_room);
 
     return roomController.routes();
 };
@@ -104,7 +107,7 @@ function *new_room(){
         this.throw(err.message, err.status || 500);
     }
 
-    if(response.statusCode == 200){
+    if(response.statusCode == 201){
         this.redirect("/rooms/");
     }
 }
@@ -164,6 +167,74 @@ function *remove_ibeacon(){
     //console.log(body);
     if(response.statusCode == 200){
         this.redirect("/room/" + body.RoomId);
+    }
+}
+
+function *edit_room_page(){
+    var id = this.params.id, response;
+    try {
+        response = yield rq({
+            uri : apiUrl + '/room/' + id,
+            method : 'GET',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+        var room = JSON.parse(response.body);
+
+    } catch(err){
+        //console.log(err);
+        this.throw(err.message, err.status || 500);
+    }
+    //console.log(body);
+    yield this.render("edit_room",{
+        title: room.name,
+        room: room
+    });
+}
+
+function *edit_room(){
+    var body = yield parse(this), response, id = this.params.id;
+    if(!body) {
+        this.throw('Bad Request', 400);
+    }
+
+    try {
+        response = yield rq({
+            uri : apiUrl + '/room/' + id,
+            method : 'PUT',
+            json : true,
+            body : body,
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+
+    } catch(err){
+        //console.log(err);
+        this.throw(err.message, err.status || 500);
+    }
+    //console.log(body);
+    if(response.statusCode == 200){
+        this.redirect("/room/" + id);
+    }
+}
+
+function *delete_room(){
+    var id = this.params.id, response;
+    try {
+        response = yield rq({
+            uri : apiUrl + '/room/' + id,
+            method : 'DELETE',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+
+    } catch(err){
+        //console.log(err);
+        this.throw(err.message, err.status || 500);
+    }
+    //console.log(body);
+    if(response.statusCode == 200){
+        this.redirect("/rooms/");
     }
 }
 
