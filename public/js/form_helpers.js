@@ -31,8 +31,22 @@ $(document).ready(function() {
                 equalTo : "#password"
             }
         }});
+    jQuery('#edit_admin').validate({
+        rules : {
+            password : {
+                minlength : 6
+            },
+            repeat : {
+                minlength : 6,
+                equalTo : "#password"
+            }
+        }});
+
     $('#admin_submit').click(function(){
         console.log($('#new_admin').valid());
+    });
+    $('#edit_submit').click(function(){
+        console.log($('#edit_admin').valid());
     });
 
     $("[type=checkbox]").click(function() {

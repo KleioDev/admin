@@ -10,13 +10,13 @@ module.exports = function(){
     var administratorController = new Router();
 
     administratorController
-        .get('/administrator', parse_multi, index)
-        .get('/administrator/new', new_administrator)
-        .get('/administrator/:id', show)
-        .get('/administrator/:id/edit', edit_administrator)
-        .post('/administrator', parse_multi, create)
-        .post('/administrator/:id', parse_multi, edit)
-        .post('/administrator/:id/delete', destroy);
+        .get('/administrator', requireLogin, parse_multi, index)
+        .get('/administrator/new', requireLogin, new_administrator)
+        .get('/administrator/:id', requireLogin, show)
+        .get('/administrator/:id/edit',requireLogin, edit_administrator)
+        .post('/administrator', requireLogin, parse_multi, create)
+        .post('/administrator/:id', requireLogin, parse_multi, edit)
+        .post('/administrator/:id/delete', requireLogin, destroy);
 
     return administratorController.routes();
 }
@@ -129,6 +129,7 @@ function *create(){
         this.throw(err.message, err.status || 500);
     }
 
+
     if(response.statusCode >= 200 && response.statusCode < 300){
         this.redirect('/administrator');
     }
@@ -146,6 +147,7 @@ function *edit(){
         this.throw('Bad Request', 400);
     }
 
+
     try {
         response = yield rq({
             uri : apiUrl + '/administrator/' + id,
@@ -158,8 +160,14 @@ function *edit(){
     } catch(err){
         this.throw(err.message, err.status || 500);
     }
+    //console.log(response.body);
+    if(response.body.token){
+        //console.log(this.session.user);
+        this.session.user = response.body.token;
+        //console.log(this.session.user);
+    }
 
-    if(response.statusCode == 200){
+    if(response.statusCode >= 200 && response.statusCode < 300){
         this.redirect('/administrator');
     }
 }
@@ -187,3 +195,13 @@ function *destroy(){
     }
 }
 
+
+function *requireLogin(next){
+
+    if (!this.session.user) {
+        this.redirect("/login");
+    }
+    else {
+        yield* next;
+    }
+}

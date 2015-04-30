@@ -6,10 +6,17 @@
                     <h3 class="panel-title" style="text-align: center">MuSA Administrator Reset</h3>
                 </div>
                 <div class="panel-body">
+                    <p class="help-block">A new password will be sent to your email.</p>
+
                     <form role="form" action="/forgot" method="post">
                         <fieldset>
                             <div class="form-group">
                                 <input class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
+                                <p class="help-block">Enter your email.</p>
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" placeholder="Phone" name="phone" type="phone" autofocus>
+                                <p class="help-block">Enter your phone.</p>
                             </div>
                             <button class="btn btn-lg btn-success btn-block">Send Confirmation</button>
                         </fieldset>

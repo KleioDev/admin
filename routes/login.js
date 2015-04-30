@@ -42,12 +42,12 @@ function *login(){
             json : true,
             body : post
         });
-        console.log(response.statusCode);
+        //console.log(response.statusCode);
         if(response.statusCode >= 400){
             this.redirect("/login");
         }
         else{
-            console.log(response.body);
+            //console.log(response.body);
             this.session.user = response.body;
             this.redirect("/");
         }
@@ -124,7 +124,7 @@ function *reset_password(){
  * Makes the application require login throughout the whole app.
  */
 function *requireLogin(next){
-    console.log(this.session.user);
+    //console.log(this.session.user);
     if (!this.session.user) {
         this.redirect("/login");
     }
