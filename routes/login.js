@@ -35,7 +35,6 @@ function *index(){
  */
 function *login(){
     var post = yield parse(this);
-    console.log(post);
     try {
         response = yield rq({
             uri : apiUrl + '/authenticate',
@@ -43,12 +42,12 @@ function *login(){
             json : true,
             body : post
         });
-
-        if(response.statusCode == 403 || response.statusCode == 500){
+        console.log(response.statusCode);
+        if(response.statusCode >= 400){
             this.redirect("/login");
         }
         else{
-            //console.log(response.body);
+            console.log(response.body);
             this.session.user = response.body;
             this.redirect("/");
         }
@@ -83,15 +82,16 @@ function *reset_password(){
 
     //Update admin account with random password
     var body = yield parse(this), response, admin, password = makeid();
+    console.log(password);
     try {
         response = yield rq({
             uri : apiUrl + '/administrator?email=' + body.email,
             method : 'GET',
             json : true,
             body : body
-        });
-        admin = JSON.parse(response.body).administrators;
-        console.log(admin);
+            });
+        console.log(response.body.administrators[0]);
+        admin = response.body.administrators[0];
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
@@ -102,7 +102,7 @@ function *reset_password(){
             method : 'PUT',
             json : true,
             body : {password:password}
-        });
+            });
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
@@ -110,7 +110,7 @@ function *reset_password(){
         //send email with updated pw
         var message = new Email({
             from: "kleio.team@gmail.com",
-            to: admin.email,
+            to: "luisfrik@gmail.com",
             subject: "Password Recovery",
             body: "Your temporary password is: " + password + ".Please access " + apiUrl + " and change your password in the administrator page."
         });

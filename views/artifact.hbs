@@ -89,11 +89,17 @@
                                                     <source id={{id}} src={{link}} type="audio/mpeg">
                                                     Your browser does not support the audio element.
                                                 </audio>
-                                                <br><form action="/delete_audio" method="post">
-                                                <input required hidden="true" name="artifact_id" value="{{../artifact.id}}">
-                                                <input required hidden="true" name="audio_id" value="{{id}}">
-                                                <button class="btn btn-danger" type="submit">Remove</button>
-                                            </form>
+                                                <br>
+                                                <div class="row">
+                                                    <div class="col-lg-1"><p><a href="/edit_audio"><button class="btn btn-primary">Edit</button></a></p></div>
+                                                    <div class="col-lg-1">
+                                                <form action="/delete_audio" method="post">
+                                                    <input required hidden="true" name="artifact_id" value="{{../artifact.id}}">
+                                                    <input required hidden="true" name="audio_id" value="{{id}}">
+                                                    <button class="btn btn-danger" type="submit">Remove</button>
+                                                </form>
+                                                        </div>
+                                                    </div>
 
                                             </div>
                                         </div>
@@ -115,6 +121,12 @@
                                                     <input hidden="true" name="ArtifactId" value="{{artifact.id}}">
                                                     <br>
                                                     <input required class="form-control" placeholder="Description" name="description" style="width: 50%;">
+                                                    <br>
+                                                    <select class="form-control" style="width: 50%;">
+                                                        <option name="language" value="english">English</option>
+                                                        <option name="language" value="spanish">Spanish</option>
+
+                                                    </select>
 
                                                     <input required type="file" name="file">
                                                     <br>
@@ -152,6 +164,8 @@
 
 
                                                 <br>
+                                                <a href="/edit_video"><button class="btn btn-primary">Edit</button></a>
+
                                                 <form action="/delete_video" method="post">
                                                     <input required hidden="true" name="artifact_id" value="{{../artifact.id}}">
                                                     <input required hidden="true" name="video_id" value="{{id}}">
@@ -180,7 +194,11 @@
                                                     <input required class="form-control" placeholder="Description" name="description" style="width: 50%;">
                                                     <br>
                                                     <input required class="form-control" placeholder="Enter youtube url" name="link" style="width: 50%;">
-
+                                                    <br>
+                                                    <select class="form-control" style="width: 50%;">
+                                                        <option name="language" value="english">English</option>
+                                                        <option name="language" value="spanish">Spanish</option>
+                                                    </select>
                                                     <br>
                                                     <button type="submit" class="btn btn-default">Submit</button>
                                                 </div>
@@ -210,7 +228,10 @@
                                             <div class="panel-body">
                                                 <label>{{title}}</label><br>
                                                 <img src={{link}}>
-                                                <br><form action="/delete_image" method="post">
+
+                                                <br>
+                                                <a href="/edit_image"><button class="btn btn-primary">Edit</button></a>
+                                                <form action="/delete_image" method="post">
                                                 <input required hidden="true" name="artifact_id" value="{{../artifact.id}}">
                                                 <input required hidden="true" name="image_id" value="{{id}}">
                                                 <button class="btn btn-danger" type="submit">Remove</button>
@@ -237,7 +258,11 @@
                                                     <br>
                                                     <input required class="form-control" placeholder="Description" name="description" style="width: 50%;">
                                                     <input required type="file" name="file">
-
+                                                    <br>
+                                                    <select class="form-control" style="width: 50%;">
+                                                        <option name="language" value="english">English</option>
+                                                        <option name="language" value="spanish">Spanish</option>
+                                                    </select>
                                                     <br>
                                                     <button type="submit" class="btn btn-default">Submit</button>
                                               </div>
@@ -268,6 +293,7 @@
                                                 <label>{{title}}</label>
                                                 <p>{{description}}</p>
                                                 <br>
+                                                <a href="/edit_text"><button class="btn btn-primary">Edit</button></a>
                                                 <form action="/delete_text" method="post">
                                                     <input required hidden="true" name="artifact_id" value="{{../artifact.id}}">
                                                     <input required hidden="true" name="text_id" value="{{id}}">
@@ -296,6 +322,10 @@
                                                     <br>
                                                     <textarea required class="form-control" placeholder="Enter info" name="description" style="width: 50%;"></textarea>
                                                     <br>
+                                                    <select class="form-control" style="width: 50%;">
+                                                        <option name="language" value="english">English</option>
+                                                        <option name="language" value="spanish">Spanish</option>
+                                                    </select>
                                                     <button type="submit" class="btn btn-default">Submit</button>
                                                 </div>
                                             </form>

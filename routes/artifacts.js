@@ -109,7 +109,7 @@ function *upload_audio(){
     if(!body) {
         this.throw('Bad Request', 400);
     }
-    console.log(body.file);
+    //console.log(body.file);
     try {
         response = yield rq({
             uri: apiUrl + "/audible",
