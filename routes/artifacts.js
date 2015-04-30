@@ -14,7 +14,7 @@ module.exports = function(){
         .get("/artifacts", requireLogin, artifacts)
         .get("/artifact/:id", requireLogin, artifact)
         .post("/upload_audio", requireLogin, parse_multi({
-            multipart: ['multipart/form-data'],//SOLUTION IS ON REQUEST PAGE IN GITHUB//////////////////////////
+            multipart: ['multipart/form-data'],
             formidable: {
                 uploadDir: 'public/audio/'
             }
@@ -33,7 +33,26 @@ module.exports = function(){
         .post("/delete_image", requireLogin, delete_image)
         .post("/add_video", requireLogin, add_video)
         .post("/delete_video", requireLogin, delete_video)
-        .post("/add_exhibition", requireLogin, add_exhibition);
+        .post("/add_exhibition", requireLogin, add_exhibition)
+        .get("/artifact/:id/audio/:audio", requireLogin, edit_audio_page)
+        .get("/artifact/:id/text/:text", requireLogin, edit_text_page)
+        .get("/artifact/:id/image/:image", requireLogin, edit_image_page)
+        .get("/artifact/:id/video/:video", requireLogin, edit_video_page)
+        .post("/artifact/:id/audio/:audio", requireLogin, parse_multi({
+            multipart: ['multipart/form-data'],
+            formidable: {
+                uploadDir: 'public/audio/'
+            }
+        }), edit_audio)
+        .post("/artifact/:id/text/:text", requireLogin, edit_text)
+        .post("/artifact/:id/image/:image", requireLogin, parse_multi({
+            multipart: ['multipart/form-data'],
+            formidable: {
+                uploadDir: 'public/img/'
+            }
+        }), edit_image)
+        .post("/artifact/:id/video/:video", requireLogin, edit_video);
+
 
     return artifactController.routes();
 };
@@ -93,6 +112,7 @@ function *artifact(){
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
+    console.log(artifact);
     yield this.render("artifact", {
         title: "Artifact: " + artifact.title,
         artifact : artifact,
@@ -338,9 +358,209 @@ function *add_exhibition(){
     } catch(err){
         this.throw(err.message, err.status || 500);
     }
-    //console.log(body);
     if(response.statusCode >= 200 && response.statusCode < 300){
         this.redirect("/artifact/" + body.ArtifactId);
+    }
+}
+
+function *edit_audio_page(){
+    var id = this.params.id, audio_id = this.params.audio, response;
+    try {
+        response = yield rq({
+            uri : apiUrl + '/audible/' + audio_id,
+            method : 'GET',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+        var audible = JSON.parse(response.body);
+
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+
+    if(response.statusCode != 404){
+        yield this.render("edit_audio", {
+            title: "Edit Audio: " + audible.title,
+            audible: audible,
+            artifactId: id
+        });
+    }
+
+}
+
+function *edit_text_page(){
+    var id = this.params.id, text_id = this.params.text, response;
+    console.log(id);
+    try {
+        response = yield rq({
+            uri : apiUrl + '/archive/' + text_id,
+            method : 'GET',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+        var text = JSON.parse(response.body);
+
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+    if(response.statusCode != 404){
+        yield this.render("edit_text", {
+            title: "Edit Text: " + text.title,
+            text: text,
+            ArtifactId: id
+        });
+    }
+
+}
+
+function *edit_image_page(){
+    var id = this.params.id, image_id = this.params.image, response;
+    try {
+        response = yield rq({
+            uri : apiUrl + '/image/' + image_id,
+            method : 'GET',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+        var image = JSON.parse(response.body);
+
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+
+    if(response.statusCode != 404){
+        yield this.render("edit_image", {
+            title: "Edit Image: " + image.title,
+            image: image,
+            artifactId: id
+        });
+    }
+
+}
+
+function *edit_video_page(){
+    var id = this.params.id, video_id = this.params.video, response;
+    try {
+        response = yield rq({
+            uri : apiUrl + '/video/' + video_id,
+            method : 'GET',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+        var video = JSON.parse(response.body);
+
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+
+    if(response.statusCode != 404){
+        yield this.render("edit_video", {
+            title: "Edit Video: " + video.title,
+            video: video,
+            artifactId: id
+        });
+    }
+}
+
+function *edit_audio(){
+    var body = this.request.body, response; //this.request.body.fields
+    if(!body) {
+        this.throw('Bad Request', 400);
+    }
+    //console.log(body.file);
+    try {
+        response = yield rq({
+            uri: apiUrl + "/audible/" + this.params.audio,
+            method: "PUT",
+            formData: {
+                file: fs.createReadStream(body.files.file.path),
+                title: body.fields.title,
+                description: body.fields.description,
+                ArtifactId: body.fields.ArtifactId
+            },
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+    } catch(err){
+        this.throw(err.message, err.status || 500);
+    }
+
+    if(response.statusCode >= 200 && response.statusCode < 300){
+        this.redirect("/artifact/" + this.params.id);
+    }
+}
+
+function *edit_text(){
+    var body = yield parse(this), response, id = this.params.id;
+    if(!body) {
+        this.throw('Bad Request', 400);
+    }
+    try {
+        response = yield rq({
+            uri : apiUrl + '/archive/' + this.params.text,
+            method : 'PUT',
+            json : true,
+            body : body,
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+    } catch(err){
+        this.throw(err.message, err.status || 500);
+    }
+
+    if(response.statusCode >= 200 && response.statusCode < 300){
+        this.redirect("/artifact/" + id);
+    }
+}
+
+function *edit_image(){
+    var body = this.request.body, response; //this.request.body.fields
+    if(!body) {
+        this.throw('Bad Request', 400);
+    }
+    //console.log(body.file);
+    try {
+        response = yield rq({
+            uri: apiUrl + "/image/" + this.params.image,
+            method: "PUT",
+            formData: {
+                file: fs.createReadStream(body.files.file.path),
+                title: body.fields.title,
+                description: body.fields.description,
+                ArtifactId: body.fields.ArtifactId
+            },
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+    } catch(err){
+        this.throw(err.message, err.status || 500);
+    }
+
+    if(response.statusCode >= 200 && response.statusCode < 300){
+        this.redirect("/artifact/" + this.params.id);
+    }
+}
+
+function *edit_video(){
+    var body = yield parse(this), response, id = this.params.id;
+    if(!body) {
+        this.throw('Bad Request', 400);
+    }
+    try {
+        response = yield rq({
+            uri : apiUrl + '/video/' + this.params.video,
+            method : 'PUT',
+            json : true,
+            body : body,
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+    } catch(err){
+        this.throw(err.message, err.status || 500);
+    }
+
+    if(response.statusCode >= 200 && response.statusCode < 300){
+        this.redirect("/artifact/" + id);
     }
 }
 

@@ -40,6 +40,10 @@
                         <td><strong>ID</strong></td>
                         <td>{{artifact.id}}</td>
                     </tr>
+                    <tr>
+                        <td><strong>Exhibition</strong></td>
+                        <td>{{artifact.Exhibition.name}}</td>
+                    </tr>
 
                     </tbody>
                 </table>
@@ -93,14 +97,8 @@
                                                 </audio>
                                                 <br>
                                                 <div class="row">
-                                                    <div class="col-lg-1"><p><a href="/edit_audio"><button class="btn btn-primary">Edit</button></a></p></div>
-                                                    <div class="col-lg-1">
-                                                <form action="/delete_audio" method="post">
-                                                    <input required hidden="true" name="artifact_id" value="{{../artifact.id}}">
-                                                    <input required hidden="true" name="audio_id" value="{{id}}">
-                                                    <button class="btn btn-danger" type="submit">Remove</button>
-                                                </form>
-                                                        </div>
+                                                    <div class="col-lg-1"><p><a href="/artifact/{{../artifact.id}}/audio/{{id}}"><button class="btn btn-primary">Edit</button></a></p></div>
+
                                                     </div>
 
                                             </div>
@@ -168,13 +166,9 @@
 
 
                                                 <br>
-                                                <a href="/edit_video"><button class="btn btn-primary">Edit</button></a>
+                                                <a href="/artifact/{{../artifact.id}}/video/{{id}}"><button class="btn btn-primary">Edit</button></a>
 
-                                                <form action="/delete_video" method="post">
-                                                    <input required hidden="true" name="artifact_id" value="{{../artifact.id}}">
-                                                    <input required hidden="true" name="video_id" value="{{id}}">
-                                                    <button class="btn btn-danger" type="submit">Remove</button>
-                                                </form>
+
 
                                             </div>
                                         </div>
@@ -236,12 +230,8 @@
                                                 <img style="max-width: 100%;height: auto;" src={{link}}>
 
                                                 <br>
-                                                <a href="/edit_image"><button class="btn btn-primary">Edit</button></a>
-                                                <form action="/delete_image" method="post">
-                                                <input required hidden="true" name="artifact_id" value="{{../artifact.id}}">
-                                                <input required hidden="true" name="image_id" value="{{id}}">
-                                                <button class="btn btn-danger" type="submit">Remove</button>
-                                            </form>
+                                                <a href="/artifact/{{../artifact.id}}/image/{{id}}"><button class="btn btn-primary">Edit</button></a>
+
 
                                             </div>
                                         </div>
@@ -300,12 +290,7 @@
                                                 <p>{{description}}</p>
                                                 <p>{{language}}</p>
                                                 <br>
-                                                <a href="/edit_text"><button class="btn btn-primary">Edit</button></a>
-                                                <form action="/delete_text" method="post">
-                                                    <input required hidden="true" name="artifact_id" value="{{../artifact.id}}">
-                                                    <input required hidden="true" name="text_id" value="{{id}}">
-                                                    <button class="btn btn-danger" type="submit">Remove</button>
-                                                </form>
+                                                <a href="/artifact/{{../artifact.id}}/text/{{id}}"><button class="btn btn-primary">Edit</button></a>
 
                                             </div>
                                         </div>
