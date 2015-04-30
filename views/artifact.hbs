@@ -83,6 +83,8 @@
                                         </div>
                                         <div id="collapseAudio{{id}}" class="panel-collapse collapse">
                                             <div class="panel-body">
+                                                <p>{{title}}</p>
+                                                <p>{{language}}</p>
                                                 <p>{{description}}</p>
 
                                                 <audio controls>
@@ -159,6 +161,8 @@
                                             <div class="panel-body">
                                                 <p>{{title}}</p>
                                                 <p>{{description}}</p>
+                                                <p>{{language}}</p>
+
                                                 <iframe id="ytplayer" type="text/html" width="480" height="240" src="http://www.youtube.com/embed/{{link}}" frameborder="0">
                                                     </iframe>
 
@@ -226,8 +230,10 @@
                                         </div>
                                         <div id="collapseImage{{id}}" class="panel-collapse collapse">
                                             <div class="panel-body">
-                                                <label>{{title}}</label><br>
-                                                <img src={{link}}>
+                                                <p>{{title}}</p>
+                                                <p>{{description}}</p>
+                                                <p>{{language}}</p>
+                                                <img style="max-width: 100%;height: auto;" src={{link}}>
 
                                                 <br>
                                                 <a href="/edit_image"><button class="btn btn-primary">Edit</button></a>
@@ -290,8 +296,9 @@
                                         </div>
                                         <div id="collapseText{{id}}" class="panel-collapse collapse">
                                             <div class="panel-body">
-                                                <label>{{title}}</label>
+                                                <p>{{title}}</p>
                                                 <p>{{description}}</p>
+                                                <p>{{language}}</p>
                                                 <br>
                                                 <a href="/edit_text"><button class="btn btn-primary">Edit</button></a>
                                                 <form action="/delete_text" method="post">
