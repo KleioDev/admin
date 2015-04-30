@@ -14,6 +14,7 @@ module.exports = function(){
         .get("/rooms", requireLogin, rooms)
         .get("/room/:id", requireLogin, room)
         .get("/room/:id/edit", requireLogin, edit_room_page)
+        .get("/map", map)
         .post("/new_room", requireLogin, new_room)
         .post("/add_to_room", requireLogin, add_to_room)
         .post("/remove_ibeacon", requireLogin, remove_ibeacon)
@@ -236,6 +237,10 @@ function *delete_room(){
     if(response.statusCode == 200){
         this.redirect("/rooms/");
     }
+}
+
+function *map(){
+    yield this.render("map", {title: "Map"});
 }
 
 function *requireLogin(next){
