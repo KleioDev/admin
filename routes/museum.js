@@ -85,7 +85,7 @@ function *edit_museum_information(){
  * doesn't change it.
  */
 function *edit_museum(){
-    var body = this.request.body.fields;
+    var body = this.request.body;
     var response;
     if(!body) {
         this.throw('Bad Request', 400);
@@ -121,15 +121,25 @@ function *edit_museum(){
     if(body.sun_closed) schedule.sunday.closed = body.sun_closed;
 
 
-    body.hoursOfOperation = JSON.stringify(schedule);
-
     //console.log(body);
+    if(!body) {
+        this.throw('Bad Request', 400);
+    }
     try {
         response = yield rq({
-            uri : apiUrl + '/museum/1',
-            method : 'PUT',
-            json : true,
-            body : body,
+            uri: apiUrl + "/museum/1",
+            method: "PUT",
+            formData: {
+                //file: fs.createReadStream(body.files.file.path),
+                name: body.fields.name,
+                description: body.fields.description,
+                hoursOfOperation: JSON.stringify(schedule),
+                phone: body.fields.phone,
+                email: body.fields.email,
+                location: body.fields.location,
+                terms: body.fields.terms,
+                about: body.fields.about
+            },
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
         });

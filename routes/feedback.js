@@ -5,6 +5,8 @@ var fs = require("fs");
 var Router = require('koa-router');
 var apiUrl = require("../config/config").url;
 var rq = require('co-request');
+var moment = require("moment");
+
 
 module.exports = function(){
     var feedbackController = new Router();
@@ -36,6 +38,9 @@ function *feedback(){
 
     } catch(err) {
         this.throw(err.message, err.status || 500);
+    }
+    for(var i = 0; i < feedback.length; i++){
+        feedback[i].updatedAt = moment(feedback[i].updatedAt).format(" MMM DD, YYYY hh:mm a");
     }
 	yield this.render("feedback", {
         title : "Feedback",
