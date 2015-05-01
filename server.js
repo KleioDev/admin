@@ -74,6 +74,7 @@ app.use(handlebars({
                 for(var i = 0; i < obj.length; i++){
                     string += "<tr>" + "<td>" + (i+1) + "</td>";
                     string += "<td>" + obj[i].firstName + " " + obj[i].lastName + "</td>";
+                    string += "<td>" + obj[i].email + "</td>";
                     string += "<td>" + obj[i].points + "</td>";
                     string += "<td style=\"text-align:center;\"><form action=\"/reset_score/" + obj[i].id + "\" method=\"post\">" +
                         "<button type=\"submit\" class=\"btn btn-danger\"><i class=\"glyphicon glyphicon-remove-sign\"></i></button></form></td></tr>";
