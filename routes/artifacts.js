@@ -112,6 +112,7 @@ function *artifact(){
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
+    //console.log(artifact);
     yield this.render("artifact", {
         title: "Artifact: " + artifact.title,
         artifact : artifact,
@@ -268,7 +269,7 @@ function *delete_image(){
     if(!body) {
         this.throw('Bad Request', 400);
     }
-    console.log(body);
+    //console.log(body);
     try {
         response = yield rq({
             uri : apiUrl + '/image/' + body.image_id,

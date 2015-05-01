@@ -12,35 +12,34 @@
         </div>
     </div>
 
-    <div class="col-lg-8">
-        <form role="form" action="/artifact/{{ArtifactId}}/text/{{text.id}}" method="POST">
-            <div class="form-group">
-                <label>Title</label>
-                <input class="form-control" name="title">
-                <p class="help-block">Was: {{text.title}}</p>
-            </div>
-            <div class="form-group" >
-                <label>Description</label>
-                <input class="form-control" name="description">
-                <p class="help-block">Was: {{text.description}}</p>
+    <form role="form" action="/artifact/{{ArtifactId}}/text/{{text.id}}" method="POST">
+        <div class="form-group">
+            <label>Title</label>
+            <input class="form-control" name="title">
+            <p class="help-block">Was: {{text.title}}</p>
+        </div>
+        <div class="form-group" >
+            <label>Description</label>
+            <textarea class="form-control" name="description"></textarea>
+            <p class="help-block">Was: {{text.description}}</p>
 
-            </div>
-            <div class="form-group" >
-                <label>Language</label>
+        </div>
+        <div class="form-group" >
+            <label>Language</label>
 
-                <select class="form-control" style="width: 50%;">
-                    <option name="language" value="english">English</option>
-                    <option name="language" value="spanish">Spanish</option>
+            <select class="form-control" style="width: 50%;">
+                <option name="language" value="english">English</option>
+                <option name="language" value="spanish">Spanish</option>
 
-                </select>
-                <p class="help-block">Was: {{text.language}}</p>
+            </select>
+            <p class="help-block">Was: {{text.language}}</p>
 
-            </div>
+        </div>
 
 
-            <button type="submit" class="btn btn-default">Submit</button>
-        </form>
-    </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+
     <div class="modal fade" id="deleteConfirmation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -54,7 +53,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <form action="/delete_text" method="post">
-                        <input required hidden="true" name="artifact_id" value="{{artifactId}}">
+                        <input required hidden="true" name="artifact_id" value="{{ArtifactId}}">
                         <input hidden="true" name="text_id" value="{{text.id}}">
 
                         <button class="btn btn-danger" type="submit">Delete</button>
