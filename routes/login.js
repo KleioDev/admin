@@ -17,6 +17,7 @@ module.exports = function(){
         .get("/", requireLogin, index)
         .get("/forgot", forgot)
         .get("/change", change)
+        .get("/change/notify", change_notify)
         .post("/forgot", reset_password);
     return loginController.routes();
 };
@@ -102,8 +103,12 @@ function *reset_password(){
     }
 
     if(response.statusCode == 200) {
-        this.redirect("/login");
+        this.redirect("/change/notify");
     }
+}
+
+function *change_notify(){
+    yield this.render("change_notify");
 }
 
 /**
