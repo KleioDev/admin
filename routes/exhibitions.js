@@ -252,6 +252,9 @@ function *delete_exhibion(){
 
 function *requireLogin(next){
 
+    if (!this.session.confirm){
+        this.redirect("/change");
+    }
     if (!this.session.user) {
         this.redirect("/login");
     }

@@ -142,12 +142,10 @@ function *edit(){
     var body = this.request.body.fields,
         id = this.params.id,
         response;
-
+    //console.log(body);
     if(!body) {
         this.throw('Bad Request', 400);
     }
-
-
     try {
         response = yield rq({
             uri : apiUrl + '/administrator/' + id,

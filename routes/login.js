@@ -6,7 +6,6 @@ var parse = require("co-body");
 var fs = require("fs");
 var Router = require('koa-router');
 var apiUrl = require("../config/config").url;
-var Email = require("email").Email;
 
 
 module.exports = function(){
@@ -17,6 +16,7 @@ module.exports = function(){
         .get("/logout", logout)
         .get("/", requireLogin, index)
         .get("/forgot", forgot)
+        .get("/change", change)
         .post("/forgot", reset_password);
     return loginController.routes();
 };
@@ -47,8 +47,10 @@ function *login(){
             this.redirect("/login");
         }
         else{
-            //console.log(response.body);
-            this.session.user = response.body;
+            console.log(response.body);
+            this.session.user = response.body.token;
+            this.session.confirm = response.body.confirm;
+            this.session.id = response.body.id;
             this.redirect("/");
         }
     } catch(err) {
@@ -78,44 +80,28 @@ function *forgot(){
 
 }
 
+function *change(){
+    console.log(this.session.id);
+    yield this.render("change_password",{id:this.session.id});
+}
+
+
 function *reset_password(){
 
     //Update admin account with random password
-    var body = yield parse(this), response, admin, password = makeid();
-    console.log(password);
+    var body = yield parse(this), response;
     try {
         response = yield rq({
-            uri : apiUrl + '/administrator?email=' + body.email,
-            method : 'GET',
+            uri : apiUrl + '/administrator/reset',
+            method : 'POST',
             json : true,
             body : body
             });
-        console.log(response.body.administrators[0]);
-        admin = response.body.administrators[0];
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
-    var id = admin.id;
-    try {
-        response = yield rq({
-            uri : apiUrl + '/administrator/' + id,
-            method : 'PUT',
-            json : true,
-            body : {password:password}
-            });
-    } catch(err) {
-        this.throw(err.message, err.status || 500);
-    }
+
     if(response.statusCode == 200) {
-        //send email with updated pw
-        var message = new Email({
-            from: "kleio.team@gmail.com",
-            to: "luisfrik@gmail.com",
-            subject: "Password Recovery",
-            body: "Your temporary password is: " + password + ".Please access " + apiUrl + " and change your password in the administrator page."
-        });
-        message.send();
-        //admin can then enter with that one
         this.redirect("/login");
     }
 }
@@ -125,18 +111,13 @@ function *reset_password(){
  */
 function *requireLogin(next){
     //console.log(this.session.user);
+    if (!this.session.confirm){
+        this.redirect("/change");
+    }
     if (!this.session.user) {
         this.redirect("/login");
     }
     else {
         yield* next;
     }
-}
-
-function makeid(){
-    var text = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    for(var i=0; i < 6; i++)
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-    return text;
 }
