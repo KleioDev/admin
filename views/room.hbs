@@ -23,6 +23,7 @@
         <table class="table table-striped table-bordered table-hover">
             <thead>
             <tr>
+                <th>Room Id</th>
                 <th>iBeacon ID</th>
                 <th style="text-align: center">Remove</th>
             </tr>
@@ -30,6 +31,7 @@
             <tbody>
             {{#each room.Beacons}}
                 <tr class="odd gradeX">
+                    <td>{{RoomId}}</td>
                     <td>{{code}}</td>
                     <td style="text-align: center">
                         <form action="/remove_ibeacon" method="post">

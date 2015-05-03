@@ -75,10 +75,10 @@ function *room(){
         this.throw(err.message, err.status || 500);
     }
 
-        yield this.render("room", {
-            title: room.name,
-            room: room
-        });
+    yield this.render("room", {
+        title: room.name,
+        room: room
+    });
 
 }
 

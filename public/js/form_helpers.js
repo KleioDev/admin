@@ -18,6 +18,9 @@ $(document).ready(function() {
     $("#notification_table").DataTable({
         responsive: true
     });
+    $("#exhibition_table").DataTable({
+        responsive: true
+    });
 
     //Buttons
 
