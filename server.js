@@ -84,7 +84,14 @@ app.use(handlebars({
             language: function(obj){
                 if(obj === "esp") return "Español";
                 else return "English";
-            }
+            },
+            exhibitionRender: function(obj){
+                if(obj)
+                    return "<a href=\"/exhibition/" + obj.id + "\">" + obj.title + " - " + obj.description + "</a>";
+                else
+                    return "No exhibition attached";
+
+}
         }
     }));
 

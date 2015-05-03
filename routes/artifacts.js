@@ -86,7 +86,6 @@ function *artifacts(){
  */
 function *artifact(){
     var response, artifact, exhibitions, id = this.params.id;
-
     try {
         response = yield rq({
             uri : apiUrl + '/artifact/' + id,
@@ -112,6 +111,7 @@ function *artifact(){
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
+
     yield this.render("artifact", {
         title: "Artifact: " + artifact.title,
         artifact : artifact,
@@ -121,7 +121,7 @@ function *artifact(){
 
 
 /**
- * Parses title information and handles the audio upload.
+ * Parses information and handles the audio upload.
  */
 function *upload_audio(){
     var body = this.request.body, response; //this.request.body.fields

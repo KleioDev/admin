@@ -29,7 +29,7 @@ function *index(){
     var response, artifacts;
     try {
         response = yield rq({
-            uri : apiUrl + '/artifact',
+            uri : apiUrl + '/artifact', //"artifact/top"
             method : 'GET',
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
