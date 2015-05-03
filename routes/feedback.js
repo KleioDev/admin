@@ -7,7 +7,10 @@ var apiUrl = require("../config/config").url;
 var rq = require('co-request');
 var moment = require("moment");
 
-
+/**
+ * Exports the routes to the server router.
+ * @returns {*} the controller routes
+ */
 module.exports = function(){
     var feedbackController = new Router();
     feedbackController
@@ -100,6 +103,10 @@ function *delete_feedback(){
     this.redirect('/feedback');
 }
 
+/**
+ * Checks if the user is logged in when accessing a page
+ * @param next
+ */
 function *requireLogin(next){
 
     if (!this.session.confirm){

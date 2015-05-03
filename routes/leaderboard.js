@@ -7,8 +7,10 @@ var login = require("./login");
 var rq = require('co-request');
 var apiUrl = require("../config/config").url;
 
-
-
+/**
+ * Exports the routes to the server router.
+ * @returns {*} the controller routes
+ */
 module.exports = function(){
     var leaderboardController = new Router();
     leaderboardController
@@ -89,6 +91,10 @@ function *reset_leaderboard(){
     }
 }
 
+/**
+ * Checks if the user is logged in when accessing a page
+ * @param next
+ */
 function *requireLogin(next){
 
     if (!this.session.confirm){

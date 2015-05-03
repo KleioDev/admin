@@ -8,6 +8,10 @@ var Router = require('koa-router');
 var apiUrl = require("../config/config").url;
 var rq = require('co-request');
 
+/**
+ * Exports the routes to the server router.
+ * @returns {*} the controller routes
+ */
 module.exports = function(){
     var artifactController = new Router();
     artifactController
@@ -337,6 +341,9 @@ function *delete_video(){
     }
 }
 
+/**
+ * Renders the page that allows the edition of extra content
+ */
 function *add_exhibition(){
     var body = yield parse(this), response;
     if(!body) {
@@ -360,6 +367,9 @@ function *add_exhibition(){
     }
 }
 
+/**
+ * Renders the page that allows the edition of extra content
+ */
 function *edit_audio_page(){
     var id = this.params.id, audio_id = this.params.audio, response;
     try {
@@ -385,6 +395,9 @@ function *edit_audio_page(){
 
 }
 
+/**
+ * Renders the page that allows the edition of extra content
+ */
 function *edit_text_page(){
     var id = this.params.id, text_id = this.params.text, response;
     try {
@@ -409,6 +422,9 @@ function *edit_text_page(){
 
 }
 
+/**
+ * Renders the page that allows the edition of extra content
+ */
 function *edit_image_page(){
     var id = this.params.id, image_id = this.params.image, response;
     try {
@@ -434,6 +450,9 @@ function *edit_image_page(){
 
 }
 
+/**
+ * Renders the page that allows the edition of extra content
+ */
 function *edit_video_page(){
     var id = this.params.id, video_id = this.params.video, response;
     try {
@@ -458,6 +477,9 @@ function *edit_video_page(){
     }
 }
 
+/**
+ * Makes the request to update the extra content
+ */
 function *edit_audio(){
     var body = this.request.body, response; //this.request.body.fields
     if(!body) {
@@ -485,6 +507,9 @@ function *edit_audio(){
     }
 }
 
+/**
+ * Makes the request to update the extra content
+ */
 function *edit_text(){
     var body = yield parse(this), response, id = this.params.id;
     if(!body) {
@@ -508,6 +533,9 @@ function *edit_text(){
     }
 }
 
+/**
+ * Makes the request to update the extra content
+ */
 function *edit_image(){
     var body = this.request.body, response; //this.request.body.fields
     if(!body) {
@@ -535,6 +563,9 @@ function *edit_image(){
     }
 }
 
+/**
+ * Makes the request to update the extra content
+ */
 function *edit_video(){
     var body = yield parse(this), response, id = this.params.id;
     if(!body) {
@@ -558,7 +589,10 @@ function *edit_video(){
     }
 }
 
-
+/**
+ * Checks if the user is logged in when accessing a page
+ * @param next
+ */
 function *requireLogin(next){
 
     if (!this.session.confirm){

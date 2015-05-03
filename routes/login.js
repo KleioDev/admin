@@ -7,7 +7,10 @@ var fs = require("fs");
 var Router = require('koa-router');
 var apiUrl = require("../config/config").url;
 
-
+/**
+ * Exports the routes to the server router.
+ * @returns {*} the controller routes
+ */
 module.exports = function(){
     var loginController = new Router();
     loginController
@@ -94,16 +97,24 @@ function *logout() {
     this.redirect("login");
 }
 
+/**
+ * Renders the forgot password page
+ */
 function *forgot(){
     yield this.render("forgot", {title:"Password Reset"});
 
 }
 
+/**
+ * Renders the reset password page
+ */
 function *change(){
     yield this.render("change_password",{id:this.session.id});
 }
 
-
+/**
+ * Handles the password reset
+ */
 function *reset_password(){
 
     //Update admin account with random password
@@ -124,12 +135,16 @@ function *reset_password(){
     }
 }
 
+/**
+ * Renders a page telling the user his password has been changed.
+ */
 function *change_notify(){
     yield this.render("change_notify", {title:"Password Reset"});
 }
 
 /**
- * Makes the application require login throughout the whole app.
+ * Checks if the user is logged in when accessing a page
+ * @param next
  */
 function *requireLogin(next){
     if (!this.session.confirm){

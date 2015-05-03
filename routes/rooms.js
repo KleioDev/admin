@@ -6,8 +6,10 @@ var Router = require('koa-router');
 var rq = require('co-request');
 var apiUrl = require("../config/config").url;
 
-
-
+/**
+ * Exports the routes to the server router.
+ * @returns {*} the controller routes
+ */
 module.exports = function(){
     var roomController = new Router();
     roomController
@@ -161,6 +163,9 @@ function *remove_ibeacon(){
     }
 }
 
+/**
+ * Renders the page that allows the edition of a room.
+ */
 function *edit_room_page(){
     var id = this.params.id, response;
     try {
@@ -181,6 +186,9 @@ function *edit_room_page(){
     });
 }
 
+/**
+ * Makes the request to edit a room.
+ */
 function *edit_room(){
     var body = yield parse(this), response, id = this.params.id;
     if(!body) {
@@ -205,6 +213,9 @@ function *edit_room(){
     }
 }
 
+/**
+ * Makes the request to delete a room.
+ */
 function *delete_room(){
     var id = this.params.id, response;
     try {
@@ -223,10 +234,17 @@ function *delete_room(){
     }
 }
 
+/**
+ * Renders a map representative of the museum floor
+ */
 function *map(){
     yield this.render("map", {title: "Map"});
 }
 
+/**
+ * Checks if the user is logged in when accessing a page
+ * @param next
+ */
 function *requireLogin(next){
 
     if (!this.session.confirm){

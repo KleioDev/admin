@@ -11,7 +11,10 @@ var apn = require('apn');
 var url = require('url');
 var gcm = require('node-gcm');
 
-
+/**
+ * Exports the routes to the server router.
+ * @returns {*} the controller routes
+ */
 module.exports = function(){
     var newsController = new Router();
     newsController
@@ -220,6 +223,9 @@ function *delete_article(){
     }
 }
 
+/**
+ * Sends notification to phones stored in the database.
+ */
 function *notifyNews(){
     var response, id = this.params.id, news;
 
@@ -322,6 +328,10 @@ function *notifyNews(){
 
 }
 
+/**
+ * Checks if the user is logged in when accessing a page
+ * @param next
+ */
 function *requireLogin(next){
 
     if (!this.session.confirm){

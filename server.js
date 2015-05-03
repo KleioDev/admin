@@ -81,10 +81,20 @@ app.use(handlebars({
                 }
                 return string;
             },
+            /**
+             * Displays the correct language
+             * @param obj either 'esp' or 'eng'
+             * @returns {string} 'Spanish' or 'English'
+             */
             language: function(obj){
                 if(obj === "esp") return "Español";
                 else return "English";
             },
+            /**
+             * Displays the correct exhibition in an artifact
+             * @param obj the exhibition
+             * @returns {string} the exhibition name or 'No exhibition attached'
+             */
             exhibitionRender: function(obj){
                 if(obj)
                     return "<a href=\"/exhibition/" + obj.id + "\">" + obj.title + " - " + obj.description + "</a>";
@@ -126,17 +136,3 @@ console.log("Listening on port 3000");
 
 //Export the app for testing purposes
 exports.app = app;
-
-
-
-
-///**
-// * Miscellaneous
-// */
-//route.get("/database", requireLogin, database);
-// /**
-//  * Not implemented yet.
-//  */
-//function *database(){
-//	yield this.render("database", {title : "Database"});
-//}

@@ -7,8 +7,10 @@ var Router = require('koa-router');
 var apiUrl = require("../config/config").url;
 var rq = require('co-request');
 
-
-
+/**
+ * Exports the routes to the server router.
+ * @returns {*} the controller routes
+ */
 module.exports = function(){
     var museumController = new Router();
     museumController
@@ -147,6 +149,10 @@ function *edit_museum(){
 
 }
 
+/**
+ * Checks if the user is logged in when accessing a page
+ * @param next
+ */
 function *requireLogin(next){
 
     if (!this.session.confirm){

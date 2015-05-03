@@ -6,7 +6,10 @@ var Router = require('koa-router');
 var rq = require('co-request');
 var apiUrl = require("../config/config").url;
 
-
+/**
+ * Exports the routes to the server router.
+ * @returns {*} the controller routes
+ */
 module.exports = function(){
     var exhibitionController = new Router();
     exhibitionController
@@ -179,6 +182,9 @@ function *remove_from_exhibition(){
     }
 }
 
+/**
+ * Renders the page that allows the edition of exhibitions
+ */
 function *edit_exhibition_page(){
     var id = this.params.id, response;
     try {
@@ -199,6 +205,9 @@ function *edit_exhibition_page(){
     });
 }
 
+/**
+ * Makes the request to update exhibitions
+ */
 function *edit_exhibition(){
     var body = yield parse(this), response, id = this.params.id;
     if(!body) {
@@ -223,6 +232,9 @@ function *edit_exhibition(){
     }
 }
 
+/**
+ * Makes the request to delete exhibitions.
+ */
 function *delete_exhibion(){
     var id = this.params.id, response;
     try {
@@ -241,6 +253,10 @@ function *delete_exhibion(){
     }
 }
 
+/**
+ * Checks if the user is logged in when accessing a page
+ * @param next
+ */
 function *requireLogin(next){
 
     if (!this.session.confirm){

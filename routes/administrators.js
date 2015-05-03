@@ -5,7 +5,10 @@ var parse_multi = require("koa-better-body")(),
     apiUrl = require("../config/config").url;
 
 
-
+/**
+ * Exports the routes to the server router.
+ * @returns {*} the controller routes
+ */
 module.exports = function(){
     var administratorController = new Router();
 
@@ -48,6 +51,7 @@ function *index(){
         admins : administrators
     });
 }
+
 /**
  * Render view to create an Administrator Instance
  */
@@ -186,7 +190,10 @@ function *destroy(){
     }
 }
 
-
+/**
+ * Checks if the user is logged in when accessing a page
+ * @param next
+ */
 function *requireLogin(next){
     if (!this.session.confirm){
         this.redirect("/change");

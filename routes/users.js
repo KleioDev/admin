@@ -6,6 +6,10 @@ var Router = require('koa-router');
 var apiUrl = require("../config/config").url;
 var rq = require("co-request");
 
+/**
+ * Exports the routes to the server router.
+ * @returns {*} the controller routes
+ */
 module.exports = function(){
     var userController = new Router();
     userController
@@ -36,6 +40,10 @@ function *users(){
         users : users});
 }
 
+/**
+ * Checks if the user is logged in when accessing a page
+ * @param next
+ */
 function *requireLogin(next){
 
     if (!this.session.confirm){
