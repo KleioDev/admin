@@ -42,7 +42,6 @@ function *museum(){
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
-
     yield this.render("museum_information", {
         title : "Museum",
         museum : museum
@@ -86,46 +85,42 @@ function *edit_museum(){
     if(!body) {
         this.throw('Bad Request', 400);
     }
-
-
+    console.log(body.fields);
     var schedule = {monday:{},tuesday:{},wednesday:{}, thursday:{},friday:{},saturday:{},sunday:{}};
-    if(body.mon_op) schedule.monday.open = body.mon_op;
-    if(body.mon_cl) schedule.monday.close = body.mon_cl;
-    if(body.mon_closed) schedule.monday.closed = body.mon_closed;
+    if(body.fields.mon_op) schedule.monday.open = body.fields.mon_op;
+    if(body.fields.mon_cl) schedule.monday.close = body.fields.mon_cl;
+    if(body.fields.mon_closed) schedule.monday.closed = body.fields.mon_closed;
 
-    if(body.tue_op) schedule.tuesday.open = body.tue_op;
-    if(body.tue_cl) schedule.tuesday.close = body.tue_cl;
-    if(body.tue_closed) schedule.tuesday.closed = body.tue_closed;
+    if(body.fields.tue_op) schedule.tuesday.open = body.fields.tue_op;
+    if(body.fields.tue_cl) schedule.tuesday.close = body.fields.tue_cl;
+    if(body.fields.tue_closed) schedule.tuesday.closed = body.fields.tue_closed;
 
-    if(body.wed_op) schedule.wednesday.open = body.wed_op;
-    if(body.wed_cl) schedule.wednesday.close = body.wed_cl;
-    if(body.wed_closed) schedule.wednesday.closed = body.wed_closed;
+    if(body.fields.wed_op) schedule.wednesday.open = body.fields.wed_op;
+    if(body.fields.wed_cl) schedule.wednesday.close = body.fields.wed_cl;
+    if(body.fields.wed_closed) schedule.wednesday.closed = body.fields.wed_closed;
 
-    if(body.thu_op) schedule.thursday.open = body.thu_op;
-    if(body.thu_cl) schedule.thursday.close = body.thu_cl;
-    if(body.thu_closed) schedule.thursday.closed = body.thu_closed;
+    if(body.fields.thu_op) schedule.thursday.open = body.fields.thu_op;
+    if(body.fields.thu_cl) schedule.thursday.close = body.fields.thu_cl;
+    if(body.fields.thu_closed) schedule.thursday.closed = body.fields.thu_closed;
 
-    if(body.fri_op) schedule.friday.open = body.fri_op;
-    if(body.fri_cl) schedule.friday.close = body.fri_cl;
-    if(body.fri_closed) schedule.friday.closed = body.fri_closed;
+    if(body.fields.fri_op) schedule.friday.open = body.fields.fri_op;
+    if(body.fields.fri_cl) schedule.friday.close = body.fields.fri_cl;
+    if(body.fields.fri_closed) schedule.friday.closed = body.fields.fri_closed;
 
-    if(body.sat_op) schedule.saturday.open = body.sat_op;
-    if(body.sat_cl) schedule.saturday.close = body.sat_cl;
-    if(body.sat_closed) schedule.saturday.closed = body.sat_closed;
+    if(body.fields.sat_op) schedule.saturday.open = body.fields.sat_op;
+    if(body.fields.sat_cl) schedule.saturday.close = body.fields.sat_cl;
+    if(body.fields.sat_closed) schedule.saturday.closed = body.fields.sat_closed;
 
-    if(body.sun_op) schedule.sunday.open = body.sun_op;
-    if(body.sun_cl) schedule.sunday.close = body.sun_cl;
-    if(body.sun_closed) schedule.sunday.closed = body.sun_closed;
+    if(body.fields.sun_op) schedule.sunday.open = body.fields.sun_op;
+    if(body.fields.sun_cl) schedule.sunday.close = body.fields.sun_cl;
+    if(body.fields.sun_closed) schedule.sunday.closed = body.fields.sun_closed;
 
-
-    if(!body) {
-        this.throw('Bad Request', 400);
-    }
     try {
         response = yield rq({
             uri: apiUrl + "/museum/1",
             method: "PUT",
-            formData: {
+            json: true,
+            body: {
                 //file: fs.createReadStream(body.files.file.path),
                 name: body.fields.name,
                 description: body.fields.description,
@@ -139,9 +134,12 @@ function *edit_museum(){
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
         });
+
     } catch(err){
+        console.log(err);
         this.throw(err.message, err.status || 500);
     }
+
 
     if(response.statusCode >= 200 && response.statusCode < 300){
         this.redirect("/museum");

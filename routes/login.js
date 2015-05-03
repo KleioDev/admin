@@ -44,7 +44,6 @@ function *index(){
         artifacts[i].interactions = i;
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    console.log(artifacts);
     yield this.render("index", {
         title : "Home",
         artifacts : artifacts
