@@ -4,9 +4,11 @@ var server = require('../server.js');
 var app = server.app;
 var comocha = require('co-mocha');
 var assert = require("assert");
+var admin = require("../config/config").admin;
+var password = require("../config/config").password;
+var cred = {email:admin, password: password};
 
 request = supertest(app.callback());
-var administrators = require('./db.js').users;
 
 describe('Administrators', function(){
 
@@ -15,8 +17,8 @@ describe('Administrators', function(){
     //    request(app)
     //        .post('/login')
     //        .send({
-    //            username: 'admin@upr.edu',
-    //            password: '123456'
+    //            email: admin,
+    //            password: password
     //        })
     //        .end(function (err, res) {
     //            if(err) throw err;
@@ -28,7 +30,7 @@ describe('Administrators', function(){
     describe('GET /administrators', function(){
 
         it('should return a status of 200', function *(){
-            yield request.post("/login").send({email:"admin@upr.edu", password:"123456"}).then(
+            yield request.post("/login").send(cred).then(
                 request.get('/administrators').expect(200));
         });
     });
@@ -36,7 +38,7 @@ describe('Administrators', function(){
     describe('GET /new_admin', function(){
 
         it('should return a status of 200', function *(){
-            yield request.post("/login").send({email:"admin@upr.edu", password:"123456"}).then(
+            yield request.post("/login").send(cred).then(
                 request.get('/new_admin').expect(200));
         });
     });
@@ -44,14 +46,14 @@ describe('Administrators', function(){
     describe('GET /edit_admin/1', function(){
 
         it('should return a status of 200', function *(){
-            yield request.post("/login").send({email:"admin@upr.edu", password:"123456"}).then(
+            yield request.post("/login").send(cred).then(
                 request.get('/edit_admin/1').expect(200));
         });
     });
     describe('GET /edit_admin/2', function(){
 
         it('should return a status of 404', function *(){
-            yield request.post("/login").send({email:"admin@upr.edu", password:"123456"}).then(
+            yield request.post("/login").send(cred).then(
                 request.get('/edit_admin/2').expect(404));
         });
     });

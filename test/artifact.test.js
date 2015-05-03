@@ -10,27 +10,27 @@ var cred = {email:admin, password: password};
 
 request = supertest(app.callback());
 
-describe('Rooms', function(){
+describe('Artifacts', function(){
 
-    describe('GET /rooms', function(){
-
-        it('should return a status of 302 redirecting to 200', function *(){
-            yield request.post("/login").send(cred).then(
-                request.get('/rooms').expect(200));
-        });
-    });
-    describe('GET /room/1', function(){
+    describe('GET /artifacts', function(){
 
         it('should return a status of 302 redirecting to 200', function *(){
             yield request.post("/login").send(cred).then(
-                request.get('/room/1').expect(200));
+                request.get('/artifacts').expect(200));
         });
     });
-    describe('GET /room/100', function(){
+    describe('GET /artifact/1', function(){
+
+        it('should return a status of 302 redirecting to 200', function *(){
+            yield request.post("/login").send(cred).then(
+                request.get('/artifact/1').expect(200));
+        });
+    });
+    describe('GET /artifact/100', function(){
 
         it('should return a status of 404', function *(){
             yield request.post("/login").send(cred).then(
-                request.get('/room/100').expect(404));
+                request.get('/artifact/100').expect(200));
         });
     });
 
