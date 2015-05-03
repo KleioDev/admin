@@ -88,7 +88,7 @@
                                         <div id="collapseAudio{{id}}" class="panel-collapse collapse">
                                             <div class="panel-body">
                                                 <p>{{title}}</p>
-                                                <p>{{language}}</p>
+                                                <p>Language: {{language lang}}</p>
                                                 <p>{{description}}</p>
 
                                                 <audio controls>
@@ -158,8 +158,9 @@
                                         <div id="collapseVideo{{id}}" class="panel-collapse collapse">
                                             <div class="panel-body">
                                                 <p>{{title}}</p>
+                                                <p>Language: {{language lang}}</p>
+
                                                 <p>{{description}}</p>
-                                                <p>{{lang}}</p>
 
                                                 <iframe id="ytplayer" type="text/html" width="480" height="240" src="http://www.youtube.com/embed/{{link}}" frameborder="0">
                                                     </iframe>
@@ -225,8 +226,9 @@
                                         <div id="collapseImage{{id}}" class="panel-collapse collapse">
                                             <div class="panel-body">
                                                 <p>{{title}}</p>
+                                                <p>Language: {{language lang}}</p>
+
                                                 <p>{{description}}</p>
-                                                <p>{{lang}}</p>
                                                 <img style="max-width: 100%;height: auto;" src={{link}}>
 
                                                 <br>
@@ -287,8 +289,9 @@
                                         <div id="collapseText{{id}}" class="panel-collapse collapse">
                                             <div class="panel-body">
                                                 <p>{{title}}</p>
+                                                <p>Language: {{language lang}}</p>
+
                                                 <p>{{description}}</p>
-                                                <p>{{lang}}</p>
                                                 <br>
                                                 <a href="/artifact/{{../artifact.id}}/text/{{id}}"><button class="btn btn-primary">Edit</button></a>
 

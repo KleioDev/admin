@@ -26,7 +26,29 @@ module.exports = function(){
  * Render the Home page (root).
  */
 function *index(){
-    yield this.render("index", {title : "Home"});
+    var response, artifacts;
+    try {
+        response = yield rq({
+            uri : apiUrl + '/artifact',
+            method : 'GET',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+        artifacts = JSON.parse(response.body).artifacts;
+
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    for(var i = 0; i < artifacts.length; i++){
+        artifacts[i].interactions = i;
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    console.log(artifacts);
+    yield this.render("index", {
+        title : "Home",
+        artifacts : artifacts
+    });
 }
 
 /**

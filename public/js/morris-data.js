@@ -109,9 +109,8 @@ $(function() {
         }],
         xkey: 'y',
         ykeys: ['a', 'b'],
-        labels: ['Series A', 'Series B'],
+        labels: ['Active Users', 'Interactive Users'],
         hideHover: 'auto',
         resize: true
     });
-
 });

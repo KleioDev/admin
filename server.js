@@ -80,6 +80,10 @@ app.use(handlebars({
                         "<button type=\"submit\" class=\"btn btn-danger\"><i class=\"glyphicon glyphicon-remove-sign\"></i></button></form></td></tr>";
                 }
                 return string;
+            },
+            language: function(obj){
+                if(obj === "esp") return "Español";
+                else return "English";
             }
         }
     }));
