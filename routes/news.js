@@ -64,18 +64,13 @@ function *single_article(){// id as param
     var response, id = this.params.id, news;
 
     try {
-        //console.log(this.session.user);
         response = yield rq({
             uri : apiUrl + '/news/' + id,
             method : 'GET',
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
         });
-        //Parse
         news = JSON.parse(response.body);
-        //console.log(news);
-
-
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
@@ -100,7 +95,6 @@ function *edit_article_page(){ //id as param
     var response, id = this.params.id, news;
 
     try {
-        //console.log(this.session.user);
         response = yield rq({
             uri : apiUrl + '/news/' + id,
             method : 'GET',
@@ -109,7 +103,6 @@ function *edit_article_page(){ //id as param
         });
         //Parse
         news = JSON.parse(response.body);
-        console.log(news);
 
 
     } catch(err) {
@@ -174,7 +167,6 @@ function *add_article(){
     var body = yield parse(this);
     body.image = null;
     var response;
-    console.log(this.session.user);
     if(!body) {
         this.throw('Bad Request', 400);
     }
@@ -238,7 +230,6 @@ function *notifyNews(){
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
         });
-        //Parse
         if(response.statusCode != 404) news = JSON.parse(response.body);
     } catch(err) {
         this.throw(err.message, err.status || 500);
@@ -252,7 +243,6 @@ function *notifyNews(){
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
         });
-        //Parse
         if(response.statusCode != 404) iosDevices = JSON.parse(response.body).phones;
     } catch(err) {
         this.throw(err.message, err.status || 500);
@@ -294,7 +284,6 @@ function *notifyNews(){
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
         });
-        //Parse
         if(response.statusCode != 404) androidDevices = JSON.parse(response.body).phones;
     } catch(err) {
         this.throw(err.message, err.status || 500);

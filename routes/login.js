@@ -43,12 +43,10 @@ function *login(){
             json : true,
             body : post
         });
-        //console.log(response.statusCode);
         if(response.statusCode >= 400){
             this.redirect("/login");
         }
         else{
-            console.log(response.body);
             this.session.user = response.body.token;
             this.session.confirm = response.body.confirm;
             this.session.id = response.body.id;
@@ -64,25 +62,23 @@ function *login(){
  * Render the login page.
  */
 function *login_page(){
-    yield this.render("login");
+    yield this.render("login", {title:"Login"});
 }
 
 /**
  * Resets the session and redirects to the login page
  */
 function *logout() {
-    //console.log(this.session.user);
     this.session = null;
     this.redirect("login");
 }
 
 function *forgot(){
-    yield this.render("forgot");
+    yield this.render("forgot", {title:"Password Reset"});
 
 }
 
 function *change(){
-    console.log(this.session.id);
     yield this.render("change_password",{id:this.session.id});
 }
 
@@ -108,14 +104,13 @@ function *reset_password(){
 }
 
 function *change_notify(){
-    yield this.render("change_notify");
+    yield this.render("change_notify", {title:"Password Reset"});
 }
 
 /**
  * Makes the application require login throughout the whole app.
  */
 function *requireLogin(next){
-    //console.log(this.session.user);
     if (!this.session.confirm){
         this.redirect("/change");
     }

@@ -70,9 +70,7 @@ function *exhibition(){
                 title: "Wrong Exhibition"
             });
         }
-        //Parse
         exhibition = JSON.parse(response.body);
-        //console.log(exhibition);
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
@@ -135,7 +133,6 @@ function *new_exhibition(){
  */
 function *add_to_exhibition(){
     var body =  yield parse(this), response;
-    console.log(body);
     if(!body) {
         this.throw('Bad Request', 400);
     }
@@ -194,10 +191,8 @@ function *edit_exhibition_page(){
         var exhibition = JSON.parse(response.body);
 
     } catch(err){
-        //console.log(err);
         this.throw(err.message, err.status || 500);
     }
-    console.log(exhibition);
     yield this.render("edit_exhibition",{
         title: exhibition.title,
         exhibition: exhibition
@@ -221,10 +216,8 @@ function *edit_exhibition(){
         });
 
     } catch(err){
-        //console.log(err);
         this.throw(err.message, err.status || 500);
     }
-    //console.log(body);
     if(response.statusCode == 200){
         this.redirect("/exhibition/" + id);
     }
@@ -241,10 +234,8 @@ function *delete_exhibion(){
         });
 
     } catch(err){
-        //console.log(err);
         this.throw(err.message, err.status || 500);
     }
-    //console.log(body);
     if(response.statusCode == 200){
         this.redirect("/exhibitions");
     }

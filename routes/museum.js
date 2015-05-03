@@ -31,14 +31,12 @@ function *museum(){
         museum;
 
     try {
-        //console.log(this.session.user);
         response = yield rq({
             uri : apiUrl + '/museum',
             method : 'GET',
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
         });
-        //Parse
         museum = JSON.parse(response.body);
 
     } catch(err) {
@@ -59,14 +57,12 @@ function *edit_museum_information(){
         museum;
 
     try {
-        //console.log(this.session.user);
         response = yield rq({
             uri : apiUrl + '/museum',
             method : 'GET',
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
         });
-        //Parse
         museum = JSON.parse(response.body);
 
     } catch(err) {
@@ -122,7 +118,6 @@ function *edit_museum(){
     if(body.sun_closed) schedule.sunday.closed = body.sun_closed;
 
 
-    //console.log(body);
     if(!body) {
         this.throw('Bad Request', 400);
     }

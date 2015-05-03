@@ -30,15 +30,12 @@ function *index(){
     administrators;
 
     try {
-        //console.log(this.session.user);
         response = yield rq({
             uri : apiUrl + '/administrator',
             method : 'GET',
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
         });
-        //Parse
-        //console.log(response.body);
         administrators = JSON.parse(response.body).administrators;
 
     } catch(err) {
@@ -142,7 +139,6 @@ function *edit(){
     var body = this.request.body.fields,
         id = this.params.id,
         response;
-    //console.log(body);
     if(!body) {
         this.throw('Bad Request', 400);
     }
@@ -158,11 +154,8 @@ function *edit(){
     } catch(err){
         this.throw(err.message, err.status || 500);
     }
-    //console.log(response.body);
     if(response.body.token){
-        //console.log(this.session.user);
         this.session.user = response.body.token;
-        //console.log(this.session.user);
     }
 
     if(response.statusCode >= 200 && response.statusCode < 300){
@@ -195,7 +188,9 @@ function *destroy(){
 
 
 function *requireLogin(next){
-
+    if (!this.session.confirm){
+        this.redirect("/change");
+    }
     if (!this.session.user) {
         this.redirect("/login");
     }

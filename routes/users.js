@@ -21,18 +21,13 @@ function *users(){
     var response, users;
 
     try {
-        //console.log(this.session.user);
         response = yield rq({
             uri : apiUrl + '/user',
             method : 'GET',
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
         });
-        //Parse
         users = JSON.parse(response.body).users;
-        //console.log(users);
-
-
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }

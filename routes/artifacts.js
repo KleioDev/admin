@@ -112,7 +112,6 @@ function *artifact(){
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
-    //console.log(artifact);
     yield this.render("artifact", {
         title: "Artifact: " + artifact.title,
         artifact : artifact,
@@ -129,7 +128,6 @@ function *upload_audio(){
     if(!body) {
         this.throw('Bad Request', 400);
     }
-    //console.log(body.file);
     try {
         response = yield rq({
             uri: apiUrl + "/audible",
@@ -269,7 +267,6 @@ function *delete_image(){
     if(!body) {
         this.throw('Bad Request', 400);
     }
-    //console.log(body);
     try {
         response = yield rq({
             uri : apiUrl + '/image/' + body.image_id,
@@ -466,7 +463,6 @@ function *edit_audio(){
     if(!body) {
         this.throw('Bad Request', 400);
     }
-    //console.log(body.file);
     try {
         response = yield rq({
             uri: apiUrl + "/audible/" + this.params.audio,
@@ -517,7 +513,6 @@ function *edit_image(){
     if(!body) {
         this.throw('Bad Request', 400);
     }
-    //console.log(body.file);
     try {
         response = yield rq({
             uri: apiUrl + "/image/" + this.params.image,

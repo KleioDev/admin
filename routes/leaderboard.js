@@ -23,7 +23,6 @@ module.exports = function(){
  * This user information is specific to the leaderboards.
  */
 function *leaderboard(){
-    //console.log(this.session.user);
     var response, leaderboard;
     try{
         response = yield rq({
@@ -32,13 +31,11 @@ function *leaderboard(){
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
         });
-        //console.log(response.body);
         leaderboard = JSON.parse(response.body).leaderboard;
 
     } catch(err){
         this.throw(err.message, err.status || 500);
     }
-    //console.log(leaderboard);
     yield this.render("leaderboard", {
         title : "Leaderboard",
         users : leaderboard
@@ -52,7 +49,6 @@ function *leaderboard(){
 function *reset_score(){
     var id = this.params.id;
     var response;
-    //console.log(body);
 
     try {
         response = yield rq({

@@ -38,12 +38,10 @@ function *rooms(){
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
         });
-        //Parse
         if(response.statusCode != 404) rooms = JSON.parse(response.body).rooms;
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
-    //console.log(rooms);
     yield this.render("rooms",{
         title: "Rooms",
         rooms : rooms
@@ -70,11 +68,7 @@ function *room(){
                 title: "Wrong Room"
             });
         }
-        //Parse
         room = JSON.parse(response.body);
-        //console.log(room);
-
-
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
@@ -134,10 +128,8 @@ function *add_to_room(){
         });
 
     } catch(err){
-        //console.log(err);
         this.throw(err.message, err.status || 500);
     }
-    //console.log(body);
     if(response.statusCode == 201){
         this.redirect("/room/" + body.RoomId);
     }
@@ -162,10 +154,8 @@ function *remove_ibeacon(){
         });
 
     } catch(err){
-        //console.log(err);
         this.throw(err.message, err.status || 500);
     }
-    //console.log(body);
     if(response.statusCode == 200){
         this.redirect("/room/" + body.RoomId);
     }
@@ -183,10 +173,8 @@ function *edit_room_page(){
         var room = JSON.parse(response.body);
 
     } catch(err){
-        //console.log(err);
         this.throw(err.message, err.status || 500);
     }
-    //console.log(body);
     yield this.render("edit_room",{
         title: room.name,
         room: room
@@ -210,10 +198,8 @@ function *edit_room(){
         });
 
     } catch(err){
-        //console.log(err);
         this.throw(err.message, err.status || 500);
     }
-    //console.log(body);
     if(response.statusCode == 200){
         this.redirect("/room/" + id);
     }
@@ -230,10 +216,8 @@ function *delete_room(){
         });
 
     } catch(err){
-        //console.log(err);
         this.throw(err.message, err.status || 500);
     }
-    //console.log(body);
     if(response.statusCode == 200){
         this.redirect("/rooms/");
     }
