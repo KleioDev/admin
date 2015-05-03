@@ -1,5 +1,5 @@
 var env = require('node-env-file');
-env(__dirname + '/.env');
+env(__dirname + '/../.env');
 module.exports = {
     url: "http://136.145.116.229",
     secret: process.env.SECRET,
