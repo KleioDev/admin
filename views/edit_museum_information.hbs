@@ -102,8 +102,7 @@
             </div>
 
             <h3>Description</h3>
-            <textarea name="description" class="form-control" placeholder="Enter short description."></textarea>
-            <p class="help-block">Was: {{{museum.description}}}</p>
+            <textarea name="description" class="form-control" placeholder="Enter short description.">{{museum.description}}</textarea>
 
             <h3>Phone</h3>
             <input type="tel" name="phone" class="form-control" placeholder="Enter phone.">
@@ -118,12 +117,10 @@
             <p class="help-block">Was: {{museum.location}}</p>
 
             <h3>Terms</h3>
-            <textarea name="terms" class="form-control" placeholder="Enter Terms of Service."></textarea>
-            <p class="help-block">Was: {{{museum.terms}}}</p>
+            <textarea name="terms" class="form-control" placeholder="Enter Terms of Service.">{{museum.terms}}</textarea>
 
             <h3>About</h3>
-            <textarea name="about" class="form-control" placeholder="Enter about information."></textarea>
-            <p class="help-block">Was: {{{museum.about}}}</p>
+            <textarea name="about" class="form-control" placeholder="Enter about information.">{{museum.about}}</textarea>
             <br>
 
             <button class="btn btn-lg btn-block btn-primary" type="submit">Submit</button>
