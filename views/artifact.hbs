@@ -345,10 +345,10 @@
     <form role="form" action="/add_exhibition" method="post">
         <div class="form-group">
             <label>Add object to an exhibitions</label>
-            <select class="form-control">
-                <option>Select an exhibition...</option>
+            <select name="id" class="form-control">
+                <option value="null">Select an exhibition...</option>
                 {{#each exhibitions}}
-                    <option name="id" value="{{id}}">{{title}} - {{#sample description}}{{/sample}}</option>
+                    <option value={{id}}>{{title}} - {{#sample description}}{{/sample}}</option>
                 {{/each}}
             </select>
             <input hidden="true" name="ArtifactId" value="{{artifact.id}}">

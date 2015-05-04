@@ -42,12 +42,11 @@ function *events(){
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
         });
-        //Parse
-        events = JSON.parse(response.body).events;
-
-
-        for(var i = 0; i < events.length; i++){
-            events[i].eventDate = moment(events[i].eventDate).format(" MMM DD, YYYY hh:mm a");
+        if(response.statusCode != 404) {
+            events = JSON.parse(response.body).events;
+            for (var i = 0; i < events.length; i++) {
+                events[i].eventDate = moment(events[i].eventDate).format(" MMM DD, YYYY hh:mm a");
+            }
         }
 
     } catch(err) {

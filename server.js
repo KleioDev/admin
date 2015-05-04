@@ -63,6 +63,7 @@ app.use(handlebars({
             debug: function(obj){
                 console.log("Working.");
                 console.log(obj);
+                return "<script>var a = 10;</script>"
             },
             /**
              * Lists users in the leaderboard view. Add a counter for rankings.
@@ -100,8 +101,19 @@ app.use(handlebars({
                     return "<a href=\"/exhibition/" + obj.id + "\">" + obj.title + " - " + obj.description + "</a>";
                 else
                     return "No exhibition attached";
+            },
+            /**
+             * Displays user analytics.
+             */
+            morrisbar: function(obj){
 
-}
+            },
+            /**
+             * Displays download analytics.
+             */
+            morrisdonut: function(obj){
+                return "<script>$(function(){Morris.Donut({element: 'morris-donut-chart', data: [{label: \"IOS\", value: 458}, {label: \"Android\", value: 783}], resize: true})});</script>";
+            }
         }
     }));
 

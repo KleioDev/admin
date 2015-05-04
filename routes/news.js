@@ -44,9 +44,11 @@ function *news(){
                 Authorization : 'Bearer ' + this.session.user}
         });
         //Parse
-        news = JSON.parse(response.body).news;
-        for(var i = 0; i < news.length; i++){
-            news[i].updatedAt = moment(news[0].updatedAt).format(" MMM DD, YYYY hh:mm a");
+        if(response.statusCode != 404) {
+            news = JSON.parse(response.body).news;
+            for (var i = 0; i < news.length; i++) {
+                news[i].updatedAt = moment(news[0].updatedAt).format(" MMM DD, YYYY hh:mm a");
+            }
         }
 
     } catch(err) {
