@@ -327,7 +327,7 @@ function *delete_video(){
 
     try {
         response = yield rq({
-            uri : apiUrl + '/video/' + body.text_id,
+            uri : apiUrl + '/video/' + body.video_id,
             method : 'DELETE',
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
@@ -570,6 +570,9 @@ function *edit_video(){
     if(!body) {
         this.throw('Bad Request', 400);
     }
+    console.log(body);
+    body.link = body.link.substring(body.link.indexOf("=")+1);
+
     try {
         response = yield rq({
             uri : apiUrl + '/video/' + this.params.video,

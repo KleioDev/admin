@@ -12,7 +12,7 @@
         </div>
     </div>
 
-    <form role="form" action="/artifact/{{ArtifactId}}/video/{{video.id}}" method="POST">
+    <form role="form" action="/artifact/{{artifactId}}/video/{{video.id}}" method="POST">
         <div class="form-group">
             <label>Title</label>
             <input class="form-control" name="title" >
@@ -27,9 +27,9 @@
         <div class="form-group" >
             <label>Language</label>
 
-            <select class="form-control" style="width: 50%;">
-                <option name="lang" value="eng">English</option>
-                <option name="lang" value="esp">Spanish</option>
+            <select name="lang" class="form-control" style="width: 50%;">
+                <option value="eng">English</option>
+                <option value="esp">Spanish</option>
 
             </select>
             <p class="help-block">Was: {{language video.lang}}</p>
@@ -59,7 +59,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <form action="/delete_video" method="post">
-                        <input required hidden="true" name="artifact_id" value="{{ArtifactId}}">
+                        <input required hidden="true" name="artifact_id" value="{{artifactId}}">
                         <input hidden="true" name="video_id" value="{{video.id}}">
 
                         <button class="btn btn-danger" type="submit">Delete</button>

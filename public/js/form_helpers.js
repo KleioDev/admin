@@ -62,7 +62,7 @@ $(document).ready(function() {
         console.log($('#edit_admin').valid());
     });
     $('#change_submit').click(function(){
-        console.log($('#edit_admin').valid());
+        console.log($('#change').valid());
     });
 
     $("[type=checkbox]").click(function() {
