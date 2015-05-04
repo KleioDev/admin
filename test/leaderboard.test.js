@@ -16,8 +16,7 @@ describe('Leaderboard', function(){
     describe('GET /leaderboard', function(){
 
         it('should return a status of 200', function *() {
-            yield request.post("/login").send(cred).then(
-                request.get('/leaderboard').expect(200));
+            yield request.post("/login").send(cred).then(request.get('/leaderboard').expect(200));
         });
     });
 

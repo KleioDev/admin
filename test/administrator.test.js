@@ -6,15 +6,16 @@ var comocha = require('co-mocha');
 var assert = require("assert");
 var admin = require("../config/config").admin;
 var password = require("../config/config").password;
+var auth = require("../config/config").auth;
 var cred = {email:admin, password: password};
 
-request = supertest(app.callback());
+var request = supertest(app.callback());
 
 describe('Administrators', function(){
 
-    //var agent = supertest.agent();
-    //before(function(done){
-    //    request(app)
+    //var agent = supertest.agent(app.callback());
+    //before(function*(done){
+    //     yield request
     //        .post('/login')
     //        .send({
     //            email: admin,
@@ -22,58 +23,48 @@ describe('Administrators', function(){
     //        })
     //        .end(function (err, res) {
     //            if(err) throw err;
-    //            agent.saveCookies(res);
+    //            agent.saveCookies("Bearer " + res);
     //            done(agent);
     //        });
     //
     //});
-    describe('GET /administrators', function(){
+
+    describe('GET /administrator', function(){
 
         it('should return a status of 200', function *(){
-            yield request.post("/login").send(cred).then(
-                request.get('/administrators').expect(200));
+            yield request.post("/login").send(cred).then(request.get('/administrator').expect(200));
+            //yield request.get("/administrator").set("Authorization", auth).end().expect(302);
         });
     });
 
-    describe('GET /new_admin', function(){
+    describe('GET /administrator', function(){
 
         it('should return a status of 200', function *(){
-            yield request.post("/login").send(cred).then(
-                request.get('/new_admin').expect(200));
+            yield request.post("/login").send(cred).then(request.get('/administrator').expect(200));
+
         });
     });
 
-    describe('GET /edit_admin/1', function(){
+    describe('GET /administrator/1', function(){
 
         it('should return a status of 200', function *(){
-            yield request.post("/login").send(cred).then(
-                request.get('/edit_admin/1').expect(200));
+            yield request.post("/login").send(cred).then(request.get('/administrator/1').expect(200));
+
         });
     });
-    describe('GET /edit_admin/2', function(){
+    describe('GET /administrator/3/edit', function(){
+
+        it('should return a status of 200', function *(){
+            yield request.post("/login").send(cred).then(request.get('/administrator/3/edit').expect(200));
+
+        });
+    });
+    describe('GET /administrator/100', function(){
 
         it('should return a status of 404', function *(){
-            yield request.post("/login").send(cred).then(
-                request.get('/edit_admin/2').expect(404));
+            yield request.post("/login").send(cred).then(request.get('/administrator/100').expect(404));
+
         });
     });
-
-    //describe('POST /edit_admin', function(){
-    //
-    //    it('should change admin\'s name', function *(){
-    //        request.post("/login").send({email:"admin@upr.edu", password:"123456"}).end();
-    //        request.post('/edit_admin').send({admin_first:"Test", admin_last:"", admin_email:""}).end();
-    //        var flag = false;
-    //        for(var i = 0; i < administrators.length; i++){
-    //            if(administrators[i].id == 2){
-    //                if(administrators[i].first_name == "Test"){
-    //                    flag = true;
-    //                    break;
-    //                }
-    //            }
-    //        }
-    //        assert(flag);
-    //    });
-    //});
 
 });

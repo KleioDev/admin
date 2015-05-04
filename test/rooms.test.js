@@ -33,5 +33,19 @@ describe('Rooms', function(){
                 request.get('/room/100').expect(404));
         });
     });
+    describe('GET /room/1/edit', function(){
+
+        it('should return a status of 200', function *(){
+            yield request.post("/login").send(cred).then(
+                request.get('/room/1/edit').expect(200));
+        });
+    });
+    describe('GET /room/100edit', function(){
+
+        it('should return a status of 404', function *(){
+            yield request.post("/login").send(cred).then(
+                request.get('/room/100edit').expect(404));
+        });
+    });
 
 });

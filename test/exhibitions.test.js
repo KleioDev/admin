@@ -31,7 +31,21 @@ describe('Exhibitions', function(){
 
         it('should return a status of 404', function *(){
             yield request.post("/login").send(cred).then(
-                request.get('/exhibition/10').expect(200));
+                request.get('/exhibition/10').expect(404));
+        });
+    });
+    describe('GET /exhibition/1/edit', function(){
+
+        it('should return a status of 200', function *(){
+            yield request.post("/login").send(cred).then(
+                request.get('/exhibition/1/edit').expect(200));
+        });
+    });
+    describe('GET /exhibition/10/edit', function(){
+
+        it('should return a status of 404', function *(){
+            yield request.post("/login").send(cred).then(
+                request.get('/exhibition/10/edit').expect(404));
         });
     });
 

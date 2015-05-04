@@ -7,13 +7,12 @@ var cred = {email:admin, password: password};
 
 exports.login = function(request, done) {
     var agent = supertest.agent();
-    request.post('/login')
-    agent.saveCookies(res);
+    request.post('/login');
 
     request.send(cred);
     request.end(function (err, res) {
-            if (err)
-                throw err;
-            done(agent);
+        if (err) throw err;
+        agent.saveCookies(res);
+        done(agent);
         });
 }

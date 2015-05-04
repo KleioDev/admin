@@ -6,5 +6,6 @@ module.exports = {
     sessionDuration: 24 * 60 * 60 * 1000,
     sessionActiveDuration: 24 * 60 * 60 * 1000,
     admin: process.env.ADMIN,
-    password: process.env.PASSWORD
+    password: process.env.PASSWORD,
+    auth: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imx1aXNmcmlrQGdtYWlsLmNvbSIsInR5cGUiOiJhZG1pbiIsImlkIjozLCJpYXQiOjE0MzA3NzUyMTIsImV4cCI6MTQzMDg2MTYxMn0.Di6MQV4FRgcKhLYhg1ntS8z9AMxTU5Yt-P9bz6HQzoI"
 };
