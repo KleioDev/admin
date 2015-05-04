@@ -50,7 +50,6 @@ function *news(){
                 news[i].updatedAt = moment(news[0].updatedAt).format(" MMM DD, YYYY hh:mm a");
             }
         }
-
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }

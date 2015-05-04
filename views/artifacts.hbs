@@ -21,7 +21,6 @@
                 <th>Date Added</th>
                 <th>Artist</th>
                 <th>ID</th>
-                <th>Active</th>
                 <th>View</th>
             </tr>
             </thead>
@@ -35,12 +34,6 @@
                 <td>{{dated}}</td>
                 <td>{{Artist.name}}</td>
                 <td>{{id}}</td>
-
-                {{#if active}}
-                <td>Active</td>
-                {{else}}
-                <td>Inactive</td>
-                {{/if}}
                 <td style="text-align: center"><a href="/artifact/{{id}}"><button class="btn btn-primary">View</button></a></td>
 
             </tr>

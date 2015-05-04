@@ -32,12 +32,12 @@ function *index(){
     var response, artifacts;
     try {
         response = yield rq({
-            uri : apiUrl + '/artifact', //"artifact/top"
+            uri : apiUrl + '/artifact/', //"artifact/top"
             method : 'GET',
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
         });
-        artifacts = JSON.parse(response.body).artifacts;
+        if(response.statusCode != 404) artifacts = JSON.parse(response.body).artifacts;
 
     } catch(err) {
         this.throw(err.message, err.status || 500);

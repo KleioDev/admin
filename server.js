@@ -106,13 +106,19 @@ app.use(handlebars({
              * Displays user analytics.
              */
             morrisbar: function(obj){
+                return "<script>$(function() {Morris.Bar({element: 'morris-bar-chart',data:" + obj + ", xkey: 'period', ykeys: ['active', 'interactive'], labels: ['Active Users', 'Interactive Users'], hideHover: 'auto', resize: true});});</script>";
 
             },
             /**
              * Displays download analytics.
              */
             morrisdonut: function(obj){
-                return "<script>$(function(){Morris.Donut({element: 'morris-donut-chart', data: [{label: \"IOS\", value: 458}, {label: \"Android\", value: 783}], resize: true})});</script>";
+                return "<script>$(function(){Morris.Donut({element: 'morris-donut-chart', data: [{label: 'IOS', value: 458}, {label: 'Android', value: 783}], resize: true})});</script>";
+            },
+            feedbackType: function(obj){
+                if(obj === "general") return "General";
+                if(obj === "bug") return "Application Bug";
+                else return "Content Problem";
             }
         }
     }));

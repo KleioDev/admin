@@ -57,7 +57,7 @@ function *reset_score(){
             uri : apiUrl + '/user/' + id,
             method : 'PUT',
             json : true,
-            body : {active : false, points: 0},
+            body : {points: 0},//{active : false, points: 0},
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
         });
