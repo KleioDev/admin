@@ -30,6 +30,7 @@ module.exports = function(){
  */
 function *index(){
     var response, artifacts, ios, android, phones, users = [{period: '2015-01', active: 0, interactive: 0}];
+
     //Top artifacts
     try {
         response = yield rq({
@@ -76,6 +77,7 @@ function *index(){
                 Authorization : 'Bearer ' + this.session.user}
         });
         if(response.statusCode != 404 && response.body.data) users = JSON.parse(response.body).data;
+
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }

@@ -114,6 +114,7 @@ app.use(handlebars({
                 string += ']';
                 return "<script>$(function() {Morris.Bar({element: 'morris-bar-chart',data: " + string + ", xkey: 'period', ykeys: ['active', 'interactive'], labels: ['Active Users', 'Interactive Users'], hideHover: 'auto', resize: true});});</script>";
 
+
             },
             /**
              * Displays download analytics.
