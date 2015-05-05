@@ -29,7 +29,7 @@ module.exports = function(){
  * Render the Home page (root).
  */
 function *index(){
-    var response, artifacts, ios, android, phones;
+    var response, artifacts, ios, android, phones, users;
     //Top artifacts
     try {
         response = yield rq({
@@ -68,11 +68,25 @@ function *index(){
         this.throw(err.message, err.status || 500);
     }
 
+    try {
+        response = yield rq({
+            uri : apiUrl + '/active/user',
+            method : 'GET',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+        if(response.statusCode != 404) users = JSON.parse(response.body).data;
+
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+
 
     yield this.render("index", {
         title : "Home",
         artifacts : artifacts,
-        phones:{ios: ios, android: android}
+        phones:{ios: ios, android: android},
+        users: users
     });
 }
 
