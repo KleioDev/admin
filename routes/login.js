@@ -147,6 +147,7 @@ function *forgot(){
  * Renders the reset password page
  */
 function *change(){
+
     yield this.render("change_password",{id:this.session.id});
 }
 
@@ -167,7 +168,6 @@ function *reset_password(){
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
-
     if(response.statusCode == 200) {
         this.redirect("/change/notify");
     }

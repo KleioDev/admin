@@ -161,6 +161,7 @@ function *edit(){
     if(response.body.token){
         this.session.user = response.body.token;
     }
+    this.session.confirm = true;
 
     if(response.statusCode >= 200 && response.statusCode < 300){
         this.redirect('/administrator');
