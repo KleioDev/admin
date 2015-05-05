@@ -87,7 +87,7 @@ function *edit_museum(){
     if(!body) {
         this.throw('Bad Request', 400);
     }
-    console.log(body.fields);
+    //console.log(body.fields);
     var schedule = {monday:{},tuesday:{},wednesday:{}, thursday:{},friday:{},saturday:{},sunday:{}};
     if(body.fields.mon_op) schedule.monday.open = body.fields.mon_op;
     if(body.fields.mon_cl) schedule.monday.close = body.fields.mon_cl;

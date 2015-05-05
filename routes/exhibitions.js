@@ -227,7 +227,6 @@ function *edit_exhibition(){
     } catch(err){
         this.throw(err.message, err.status || 500);
     }
-    console.log(body);
     if(response.statusCode == 200){
         this.redirect("/exhibition/" + id);
     }

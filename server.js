@@ -113,7 +113,7 @@ app.use(handlebars({
              * Displays download analytics.
              */
             morrisdonut: function(obj){
-                return "<script>$(function(){Morris.Donut({element: 'morris-donut-chart', data: [{label: 'IOS', value: 458}, {label: 'Android', value: 783}], resize: true})});</script>";
+                return "<script>$(function(){Morris.Donut({element: 'morris-donut-chart', data: [{label: 'IOS', value: " + obj.ios + "}, {label: 'Android', value: " + obj.android + "}], resize: true})});</script>";
             },
             feedbackType: function(obj){
                 if(obj === "general") return "General";

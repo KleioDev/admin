@@ -570,7 +570,6 @@ function *edit_video(){
     if(!body) {
         this.throw('Bad Request', 400);
     }
-    console.log(body);
     body.link = body.link.substring(body.link.indexOf("=")+1);
 
     try {

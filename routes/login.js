@@ -29,10 +29,11 @@ module.exports = function(){
  * Render the Home page (root).
  */
 function *index(){
-    var response, artifacts;
+    var response, artifacts, ios, android, phones;
+    //Top artifacts
     try {
         response = yield rq({
-            uri : apiUrl + '/artifact/', //"artifact/top"
+            uri : apiUrl + '/artifact', //"artifact?top=true"
             method : 'GET',
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
@@ -42,9 +43,36 @@ function *index(){
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
+    //IOS downloads
+    try {
+        response = yield rq({
+            uri : apiUrl + '/phones?os=ios',
+            method : 'GET',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+        if(response.statusCode != 404) ios = JSON.parse(response.body).phones.length;
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+    try {
+        response = yield rq({
+            uri : apiUrl + '/phones?os=android',
+            method : 'GET',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+        if(response.statusCode != 404) android = JSON.parse(response.body).phones.length;
+
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+
+
     yield this.render("index", {
         title : "Home",
-        artifacts : artifacts
+        artifacts : artifacts,
+        phones:{ios: ios, android: android}
     });
 }
 
