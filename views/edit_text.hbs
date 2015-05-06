@@ -15,12 +15,12 @@
     <form role="form" action="/artifact/{{ArtifactId}}/text/{{text.id}}" method="POST">
         <div class="form-group">
             <label>Title</label>
-            <input class="form-control" name="title">
+            <input class="form-control" name="title" value="{{text.title}}">
             <p class="help-block">Was: {{text.title}}</p>
         </div>
         <div class="form-group" >
             <label>Description</label>
-            <textarea class="form-control" name="description"></textarea>
+            <textarea class="form-control" name="description">{{text.description}}</textarea>
             <p class="help-block">Was: {{text.description}}</p>
 
         </div>
@@ -28,6 +28,8 @@
             <label>Language</label>
 
             <select name="lang" class="form-control" style="width: 50%;">
+                <option>Select a language</option>
+
                 <option  value="eng">English</option>
                 <option  value="esp">Spanish</option>
 

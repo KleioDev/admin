@@ -213,7 +213,9 @@ function *edit_exhibition(){
     if(!body) {
         this.throw('Bad Request', 400);
     }
-
+    for(prop in body){
+        if(!body[prop]) delete body[prop];
+    }
     try {
         response = yield rq({
             uri : apiUrl + '/exhibition/' + id,

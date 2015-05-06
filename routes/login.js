@@ -29,12 +29,12 @@ module.exports = function(){
  * Render the Home page (root).
  */
 function *index(){
-    var response, artifacts, ios, android, phones, users = [{period: '2015-01', active: 0, interactive: 0}];
+    var response, artifacts, ios, android, phones, users = [{period: '2015-01', active: 0, interactive: 0}], array = [];
 
     //Top artifacts
     try {
         response = yield rq({
-            uri : apiUrl + '/artifact', //"artifact?top=true"
+            uri : apiUrl + '/artifact?top=true', //"artifact?top=true"
             method : 'GET',
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
@@ -76,8 +76,10 @@ function *index(){
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
         });
-        if(response.statusCode != 404 && response.body.data) users = JSON.parse(response.body).data;
-
+        if(response.statusCode != 404) users = JSON.parse(response.body);
+        for(prop in users){
+            array.push(users[prop]);
+        }
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
@@ -87,7 +89,7 @@ function *index(){
         title : "Home",
         artifacts : artifacts,
         phones:{ios: ios, android: android},
-        users: users
+        users: array
     });
 }
 

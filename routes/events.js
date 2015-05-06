@@ -131,11 +131,15 @@ function *edit_event(){
     var body = yield parse(this);
     var id = body.id;
     var response;
-    body.eventDate = body.date+"T"+body.time+":00.000-04";
-    delete body.date, body.time;
     if(!body) {
         this.throw('Bad Request', 400);
     }
+    for(prop in body){
+        if(!body[prop]) delete body[prop];
+    }
+    if(!body.date && !body.time) body.eventDate = body.date+"T"+body.time+":00.000-04";
+    else if(!body.date && body.time) body.eventDate = body.date+"T";
+
     //2015-05-06T08:00:00.000-04
     //2015-05-02T03:24:00.000Z
 
@@ -177,15 +181,16 @@ function *add_event(){
     var body = yield parse(this);
     //body.image = null;
     var response;
+    if(!body) {
+        this.throw('Bad Request', 400);
+    }
     var date = body.date+"T"+body.time+":00.000-04";
     body.eventDate = new moment(date);
 
     delete body.date;
     delete body.time;
 
-    if(!body) {
-        this.throw('Bad Request', 400);
-    }
+
 
     try {
         response = yield rq({
