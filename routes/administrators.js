@@ -146,6 +146,10 @@ function *edit(){
     if(!body) {
         this.throw('Bad Request', 400);
     }
+    for(prop in body){
+        if(!body[prop]) delete body[prop];
+    }
+    console.log(body);
     try {
         response = yield rq({
             uri : apiUrl + '/administrator/' + id,

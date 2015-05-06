@@ -15,12 +15,12 @@
     <form role="form" action="/artifact/{{ArtifactId}}/audio/{{audible.id}}" method="POST">
         <div class="form-group">
             <label>Title</label>
-            <input class="form-control" name="title" >
+            <input class="form-control" name="title" value="{{audible.title}}">
             <p class="help-block">Was: {{audible.title}}</p>
         </div>
         <div class="form-group" >
             <label>Description</label>
-            <input class="form-control" name="description">
+            <input class="form-control" name="description" value="{{audible.description}}">
             <p class="help-block">Was: {{audible.description}}</p>
 
         </div>
@@ -28,6 +28,8 @@
             <label>Language</label>
 
             <select name="lang" class="form-control" style="width: 50%;">
+                <option>Select a language</option>
+
                 <option  value="eng">English</option>
                 <option  value="esp">Spanish</option>
 
@@ -38,7 +40,7 @@
         <div class="form-group" >
             <label>Audio File</label>
 
-            <input required type="file" name="file">
+            <input type="file" name="file">
             <p class="help-block">Was:</p>
 
             <audio controls>
@@ -62,8 +64,8 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <form action="/delete_audio" method="post">
-                        <input required hidden="true" name="artifact_id" value="{{ArtifactId}}">
-                        <input hidden="true" name="audio_id" value="{{audio.id}}">
+                        <input required hidden="true" name="artifact_id" value="{{artifactId}}">
+                        <input hidden="true" name="audio_id" value="{{audible.id}}">
 
                         <button class="btn btn-danger" type="submit">Delete</button>
                     </form>

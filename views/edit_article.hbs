@@ -10,7 +10,7 @@
     <form action="/edit_article" method="post">
         <div class="form-group">
             <label>Title</label>
-            <input id="article_title" type="text" name="title" class="form-control" placeholder="Enter title.">
+            <input id="article_title" type="text" name="title" class="form-control" placeholder="Enter title." value="{{title}}">
             <p class="help-block">Was: {{title}}</p>
             <label>Text</label>
             <textarea id="article_text" type="text" name="description" class="form-control" placeholder="Enter text." rows="6">{{text}}</textarea>

@@ -16,24 +16,24 @@
             <input hidden="true" name="id" value="{{admin.id}}">
             <div class="form-group">
                 <label>First Name</label>
-                <input class="form-control" id="admin_first" name="firstName" >
+                <input class="form-control" id="admin_first" name="firstName" value="{{admin.firstName}}">
                 <p class="help-block">Was: {{admin.firstName}}</p>
             </div>
             <div class="form-group" >
                 <label>Last Name</label>
-                <input class="form-control" id="admin_last" name="lastName">
+                <input class="form-control" id="admin_last" name="lastName" value="{{admin.lastName}}">
                 <p class="help-block">Was: {{admin.lastName}}</p>
 
             </div>
             <div class="form-group" >
                 <label>Email</label>
-                <input class="form-control" type="email" id="admin_email" name="email">
+                <input class="form-control" type="email" id="admin_email" name="email" value="{{admin.email}}">
                 <p class="help-block">Was: {{admin.email}}</p>
 
             </div>
             <div class="form-group" >
                 <label>Phone</label>
-                <input class="form-control" type="tel" name="phone">
+                <input class="form-control" type="tel" name="phone" value="{{admin.phone}}">
                 <p class="help-block">Was: {{admin.phone}}</p>
 
             </div>
@@ -45,6 +45,8 @@
                 <label>Repeat Password</label>
                 <input class="form-control" type="password"  name="repeat" id="repeat">
             </div>
+
+            <input type="checkbox" value="true" name="change_passwordd">
             <button type="submit" class="btn btn-default" id="edit_submit">Submit</button>
         </form>
     <div class="modal fade" id="deleteConfirmation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

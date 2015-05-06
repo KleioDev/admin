@@ -65,85 +65,102 @@ $(document).ready(function() {
         console.log($('#change').valid());
     });
 
-    $("[type=checkbox]").click(function() {
-        //Monday
-        if(document.getElementById('mon_closed').checked){
-            document.getElementById('mon_op').disabled = true;
-            document.getElementById('mon_cl').disabled = true;
-        }
-        else{
-            document.getElementById('mon_op').disabled = false;
-            document.getElementById('mon_cl').disabled = false;
-
-        }
-        //Tuesday
-        if(document.getElementById('tue_closed').checked){
-            document.getElementById('tue_op').disabled = true;
-            document.getElementById('tue_cl').disabled = true;
-
-        }
-        else{
-            document.getElementById('tue_op').disabled = false;
-            document.getElementById('tue_cl').disabled = false;
-
-        }
-        //Wednesday
-        if(document.getElementById('wed_closed').checked){
-            document.getElementById('wed_op').disabled = true;
-            document.getElementById('wed_cl').disabled = true;
-
-        }
-        else{
-            document.getElementById('wed_op').disabled = false;
-            document.getElementById('wdd_cl').disabled = false;
-
-        }
-        //Thursday
-        if(document.getElementById('thu_closed').checked){
-            document.getElementById('thu_op').disabled = true;
-            document.getElementById('thu_cl').disabled = true;
-
-        }
-        else{
-            document.getElementById('thu_op').disabled = false;
-            document.getElementById('thu_cl').disabled = false;
-
-        }
-        //Friday
-        if(document.getElementById('fri_closed').checked){
-            document.getElementById('fri_op').disabled = true;
-            document.getElementById('fri_cl').disabled = true;
-
-        }
-        else{
-            document.getElementById('fri_op').disabled = false;
-            document.getElementById('fri_cl').disabled = false;
-
-        }
-        //Saturday
-        if(document.getElementById('sat_closed').checked){
-            document.getElementById('sat_op').disabled = true;
-            document.getElementById('sat_cl').disabled = true;
-
-        }
-        else{
-            document.getElementById('sat_op').disabled = false;
-            document.getElementById('sat_cl').disabled = false;
-
-        }
-        //Sunday
-        if(document.getElementById('sun_closed').checked){
-            document.getElementById('sun_op').disabled = true;
-            document.getElementById('sun_cl').disabled = true;
-
-        }
-        else{
-            document.getElementById('sun_op').disabled = false;
-            document.getElementById('sun_cl').disabled = false;
-
-        }
-
-    });
+    //$("[type=checkbox]").click(function() {
+    //    //Monday
+    //    if (document.getElementById('mon_closed').checked) {
+    //        document.getElementById('mon_op').disabled = true;
+    //        document.getElementById('mon_cl').disabled = true;
+    //    }
+    //    else {
+    //        document.getElementById('mon_op').disabled = false;
+    //        document.getElementById('mon_cl').disabled = false;
+    //
+    //    }
+    //});
+    //$("[type=checkbox]").click(function() {
+    //
+    //    //Tuesday
+    //    if (document.getElementById('tue_closed').checked) {
+    //        document.getElementById('tue_op').disabled = true;
+    //        document.getElementById('tue_cl').disabled = true;
+    //
+    //    }
+    //    else {
+    //        document.getElementById('tue_op').disabled = false;
+    //        document.getElementById('tue_cl').disabled = false;
+    //
+    //    }
+    //});
+    //$("[type=checkbox]").click(function() {
+    //
+    //    //Wednesday
+    //    if (document.getElementById('wed_closed').checked) {
+    //        document.getElementById('wed_op').disabled = true;
+    //        document.getElementById('wed_cl').disabled = true;
+    //
+    //    }
+    //    else {
+    //        document.getElementById('wed_op').disabled = false;
+    //        document.getElementById('wdd_cl').disabled = false;
+    //
+    //    }
+    //});
+    //$("[type=checkbox]").click(function() {
+    //
+    //    //Thursday
+    //    if (document.getElementById('thu_closed').checked) {
+    //        document.getElementById('thu_op').disabled = true;
+    //        document.getElementById('thu_cl').disabled = true;
+    //
+    //    }
+    //    else {
+    //        document.getElementById('thu_op').disabled = false;
+    //        document.getElementById('thu_cl').disabled = false;
+    //
+    //    }
+    //});
+    //$("[type=checkbox]").click(function() {
+    //
+    //    //Friday
+    //    if (document.getElementById('fri_closed').checked) {
+    //        document.getElementById('fri_op').disabled = true;
+    //        document.getElementById('fri_cl').disabled = true;
+    //
+    //    }
+    //    else {
+    //        document.getElementById('fri_op').disabled = false;
+    //        document.getElementById('fri_cl').disabled = false;
+    //
+    //    }
+    //});
+    //$("[type=checkbox]").click(function() {
+    //
+    //    //Saturday
+    //    if (document.getElementById('sat_closed').checked) {
+    //        document.getElementById('sat_op').disabled = true;
+    //        document.getElementById('sat_cl').disabled = true;
+    //
+    //    }
+    //    else {
+    //        document.getElementById('sat_op').disabled = false;
+    //        document.getElementById('sat_cl').disabled = false;
+    //
+    //    }
+    //});
+    //$("[type=checkbox]").click(function() {
+    //
+    //    //Sunday
+    //    if(document.getElementById('sun_closed').checked){
+    //        document.getElementById('sun_op').disabled = true;
+    //        document.getElementById('sun_cl').disabled = true;
+    //
+    //    }
+    //    else{
+    //        document.getElementById('sun_op').disabled = false;
+    //        document.getElementById('sun_cl').disabled = false;
+    //
+    //    }
+    //});
 
 
 

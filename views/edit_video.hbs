@@ -15,12 +15,12 @@
     <form role="form" action="/artifact/{{artifactId}}/video/{{video.id}}" method="POST">
         <div class="form-group">
             <label>Title</label>
-            <input class="form-control" name="title" >
+            <input class="form-control" name="title" value="{{video.title}}">
             <p class="help-block">Was: {{video.title}}</p>
         </div>
         <div class="form-group" >
             <label>Description</label>
-            <input class="form-control" name="description">
+            <input class="form-control" name="description" value="{{video.description}}">
             <p class="help-block">Was: {{video.description}}</p>
 
         </div>
@@ -28,6 +28,8 @@
             <label>Language</label>
 
             <select name="lang" class="form-control" style="width: 50%;">
+                <option>Select a language</option>
+
                 <option value="eng">English</option>
                 <option value="esp">Spanish</option>
 
@@ -38,7 +40,7 @@
         <div class="form-group" >
             <label>Youtube URL</label>
 
-            <input required class="form-control" name="link">
+            <input class="form-control" name="link">
             <p class="help-block">Was: https://www.youtube.com/watch?v={{video.link}}</p>
 
 

@@ -10,7 +10,7 @@
     <form action="/event/{{id}}/edit" method="post">
         <div class="form-group">
             <label>Title</label>
-            <input id="article_title" type="text" name="title" class="form-control" placeholder="Enter title.">
+            <input id="article_title" type="text" name="title" class="form-control" placeholder="Enter title." value="{{title}}">
             <p class="help-block">Was: {{title}}</p>
 
             <label>Date</label>
@@ -25,6 +25,8 @@
 
             <input id="article_id" type="number" name="id"  value="{{id}}" hidden="true" >
             <select class="form-control" style="width: 50%;">
+                <option>Select a language</option>
+
                 <option name="lang" value="eng">English</option>
                 <option name="lang" value="esp">Spanish</option>
             </select>

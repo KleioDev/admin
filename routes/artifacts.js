@@ -68,7 +68,7 @@ function *artifacts(){
     var response, artifacts;
     try {
         response = yield rq({
-            uri : apiUrl + '/artifact',
+            uri : apiUrl + '/artifact?limit=1000',
             method : 'GET',
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
@@ -132,6 +132,9 @@ function *upload_audio(){
     if(!body) {
         this.throw('Bad Request', 400);
     }
+    for(prop in body){
+        if(!body[prop]) delete body[prop];
+    }
     try {
         response = yield rq({
             uri: apiUrl + "/audible",
@@ -163,7 +166,7 @@ function *delete_audio(){
     if(!body) {
         this.throw('Bad Request', 400);
     }
-
+    console.log(body);
     try {
         response = yield rq({
             uri : apiUrl + '/audible/' + body.audio_id,
@@ -188,7 +191,9 @@ function *add_text(){
     if(!body) {
         this.throw('Bad Request', 400);
     }
-
+    for(prop in body){
+        if(!body[prop]) delete body[prop];
+    }
     try {
         response = yield rq({
             uri : apiUrl + '/archive/',
@@ -241,6 +246,9 @@ function *add_image(){
     var body = this.request.body, response; //this.request.body.fields
     if(!body) {
         this.throw('Bad Request', 400);
+    }
+    for(prop in body){
+        if(!body[prop]) delete body[prop];
     }
     try {
         response = yield rq({
@@ -295,8 +303,13 @@ function *add_video(){
     if(!body) {
         this.throw('Bad Request', 400);
     }
-    body.link = body.link.substring(body.link.indexOf("=")+1);
-
+    for(prop in body){
+        if(!body[prop]) delete body[prop];
+    }
+    if(!body.link) {
+        if(body.link.indexOf("&")) body.link = body.link.substring(body.link.indexOf("=")+1, body.link.indexOf("&"));
+        else body.link = body.link.substring(body.link.indexOf("=")+1);
+    }
     try {
         response = yield rq({
             uri : apiUrl + '/video/',
@@ -371,6 +384,7 @@ function *add_exhibition(){
  */
 function *edit_audio_page(){
     var id = this.params.id, audio_id = this.params.audio, response;
+
     try {
         response = yield rq({
             uri : apiUrl + '/audible/' + audio_id,
@@ -383,7 +397,6 @@ function *edit_audio_page(){
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
-
     if(response.statusCode != 404){
         yield this.render("edit_audio", {
             title: "Edit Audio: " + audible.title,
@@ -484,6 +497,9 @@ function *edit_audio(){
     if(!body) {
         this.throw('Bad Request', 400);
     }
+    for(prop in body){
+        if(!body[prop]) delete body[prop];
+    }
     try {
         response = yield rq({
             uri: apiUrl + "/audible/" + this.params.audio,
@@ -514,6 +530,9 @@ function *edit_text(){
     if(!body) {
         this.throw('Bad Request', 400);
     }
+    for(prop in body){
+        if(!body[prop]) delete body[prop];
+    }
     try {
         response = yield rq({
             uri : apiUrl + '/archive/' + this.params.text,
@@ -539,6 +558,9 @@ function *edit_image(){
     var body = this.request.body, response; //this.request.body.fields
     if(!body) {
         this.throw('Bad Request', 400);
+    }
+    for(prop in body){
+        if(!body[prop]) delete body[prop];
     }
     try {
         response = yield rq({
@@ -570,8 +592,13 @@ function *edit_video(){
     if(!body) {
         this.throw('Bad Request', 400);
     }
-    body.link = body.link.substring(body.link.indexOf("=")+1);
-
+    for(prop in body){
+        if(!body[prop]) delete body[prop];
+    }
+    if(!body.link) {
+        if(body.link.indexOf("&")) body.link = body.link.substring(body.link.indexOf("=")+1, body.link.indexOf("&"));
+        else body.link = body.link.substring(body.link.indexOf("=")+1);
+    }
     try {
         response = yield rq({
             uri : apiUrl + '/video/' + this.params.video,
