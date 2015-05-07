@@ -493,30 +493,45 @@ function *edit_video_page(){
  * Makes the request to update the extra content
  */
 function *edit_audio(){
-    var body = this.request.body, response; //this.request.body.fields
+    var body = this.request.body.fields, response; //this.request.body.fields
     if(!body) {
         this.throw('Bad Request', 400);
     }
     for(prop in body){
         if(!body[prop]) delete body[prop];
     }
+
     try {
-        response = yield rq({
-            uri: apiUrl + "/audible/" + this.params.audio,
-            method: "PUT",
-            formData: {
-                file: fs.createReadStream(body.files.file.path),
-                title: body.fields.title,
-                description: body.fields.description,
-                ArtifactId: body.fields.ArtifactId
-            },
-            headers : {
-                Authorization : 'Bearer ' + this.session.user}
-        });
+        if(this.request.body.files.file.name.length != 0) {
+            body.file = fs.createReadStream(this.request.body.files.file.path);
+            console.log("With file");
+            console.log(body);
+
+            response = yield rq({
+                uri: apiUrl + "/audible/" + this.params.audio,
+                method: "PUT",
+                formData: body,
+                headers: {
+                    Authorization: 'Bearer ' + this.session.user
+                }
+            });
+        }
+        else{
+            console.log("Without file");
+            console.log(body);
+            response = yield rq({
+                uri: apiUrl + "/audible/" + this.params.audio,
+                method: "PUT",
+                formData:body,
+                headers: {
+                    Authorization: 'Bearer ' + this.session.user
+                }
+            });
+        }
     } catch(err){
         this.throw(err.message, err.status || 500);
     }
-
+    console.log(response.statusCode);
     if(response.statusCode >= 200 && response.statusCode < 300){
         this.redirect("/artifact/" + this.params.id);
     }
@@ -555,7 +570,7 @@ function *edit_text(){
  * Makes the request to update the extra content
  */
 function *edit_image(){
-    var body = this.request.body, response; //this.request.body.fields
+    var body = this.request.body.fields, response; //this.request.body.fields
     if(!body) {
         this.throw('Bad Request', 400);
     }
@@ -563,18 +578,27 @@ function *edit_image(){
         if(!body[prop]) delete body[prop];
     }
     try {
-        response = yield rq({
-            uri: apiUrl + "/image/" + this.params.image,
-            method: "PUT",
-            formData: {
-                file: fs.createReadStream(body.files.file.path),
-                title: body.fields.title,
-                description: body.fields.description,
-                ArtifactId: body.fields.ArtifactId
-            },
-            headers : {
-                Authorization : 'Bearer ' + this.session.user}
-        });
+        if(this.request.body.files.file.path) {
+            body.file = fs.createReadStream(this.request.body.files.file.path);
+            response = yield rq({
+                uri: apiUrl + "/image/" + this.params.image,
+                method: "PUT",
+                formData: body,
+                headers: {
+                    Authorization: 'Bearer ' + this.session.user
+                }
+            });
+        }
+        else{
+            response = yield rq({
+                uri: apiUrl + "/image/" + this.params.image,
+                method: "PUT",
+                formData: body,
+                headers: {
+                    Authorization: 'Bearer ' + this.session.user
+                }
+            });
+        }
     } catch(err){
         this.throw(err.message, err.status || 500);
     }

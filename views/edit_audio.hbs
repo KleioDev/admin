@@ -12,7 +12,7 @@
         </div>
     </div>
 
-    <form role="form" action="/artifact/{{ArtifactId}}/audio/{{audible.id}}" method="POST">
+    <form role="form" action="/artifact/{{artifactId}}/audio/{{audible.id}}" method="POST" enctype="multipart/form-data">
         <div class="form-group">
             <label>Title</label>
             <input class="form-control" name="title" value="{{audible.title}}">
@@ -28,7 +28,7 @@
             <label>Language</label>
 
             <select name="lang" class="form-control" style="width: 50%;">
-                <option>Select a language</option>
+                <option value="">Select a language</option>
 
                 <option  value="eng">English</option>
                 <option  value="esp">Spanish</option>
