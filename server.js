@@ -154,6 +154,9 @@ app.use(rooms());
 app.use(artifacts());
 app.use(exhibitions());
 app.use(events());
+app.use(function*(){
+    if(this.status == 404) this.redirect("/404");
+});
 
 //Set the app to listen at the port
 app.listen(3000);

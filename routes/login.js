@@ -22,7 +22,8 @@ module.exports = function(){
         .get("/change", change)
         .get("/change/notify", change_notify)
         .post("/forgot", reset_password)
-        .get("/qr", qr_catalog);
+        .get("/qr", qr_catalog)
+        .get("/404", not_found);
     return loginController.routes();
 };
 
@@ -198,6 +199,10 @@ function *qr_catalog(){
         this.throw(err.message, err.status || 500);
     }
     yield this.render("qr", {title: "QR Catalog",artifacts: artifacts});
+}
+
+function *not_found(){
+    yield this.render("404",{title: "404: Not Found"})
 }
 
 /**

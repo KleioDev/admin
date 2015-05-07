@@ -68,7 +68,7 @@ function *artifacts(){
     var response, artifacts;
     try {
         response = yield rq({
-            uri : apiUrl + '/artifact?limit=1000',
+            uri : apiUrl + '/artifact?per_page=1000',
             method : 'GET',
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
@@ -97,8 +97,8 @@ function *artifact(){
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
         });
-        artifact = JSON.parse(response.body);
 
+        artifact = JSON.parse(response.body);
     } catch(err) {
         this.throw(err.message, err.status || 500);
     }
@@ -505,8 +505,6 @@ function *edit_audio(){
         if(this.request.body.files.file.name.length != 0) {
             body.file = fs.createReadStream(this.request.body.files.file.path);
             console.log("With file");
-            console.log(body);
-
             response = yield rq({
                 uri: apiUrl + "/audible/" + this.params.audio,
                 method: "PUT",
@@ -522,7 +520,8 @@ function *edit_audio(){
             response = yield rq({
                 uri: apiUrl + "/audible/" + this.params.audio,
                 method: "PUT",
-                formData:body,
+                json:true,
+                formData: body,
                 headers: {
                     Authorization: 'Bearer ' + this.session.user
                 }

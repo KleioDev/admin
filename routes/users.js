@@ -22,7 +22,7 @@ module.exports = function(){
  * Render the Users page.
  */
 function *users(){
-    var response, users;
+    var response, users = [];
 
     try {
         response = yield rq({
@@ -31,6 +31,7 @@ function *users(){
             headers : {
                 Authorization : 'Bearer ' + this.session.user}
         });
+
         users = JSON.parse(response.body).users;
     } catch(err) {
         this.throw(err.message, err.status || 500);
