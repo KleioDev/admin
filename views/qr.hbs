@@ -1,0 +1,21 @@
+<div class="container">
+    <div class="row">
+        {{#each artifacts}}
+
+            <div class="col-lg-4">
+                <!--<p style="text-align: center;">{{title}}</p>-->
+                <!--<img src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&data={{id}}">-->
+                <div class="panel panel-default">
+                    <div class="panel-heading" style="padding-bottom: 8px">
+                        <p style="text-align: center;">{{title}}</p>
+                    </div>
+                    <div class="panel-body">
+                        <img style="display: block;margin-left: auto;margin-right: auto" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{id}}">
+                    </div>
+                </div>
+            </div>
+        {{/each}}
+    </div>
+</div>
+
+

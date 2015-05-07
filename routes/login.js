@@ -21,7 +21,8 @@ module.exports = function(){
         .get("/forgot", forgot)
         .get("/change", change)
         .get("/change/notify", change_notify)
-        .post("/forgot", reset_password);
+        .post("/forgot", reset_password)
+        .get("/qr", qr_catalog);
     return loginController.routes();
 };
 
@@ -180,6 +181,23 @@ function *reset_password(){
  */
 function *change_notify(){
     yield this.render("change_notify", {title:"Password Reset"});
+}
+
+function *qr_catalog(){
+    var response, artifacts;
+    try {
+        response = yield rq({
+            uri : apiUrl + '/artifact?limit=1000',
+            method : 'GET',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+        artifacts = JSON.parse(response.body).artifacts;
+
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+    yield this.render("qr", {title: "QR Catalog",artifacts: artifacts});
 }
 
 /**
