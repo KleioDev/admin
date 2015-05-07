@@ -137,13 +137,18 @@ function *edit_event(){
     for(prop in body){
         if(!body[prop]) delete body[prop];
     }
-    if(!body.date && !body.time) body.eventDate = body.date+"T"+body.time+":00.000-04";
-    else if(!body.date && body.time) body.eventDate = body.date+"T";
+    if(body.date && body.time) {
+        //body.eventDate = body.date+"T"+body.time+":00.000-04";
+        body.eventDate = moment(body.date+"T"+body.time+":00.000-04");
+    }
+    else if(body.date && !body.time) {
+        body.eventDate = moment(body.date+"T");
+    }
 
     //2015-05-06T08:00:00.000-04
     //2015-05-02T03:24:00.000Z
 
-
+    console.log(body);
     try {
         response = yield rq({
             uri : apiUrl + '/events/' + id,

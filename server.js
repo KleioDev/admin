@@ -126,6 +126,10 @@ app.use(handlebars({
                 if(obj === "general") return "General";
                 if(obj === "bug") return "Application Bug";
                 else return "Content Problem";
+            },
+            checked: function(obj){
+                if(obj) return "checked='true'";
+                else return '';
             }
         }
     }));
