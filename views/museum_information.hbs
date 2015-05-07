@@ -11,57 +11,94 @@
     </div>
     <img src="{{museum.image}}" style="max-width: 100%;height: auto;">
     <br>
-    <h4>Name:</h4>
+    <h5>Name:</h5>
     <p>{{museum.name}}</p>
     <div style="border-bottom: 1px solid darkgray;"></div>
-    <h4>Hours of Operation:</h4>
+    <h5>Hours of Operation:</h5>
+    <div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr><th>Days</th>
+            <th>Time</th></tr>
+        </thead>
+        <tr><td>Monday</td>
     {{#if museum.hoursOfOperation.monday.closed}}
-        <p>Monday: Closed</p>
+        <td>Closed</td>
     {{else}}
-        <p>Monday: {{museum.hoursOfOperation.monday.open}} to {{museum.hoursOfOperation.monday.close}}</p>
+        <td>{{museum.hoursOfOperation.monday.open}} to {{museum.hoursOfOperation.monday.close}}</td>
     {{/if}}
+        </tr>
+
+        <tr><td>Tuesday</td>
+
     {{#if museum.hoursOfOperation.tuesday.closed}}
-        <p>Tuesday: Closed</p>
+        <td>Closed</td>
     {{else}}
-        <p>Tuesday: {{museum.hoursOfOperation.tuesday.open}} to {{museum.hoursOfOperation.tuesday.close}}</p>
+        <td>{{museum.hoursOfOperation.tuesday.open}} to {{museum.hoursOfOperation.tuesday.close}}</td>
     {{/if}}
+        </tr>
+
+        <tr><td>Wednesday</td>
     {{#if museum.hoursOfOperation.wednesday.closed}}
-        <p>Wednesday: Closed</p>
+        <td>Closed</td>
     {{else}}
-        <p>Wednesday: {{museum.hoursOfOperation.wednesday.open}} to {{museum.hoursOfOperation.wednesday.close}}</p>
+        <td>{{museum.hoursOfOperation.wednesday.open}} to {{museum.hoursOfOperation.wednesday.close}}</td>
     {{/if}}
+        </tr>
+
+        <tr><td>Thursday</td>
     {{#if museum.hoursOfOperation.thursday.closed}}
-        <p>Thursday: Closed</p>
+        <td>Closed</td>
     {{else}}
-        <p>Thursday: {{museum.hoursOfOperation.thurday.open}} to {{museum.hoursOfOperation.thursday.close}}</p>
+        <td>{{museum.hoursOfOperation.thursday.open}} to {{museum.hoursOfOperation.thursday.close}}</td>
     {{/if}}
-    {{#if museum.hoursOfOperation.friday.closed}}
-        <p>Friday: Closed</p>
+            </tr>
+
+        <tr><td>Friday</td>
+
+            {{#if museum.hoursOfOperation.friday.closed}}
+        <td>Closed</td>
     {{else}}
-        <p>Friday: {{museum.hoursOfOperation.friday.open}} to {{museum.hoursOfOperation.friday.close}}</p>
+        <td>{{museum.hoursOfOperation.friday.open}} to {{museum.hoursOfOperation.friday.close}}</td>
     {{/if}}
-    {{#if museum.hoursOfOperation.saturday.closed}}
-        <p>Saturday: Closed</p>
+            </tr>
+
+        <tr><td>Saturday</td>
+
+            {{#if museum.hoursOfOperation.saturday.closed}}
+        <td>Closed</td>
     {{else}}
-        <p>Saturday: {{museum.hoursOfOperation.saturday.open}} to {{museum.hoursOfOperation.saturday.close}}</p>
+        <td>{{museum.hoursOfOperation.saturday.open}} to {{museum.hoursOfOperation.saturday.close}}</td>
     {{/if}}
-    {{#if museum.hoursOfOperation.sunday.closed}}
-        <p>Sunday: Closed</p>
+            </tr>
+
+        <tr><td>Sunday</td>
+
+            {{#if museum.hoursOfOperation.sunday.closed}}
+        <td>Closed</td>
     {{else}}
-        <p>Sunday: {{museum.hoursOfOperation.sunday.open}} to {{museum.hoursOfOperation.sunday.close}}</p>
+        <td>{{museum.hoursOfOperation.sunday.open}} to {{museum.hoursOfOperation.sunday.close}}</td>
     {{/if}}
+        </tr>
+    </table>
+        </div>
     <div style="border-bottom: 1px solid darkgray;"></div>
-    <h4>Description:</h4>
+    <h5>Description:</h5>
     <p>{{{museum.description}}}</p>
     <div style="border-bottom: 1px solid darkgray;"></div>
-    <h4>Phone:</h4>
+    <h5>Phone:</h5>
     <p>{{museum.phone}}</p>
     <div style="border-bottom: 1px solid darkgray;"></div>
-    <h4>Email:</h4>
+    <h5>Email:</h5>
     <p>{{museum.email}}</p>
     <div style="border-bottom: 1px solid darkgray;"></div>
-    <h4>Location:</h4>
-    <p>{{museum.location}}</p>
+    <h5>Location:</h5>
+    <a href="{{museum.location}}">Google Maps - {{museum.location}}</a>
     <div style="border-bottom: 1px solid darkgray;"></div>
     <br>
+
+    <br>
+
+    <a href="/museum/sync" class="btn btn-block btn-danger">Synchronize TMS database with Kleio database</a>
+    <p class="help-block">This will take the artifacts from the TMS database and transfer them with the artifacts in the Kleio database.</p>
 </div>

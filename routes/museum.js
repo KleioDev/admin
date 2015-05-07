@@ -6,6 +6,7 @@ var fs = require("fs");
 var Router = require('koa-router');
 var apiUrl = require("../config/config").url;
 var rq = require('co-request');
+var moment = require("moment");
 
 /**
  * Exports the routes to the server router.
@@ -22,7 +23,8 @@ module.exports = function(){
             formidable: {
                 uploadDir: 'public/img/'
             }
-        }),edit_museum);
+        }),edit_museum)
+        .get("/museum/sync", requireLogin, sync);
     return museumController.routes();
 };
 /**
@@ -43,6 +45,11 @@ function *museum(){
 
     } catch(err) {
         this.throw(err.message, err.status || 500);
+    }
+    for(prop in museum.hoursOfOperation){
+        museum.hoursOfOperation[prop].open = moment(museum.hoursOfOperation[prop].open,"hh:mm").format("h:mm a");
+        museum.hoursOfOperation[prop].close = moment(museum.hoursOfOperation[prop].close, "hh:mm").format("h:mm a")
+
     }
     yield this.render("museum_information", {
         title : "Museum",
@@ -175,6 +182,21 @@ function *edit_museum(){
         this.redirect("/museum");
     }
 
+}
+
+function *sync(){
+    var response;
+    try {
+        response = yield rq({
+            uri : apiUrl + ':3000/server/reset',
+            method : 'GET',
+            headers : {
+                Authorization : 'Bearer ' + this.session.user}
+        });
+    } catch(err) {
+        this.throw(err.message, err.status || 500);
+    }
+    this.redirect("/museum");
 }
 
 /**
