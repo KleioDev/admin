@@ -188,7 +188,7 @@ function *qr_catalog(){
     var response, artifacts;
     try {
         response = yield rq({
-            uri : apiUrl + '/artifact?limit=1000',
+            uri : apiUrl + '/artifact?per_page=1000',
             method : 'GET',
             headers : {
                 Authorization : 'Bearer ' + this.session.user}

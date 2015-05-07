@@ -251,6 +251,8 @@ function *add_image(){
         if(!body[prop]) delete body[prop];
     }
     try {
+        console.log(body);
+
         response = yield rq({
             uri: apiUrl + "/image",
             method: "POST",
@@ -579,6 +581,7 @@ function *edit_image(){
     try {
         if(this.request.body.files.file.path) {
             body.file = fs.createReadStream(this.request.body.files.file.path);
+            console.log(body);
             response = yield rq({
                 uri: apiUrl + "/image/" + this.params.image,
                 method: "PUT",
