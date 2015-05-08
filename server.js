@@ -130,6 +130,11 @@ app.use(handlebars({
             checked: function(obj){
                 if(obj) return "checked='true'";
                 else return '';
+            },
+            cap: function(obj){
+                if(obj === "male") return "Male";
+                else if (obj === "female") return "Female";
+                else return "Undefined"
             }
         }
     }));
