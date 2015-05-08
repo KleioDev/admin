@@ -327,6 +327,7 @@ function *notifyEvent(){
         message.addData('title', 'New Event at Musa!');
         message.addData('msgcnt', '3');
         message.addData('type', "event");
+        message.addData('alert', event.title);
         message.addData('event', event.id);
         message.timeToLive = 3000;
         var tokens = [];
