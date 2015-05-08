@@ -305,6 +305,8 @@ function *notifyNews(){
         message.addData('title', 'New Article at Musa!');
         message.addData('msgcnt', '3');
         message.addData('type', "news");
+        message.addData('alert', news.title);
+
         message.addData('news', news.id);
         message.timeToLive = 3000;
         var tokens = [];
