@@ -99,6 +99,25 @@
 
     <br>
 
-    <a href="/museum/sync" class="btn btn-block btn-danger">Synchronize TMS database with Kleio database</a>
+    <a href="#" data-toggle="modal" data-target="#syncConfirmation" class="btn btn-block btn-danger">Synchronize TMS database with Kleio database</a>
     <p class="help-block">This will take the artifacts from the TMS database and transfer them with the artifacts in the Kleio database.</p>
+
+    <div class="modal fade" id="syncConfirmation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Synchronization Confirmation</h4>
+                </div>
+                <div class="modal-body">
+                    Would you like to synchronize databases?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <a href="/museum/sync" data-toggle="modal" data-target="#syncConfirmation" class="btn btn-danger">Sync</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

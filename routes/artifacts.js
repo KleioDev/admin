@@ -308,7 +308,7 @@ function *add_video(){
     for(prop in body){
         if(!body[prop]) delete body[prop];
     }
-    if(!body.link) {
+    if(body.link) {
         if(body.link.indexOf("&")) body.link = body.link.substring(body.link.indexOf("=")+1, body.link.indexOf("&"));
         else body.link = body.link.substring(body.link.indexOf("=")+1);
     }
@@ -621,8 +621,8 @@ function *edit_video(){
     for(prop in body){
         if(!body[prop]) delete body[prop];
     }
-    if(!body.link) {
-        if(body.link.indexOf("&")) body.link = body.link.substring(body.link.indexOf("=")+1, body.link.indexOf("&"));
+    if(body.link) {
+        if(body.link.indexOf("&") > 0) body.link = body.link.substring(body.link.indexOf("=")+1, body.link.indexOf("&"));
         else body.link = body.link.substring(body.link.indexOf("=")+1);
     }
     try {

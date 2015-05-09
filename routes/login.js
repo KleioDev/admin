@@ -86,12 +86,33 @@ function *index(){
         this.throw(err.message, err.status || 500);
     }
 
-
     yield this.render("index", {
         title : "Home",
+        //artifacts:[
+        //    {title:"Mona Lisa", objectNumber:'2007.001.79.64', interactions: 569},
+        //    {title:"The Last Supper", objectNumber:'2007.001.79.65', interactions: 490},
+        //    {title:"The Creation of Adam", objectNumber:'2007.001.79.66', interactions: 476},
+        //    {title:"Starry Night", objectNumber:'2007.001.79.67', interactions: 459},
+        //    {title:"The Scream", objectNumber:'2007.001.79.68', interactions: 428},
+        //    {title:"The Persistence of Memory", objectNumber:'2007.001.79.69', interactions: 400},
+        //    {title:"Girl with a Pearl Earring", objectNumber:'2007.001.79.70', interactions: 321},
+        //    {title:"The Night Watch", objectNumber:'2007.001.79.71', interactions: 320},
+        //    {title:"Guarnica", objectNumber:'2007.001.79.72', interactions: 256},
+        //    {title:"La Escuela del Maestro Rafael Cordero", objectNumber:'2007.001.79.73', interactions: 231}
+        //
+        //
+        //],
         artifacts : artifacts,
-        phones:{ios: ios, android: android},
+        phones:{ios: ios, android: android},//phones:{ios: 453, android: 961},
         users: array
+        //users: [
+        //    {active:98, interactive:70, period:'1-2015'},
+        //    {active:102, interactive:56, period:'2-2015'},
+        //    {active:49, interactive:31, period:'3-2015'},
+        //    {active:134, interactive:101, period:'4-2015'},
+        //    {active:99, interactive:45, period:'5-2015'},
+        //    {active:200, interactive:158, period:'6-2015'},
+        //    {active:234, interactive:140, period:'7-2015'}]
     });
 }
 
