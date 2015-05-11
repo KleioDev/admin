@@ -79,7 +79,7 @@ function *artifacts(){
         this.throw(err.message, err.status || 500);
     }
     yield this.render("artifacts", {
-        title : "Artifacts",
+        title : "Objects",
         objects: artifacts
     });
 }
@@ -117,7 +117,7 @@ function *artifact(){
     }
 
     yield this.render("artifact", {
-        title: "Artifact: " + artifact.title,
+        title: "Object: " + artifact.title,
         artifact : artifact,
         exhibitions : exhibitions
     });
