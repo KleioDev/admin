@@ -349,7 +349,7 @@
             <select name="id" class="form-control">
                 <option value="null">Select an exhibition...</option>
                 {{#each exhibitions}}
-                    <option value={{id}}>{{title}} - {{#sample description}}{{/sample}}</option>
+                    <option value={{id}}>{{title}} - {{{sample description}}}</option>
                 {{/each}}
             </select>
             <input hidden="true" name="ArtifactId" value="{{artifact.id}}">
